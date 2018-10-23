@@ -1,0 +1,5 @@
+rendergraph/
+projects/*
+
+!projects/rendergraph.vcxproj
+!projects/rendergraph.vcxproj.filters

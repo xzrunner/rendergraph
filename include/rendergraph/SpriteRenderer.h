@@ -28,6 +28,8 @@ public:
 	void DrawQuad(const float* positions, const float* texcoords, int texid, uint32_t color);
 	void DrawPainter(const tess::Painter& pt, const sm::mat4& mat);
 
+	auto GetShader() { return m_shader; }
+
 public:
 	struct Vertex
 	{

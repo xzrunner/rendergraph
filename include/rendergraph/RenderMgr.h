@@ -12,7 +12,9 @@ class IRenderer;
 
 enum class RenderType
 {
-	SPRITE = 0,
+	NIL = 0,
+
+	SPRITE,
 	EXTERN,
 
 	MAX_COUNT
@@ -28,7 +30,7 @@ public:
 private:
 	std::array<std::shared_ptr<IRenderer>, static_cast<int>(RenderType::MAX_COUNT)> m_renderers;
 
-	int m_curr_render = -1;
+	RenderType m_curr_render = RenderType::NIL;
 
 	CU_SINGLETON_DECLARATION(RenderMgr);
 

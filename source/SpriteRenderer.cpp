@@ -70,11 +70,11 @@ void SpriteRenderer::Flush()
 
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
-	rc.SetBlend(ur::BLEND_SRC_ALPHA, ur::BLEND_ONE_MINUS_SRC_ALPHA);
+	rc.SetBlend(ur::BLEND_SRC_ALPHA, ur::BLEND_ONE_MINUS_SRC_ALPHA, false);
 
-	m_shader->Use();
+	m_shader->Use(false);
 
-	rc.BindTexture(m_tex_id, 0);
+	rc.BindTexture(m_tex_id, 0, false);
 
 	m_shader->SetMat4("u_model", sm::mat4().x);
 
@@ -88,7 +88,7 @@ void SpriteRenderer::Flush()
 
 	rc.DrawElements(ur::DRAW_TRIANGLES, 0, m_buf.indices.size());
 
-	rc.SetBlend(ur::BLEND_ONE, ur::BLEND_ONE_MINUS_SRC_ALPHA);
+	rc.SetBlend(ur::BLEND_ONE, ur::BLEND_ONE_MINUS_SRC_ALPHA, false);
 
 	m_buf.Clear();
 }
@@ -248,7 +248,7 @@ void SpriteRenderer::InitShader()
 	sp.uniform_names.view_mat  = "u_view";
 	sp.uniform_names.proj_mat  = "u_projection";
 	auto& wc = pt2::Blackboard::Instance()->GetWindowContext();
-	m_shader = std::make_shared<pt2::Shader>(*wc, &rc, sp);
+	m_shader = std::make_shared<pt2::Shader>(*wc, &rc, sp, false);
 }
 
 //////////////////////////////////////////////////////////////////////////

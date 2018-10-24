@@ -10,28 +10,43 @@ CU_SINGLETON_DEFINITION(RenderMgr);
 
 RenderMgr::RenderMgr()
 {
-	m_renderers[static_cast<int>(RenderType::SPRITE)]
-		= std::make_shared<SpriteRenderer>();
-	m_renderers[static_cast<int>(RenderType::EXTERN)]
-		= std::make_shared<ExternRenderer>();
 }
 
 std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 {
-	if (m_curr_render != static_cast<int>(type))
+	if (m_curr_render != type)
 	{
-		if (m_curr_render >= 0) {
-			m_renderers[m_curr_render]->Flush();
+		if (m_curr_render > RenderType::NIL) {
+			m_renderers[static_cast<int>(m_curr_render)]->Flush();
 		}
-		m_curr_render = static_cast<int>(type);
+		m_curr_render = type;
 	}
-	return m_curr_render < 0 ? nullptr : m_renderers[m_curr_render];
+
+	if (!m_renderers[static_cast<int>(m_curr_render)])
+	{
+		switch (m_curr_render)
+		{
+		case RenderType::NIL:
+			m_renderers[static_cast<int>(RenderType::SPRITE)] = nullptr;
+			break;
+		case RenderType::SPRITE:
+			m_renderers[static_cast<int>(RenderType::SPRITE)]
+				= std::make_shared<SpriteRenderer>();
+			break;
+		case RenderType::EXTERN:
+			m_renderers[static_cast<int>(RenderType::EXTERN)]
+				= std::make_shared<ExternRenderer>();
+			break;
+		}
+	}
+	return m_renderers[static_cast<int>(m_curr_render)];
 }
 
 void RenderMgr::Flush()
 {
-	if (m_curr_render >= 0) {
-		m_renderers[m_curr_render]->Flush();
+	auto shader = SetRenderer(m_curr_render);
+	if (shader) {
+		shader->Flush();
 	}
 }
 

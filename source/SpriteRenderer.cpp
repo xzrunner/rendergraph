@@ -128,7 +128,7 @@ void SpriteRenderer::DrawQuad(const float* positions, const float* texcoords, in
 
 void SpriteRenderer::DrawPainter(const tess::Painter& pt, const sm::mat4& mat)
 {
-	if (pt.GetBuffer().indices.empty()) {
+	if (pt.IsEmpty()) {
 		return;
 	}
 

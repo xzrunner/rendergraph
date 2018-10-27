@@ -26,7 +26,7 @@ public:
 	virtual void Flush() override;
 
 	void DrawQuad(const float* positions, const float* texcoords, int texid, uint32_t color);
-	void DrawPainter(const tess::Painter& pt, const sm::mat4& mat);
+	void DrawPainter(const tess::Painter& pt, const sm::mat4& mat = sm::mat4());
 
 	auto GetShader() { return m_shader; }
 

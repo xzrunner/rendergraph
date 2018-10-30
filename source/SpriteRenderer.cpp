@@ -178,6 +178,11 @@ void SpriteRenderer::DrawPainter(const tess::Painter& pt, const sm::mat4& mat)
 	}
 }
 
+uint32_t SpriteRenderer::GetPaletteTexID() const
+{
+	return m_palette ? m_palette->GetTexID() : 0;
+}
+
 void SpriteRenderer::InitShader()
 {
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();

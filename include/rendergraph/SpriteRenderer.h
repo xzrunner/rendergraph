@@ -30,7 +30,7 @@ public:
 
 	auto GetShader() { return m_shader; }
 
-	uint32_t GetPaletteTexID() const;
+	auto& GetPalette() const { return *m_palette; }
 
 public:
 	struct Vertex

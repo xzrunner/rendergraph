@@ -70,8 +70,6 @@ void SpriteRenderer::Flush()
 
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
-	rc.SetBlend(ur::BLEND_SRC_ALPHA, ur::BLEND_ONE_MINUS_SRC_ALPHA, false);
-
 	m_shader->Use(false);
 
 	rc.BindTexture(m_tex_id, 0, false);
@@ -87,8 +85,6 @@ void SpriteRenderer::Flush()
 	rc.UpdateBuffer(m_ebo, m_buf.indices.data(), ibuf_sz);
 
 	rc.DrawElements(ur::DRAW_TRIANGLES, 0, m_buf.indices.size());
-
-	rc.SetBlend(ur::BLEND_ONE, ur::BLEND_ONE_MINUS_SRC_ALPHA, false);
 
 	m_buf.Clear();
 }

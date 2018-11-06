@@ -26,7 +26,7 @@ void ExternRenderer::Flush()
 
 void ExternRenderer::DrawTexSpr(const std::shared_ptr<pt2::Shader>& shader, const sm::mat4& mat) const
 {
-	shader->Use(false);
+	shader->Use();
 
 	shader->SetMat4(shader->GetModelUniformName().c_str(), mat.x);
 
@@ -36,7 +36,7 @@ void ExternRenderer::DrawTexSpr(const std::shared_ptr<pt2::Shader>& shader, cons
 
 void ExternRenderer::DrawNoTexSpr(const std::shared_ptr<pt2::Shader>& shader, const sm::mat4& mat) const
 {
-	shader->Use(false);
+	shader->Use();
 
 	shader->SetMat4(shader->GetModelUniformName().c_str(), mat.x);
 

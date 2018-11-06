@@ -70,9 +70,9 @@ void SpriteRenderer::Flush()
 
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
-	m_shader->Use(false);
+	m_shader->Use();
 
-	rc.BindTexture(m_tex_id, 0, false);
+	rc.BindTexture(m_tex_id, 0);
 
 	m_shader->SetMat4("u_model", sm::mat4().x);
 
@@ -244,7 +244,7 @@ void SpriteRenderer::InitShader()
 	sp.uniform_names.view_mat  = "u_view";
 	sp.uniform_names.proj_mat  = "u_projection";
 	auto& wc = pt2::Blackboard::Instance()->GetWindowContext();
-	m_shader = std::make_shared<pt2::Shader>(*wc, &rc, sp, false);
+	m_shader = std::make_shared<pt2::Shader>(*wc, &rc, sp);
 }
 
 //////////////////////////////////////////////////////////////////////////

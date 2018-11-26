@@ -68,11 +68,16 @@ void SpriteRenderer::Flush()
 		return;
 	}
 
-	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-
 	m_shader->Use();
+	if (m_buf.indices.empty()) {
+		return;
+	}
 
+	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 	rc.BindTexture(m_tex_id, 0);
+	if (m_buf.indices.empty()) {
+		return;
+	}
 
 	m_shader->SetMat4("u_model", sm::mat4().x);
 

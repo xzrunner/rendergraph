@@ -15,6 +15,7 @@ enum class RenderType
 	NIL = 0,
 
 	SPRITE,
+	TEX3D,
 	EXTERN,
 
 	MAX_COUNT

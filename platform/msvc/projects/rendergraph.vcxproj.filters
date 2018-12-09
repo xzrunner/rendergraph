@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\Callback.cpp" />
+    <ClCompile Include="..\..\..\source\RenderMgr.cpp" />
+    <ClCompile Include="..\..\..\source\ExternRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\SpriteRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\Tex3dRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\IRenderer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\RenderMgr.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\ExternRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\SpriteRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\Tex3dRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="renders">
+      <UniqueIdentifier>{e773b86a-1167-46e9-9d8d-1f798fba8ae1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,6 +1,7 @@
 #include "rendergraph/RenderMgr.h"
 #include "rendergraph/IRenderer.h"
 #include "rendergraph/SpriteRenderer.h"
+#include "rendergraph/Tex3dRenderer.h"
 #include "rendergraph/ExternRenderer.h"
 
 namespace rg
@@ -32,6 +33,10 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 		case RenderType::SPRITE:
 			m_renderers[static_cast<int>(RenderType::SPRITE)]
 				= std::make_shared<SpriteRenderer>();
+			break;
+		case RenderType::TEX3D:
+			m_renderers[static_cast<int>(RenderType::TEX3D)]
+				= std::make_shared<Tex3dRenderer>();
 			break;
 		case RenderType::EXTERN:
 			m_renderers[static_cast<int>(RenderType::EXTERN)]

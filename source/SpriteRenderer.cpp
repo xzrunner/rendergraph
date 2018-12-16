@@ -235,15 +235,15 @@ void SpriteRenderer::InitShader()
 	sw::Evaluator frag({ mul }, sw::ST_FRAG);
 
 	//printf("//////////////////////////////////////////////////////////////////////////\n");
-	//printf("%s\n", vert.GetShaderStr().c_str());
+	//printf("%s\n", vert.GenShaderStr().c_str());
 	//printf("//////////////////////////////////////////////////////////////////////////\n");
-	//printf("%s\n", frag.GetShaderStr().c_str());
+	//printf("%s\n", frag.GenShaderStr().c_str());
 	//printf("//////////////////////////////////////////////////////////////////////////\n");
 
 	std::vector<std::string> texture_names;
 	pt2::Shader::Params sp(texture_names, layout);
-	sp.vs = vert.GetShaderStr().c_str();
-	sp.fs = frag.GetShaderStr().c_str();
+	sp.vs = vert.GenShaderStr().c_str();
+	sp.fs = frag.GenShaderStr().c_str();
 
 	sp.uniform_names.model_mat = "u_model";
 	sp.uniform_names.view_mat  = "u_view";

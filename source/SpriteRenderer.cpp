@@ -80,6 +80,7 @@ void SpriteRenderer::Flush()
 	}
 
 	m_shader->SetMat4("u_model", sm::mat4().x);
+//    m_shader->UpdateModelMat(sm::mat4().x);
 
 	rc.BindBuffer(ur::VERTEXBUFFER, m_vbo);
 	size_t vbuf_sz = sizeof(Vertex) * m_buf.vertices.size();

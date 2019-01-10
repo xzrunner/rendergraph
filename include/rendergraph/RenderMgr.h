@@ -5,6 +5,8 @@
 #include <memory>
 #include <array>
 
+namespace pt2 { class WindowContext; }
+
 namespace rg
 {
 
@@ -25,6 +27,8 @@ class RenderMgr
 {
 public:
 	std::shared_ptr<IRenderer> SetRenderer(RenderType type);
+
+    bool BindSprWndCtx(pt2::WindowContext& wc) const;
 
 	void Flush();
 

@@ -47,6 +47,17 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 	return m_renderers[static_cast<int>(m_curr_render)];
 }
 
+bool RenderMgr::BindSprWndCtx(pt2::WindowContext& wc) const
+{
+    auto& rd = m_renderers[static_cast<int>(RenderType::SPRITE)];
+    if (!rd) {
+        return false;
+    }
+
+    std::static_pointer_cast<SpriteRenderer>(rd)->BindWindowContext(wc);
+    return true;
+}
+
 void RenderMgr::Flush()
 {
 	auto shader = SetRenderer(m_curr_render);

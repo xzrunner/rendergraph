@@ -16,7 +16,6 @@
 #include <shaderweaver/node/SampleTex2D.h>
 #include <shaderweaver/node/Multiply.h>
 #include <painting2/Shader.h>
-#include <painting2/Blackboard.h>
 
 namespace
 {
@@ -180,6 +179,11 @@ void SpriteRenderer::DrawPainter(const tess::Painter& pt, const sm::mat4& mat)
 	}
 }
 
+void SpriteRenderer::BindWindowContext(pt2::WindowContext& wc)
+{
+    std::static_pointer_cast<pt2::Shader>(m_shader)->AddNotify(wc);
+}
+
 void SpriteRenderer::InitShader()
 {
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
@@ -249,8 +253,8 @@ void SpriteRenderer::InitShader()
 	sp.uniform_names.model_mat = "u_model";
 	sp.uniform_names.view_mat  = "u_view";
 	sp.uniform_names.proj_mat  = "u_projection";
-	auto& wc = pt2::Blackboard::Instance()->GetWindowContext();
-	m_shader = std::make_shared<pt2::Shader>(*wc, &rc, sp);
+
+	m_shader = std::make_shared<pt2::Shader>(&rc, sp);
 }
 
 //////////////////////////////////////////////////////////////////////////

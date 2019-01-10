@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 
 namespace pt0 { class Shader; }
+namespace pt2 { class WindowContext; }
 namespace tess { class Painter; class Palette; }
 namespace gs { class Shape; }
 
@@ -31,6 +32,8 @@ public:
 	auto GetShader() { return m_shader; }
 
 	auto& GetPalette() const { return *m_palette; }
+
+    void BindWindowContext(pt2::WindowContext& wc);
 
 public:
 	struct Vertex

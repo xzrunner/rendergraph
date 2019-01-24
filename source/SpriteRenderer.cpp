@@ -37,6 +37,8 @@ void copy_vertex_buffer(const sm::mat4& mat, rg::SpriteRenderer::Buffer& dst,
 	dst.curr_index += static_cast<unsigned short>(src.vertices.size());
 }
 
+const int MAX_VERTEX_NUM = 0xffff;
+
 }
 
 namespace rg
@@ -101,6 +103,10 @@ void SpriteRenderer::DrawQuad(const float* positions, const float* texcoords, in
 		m_tex_id = texid;
 	}
 
+    if (m_buf.vertices.size() + 4 >= MAX_VERTEX_NUM) {
+        Flush();
+    }
+
 	m_buf.Reserve(6, 4);
 
 	m_buf.index_ptr[0] = m_buf.curr_index;
@@ -153,6 +159,10 @@ void SpriteRenderer::DrawPainter(const tess::Painter& pt, const sm::mat4& mat)
 				m_tex_id = cached_texid;
 			}
 
+            if (m_buf.vertices.size() + pt.GetBuffer().vertices.size() >= MAX_VERTEX_NUM) {
+                Flush();
+            }
+
 			copy_vertex_buffer(mat, m_buf, pt.GetBuffer());
 
 			float x = cached_texcoords[0];
@@ -160,6 +170,8 @@ void SpriteRenderer::DrawPainter(const tess::Painter& pt, const sm::mat4& mat)
 			float w = cached_texcoords[2] - cached_texcoords[0];
 			float h = cached_texcoords[5] - cached_texcoords[1];
 			size_t v_sz = pt.GetBuffer().vertices.size();
+
+            assert(m_buf.curr_index - v_sz < m_buf.vertices.size());
 			auto v_ptr = &m_buf.vertices[m_buf.curr_index - v_sz];
 			for (size_t i = 0; i < v_sz; ++i)
 			{

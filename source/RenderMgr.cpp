@@ -1,7 +1,8 @@
 #include "rendergraph/RenderMgr.h"
 #include "rendergraph/IRenderer.h"
 #include "rendergraph/SpriteRenderer.h"
-#include "rendergraph/Tex3dRenderer.h"
+#include "rendergraph/MeshRenderer.h"
+#include "rendergraph/VolumeRenderer.h"
 #include "rendergraph/ExternRenderer.h"
 
 namespace rg
@@ -34,9 +35,13 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 			m_renderers[static_cast<int>(RenderType::SPRITE)]
 				= std::make_shared<SpriteRenderer>();
 			break;
+        case RenderType::MESH:
+            m_renderers[static_cast<int>(RenderType::MESH)]
+                = std::make_shared<MeshRenderer>();
+            break;
 		case RenderType::TEX3D:
 			m_renderers[static_cast<int>(RenderType::TEX3D)]
-				= std::make_shared<Tex3dRenderer>();
+				= std::make_shared<VolumeRenderer>();
 			break;
 		case RenderType::EXTERN:
 			m_renderers[static_cast<int>(RenderType::EXTERN)]
@@ -55,6 +60,17 @@ bool RenderMgr::BindSprWndCtx(pt2::WindowContext& wc) const
     }
 
     std::static_pointer_cast<SpriteRenderer>(rd)->BindWindowContext(wc);
+    return true;
+}
+
+bool RenderMgr::BindMeshWndCtx(pt3::WindowContext& wc) const
+{
+    auto& rd = m_renderers[static_cast<int>(RenderType::MESH)];
+    if (!rd) {
+        return false;
+    }
+
+    std::static_pointer_cast<MeshRenderer>(rd)->BindWindowContext(wc);
     return true;
 }
 

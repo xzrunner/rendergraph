@@ -6,6 +6,7 @@
 #include <array>
 
 namespace pt2 { class WindowContext; }
+namespace pt3 { class WindowContext; }
 
 namespace rg
 {
@@ -17,6 +18,7 @@ enum class RenderType
 	NIL = 0,
 
 	SPRITE,
+    MESH,
 	TEX3D,
 	EXTERN,
 
@@ -29,6 +31,7 @@ public:
 	std::shared_ptr<IRenderer> SetRenderer(RenderType type);
 
     bool BindSprWndCtx(pt2::WindowContext& wc) const;
+    bool BindMeshWndCtx(pt3::WindowContext& wc) const;
 
 	void Flush();
 

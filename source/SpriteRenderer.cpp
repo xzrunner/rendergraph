@@ -1,5 +1,6 @@
 #include "rendergraph/SpriteRenderer.h"
 #include "rendergraph/Callback.h"
+#include "rendergraph/RenderBuffer.h"
 
 #include <SM_Rect.h>
 #include <tessellation/Painter.h>
@@ -20,7 +21,7 @@
 namespace
 {
 
-void copy_vertex_buffer(const sm::mat4& mat, rg::SpriteRenderer::Buffer& dst,
+void copy_vertex_buffer(const sm::mat4& mat, rg::RenderBuffer<rg::SpriteVertex>& dst,
 	                    const tess::Painter::Buffer& src)
 {
 	dst.Reserve(src.indices.size(), src.vertices.size());
@@ -37,8 +38,6 @@ void copy_vertex_buffer(const sm::mat4& mat, rg::SpriteRenderer::Buffer& dst,
 	dst.curr_index += static_cast<unsigned short>(src.vertices.size());
 }
 
-const int MAX_VERTEX_NUM = 0xffff;
-
 }
 
 namespace rg
@@ -49,51 +48,12 @@ SpriteRenderer::SpriteRenderer()
 	InitShader();
 
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-
 	m_palette = std::make_unique<tess::Palette>(&rc);
-
-	m_vbo = rc.CreateBuffer(ur::VERTEXBUFFER, nullptr, 0);
-	m_ebo = rc.CreateBuffer(ur::INDEXBUFFER, nullptr, 0);
-}
-
-SpriteRenderer::~SpriteRenderer()
-{
-	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-	rc.ReleaseBuffer(ur::VERTEXBUFFER, m_vbo);
-	rc.ReleaseBuffer(ur::INDEXBUFFER, m_ebo);
 }
 
 void SpriteRenderer::Flush()
 {
-	if (m_buf.indices.empty()) {
-		return;
-	}
-
-	m_shader->Use();
-	if (m_buf.indices.empty()) {
-		return;
-	}
-
-	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-	rc.BindTexture(m_tex_id, 0);
-	if (m_buf.indices.empty()) {
-		return;
-	}
-
-	m_shader->SetMat4("u_model", sm::mat4().x);
-//    m_shader->UpdateModelMat(sm::mat4().x);
-
-	rc.BindBuffer(ur::VERTEXBUFFER, m_vbo);
-	size_t vbuf_sz = sizeof(Vertex) * m_buf.vertices.size();
-	rc.UpdateBuffer(m_vbo, m_buf.vertices.data(), vbuf_sz);
-
-	rc.BindBuffer(ur::INDEXBUFFER, m_ebo);
-	size_t ibuf_sz = sizeof(unsigned short) * m_buf.indices.size();
-	rc.UpdateBuffer(m_ebo, m_buf.indices.data(), ibuf_sz);
-
-	rc.DrawElements(ur::DRAW_TRIANGLES, 0, m_buf.indices.size());
-
-	m_buf.Clear();
+    FlushBuffer(ur::DRAW_TRIANGLES);
 }
 
 void SpriteRenderer::DrawQuad(const float* positions, const float* texcoords, int texid, uint32_t color)
@@ -103,7 +63,7 @@ void SpriteRenderer::DrawQuad(const float* positions, const float* texcoords, in
 		m_tex_id = texid;
 	}
 
-    if (m_buf.vertices.size() + 4 >= MAX_VERTEX_NUM) {
+    if (m_buf.vertices.size() + 4 >= RenderBuffer<SpriteVertex>::MAX_VERTEX_NUM) {
         Flush();
     }
 
@@ -159,7 +119,7 @@ void SpriteRenderer::DrawPainter(const tess::Painter& pt, const sm::mat4& mat)
 				m_tex_id = cached_texid;
 			}
 
-            if (m_buf.vertices.size() + pt.GetBuffer().vertices.size() >= MAX_VERTEX_NUM) {
+            if (m_buf.vertices.size() + pt.GetBuffer().vertices.size() >= RenderBuffer<SpriteVertex>::MAX_VERTEX_NUM) {
                 Flush();
             }
 
@@ -267,31 +227,6 @@ void SpriteRenderer::InitShader()
 	sp.uniform_names.proj_mat  = "u_projection";
 
 	m_shader = std::make_shared<pt2::Shader>(&rc, sp);
-}
-
-//////////////////////////////////////////////////////////////////////////
-// struct SpriteRenderer::Buffer
-//////////////////////////////////////////////////////////////////////////
-
-void SpriteRenderer::Buffer::Reserve(size_t idx_count, size_t vtx_count)
-{
-	size_t sz = vertices.size();
-	vertices.resize(sz + vtx_count);
-	vert_ptr = vertices.data() + sz;
-
-	sz = indices.size();
-	indices.resize(sz + idx_count);
-	index_ptr = indices.data() + sz;
-}
-
-void SpriteRenderer::Buffer::Clear()
-{
-	vertices.resize(0);
-	indices.resize(0);
-
-	curr_index = 0;
-	vert_ptr   = nullptr;
-	index_ptr  = nullptr;
 }
 
 }

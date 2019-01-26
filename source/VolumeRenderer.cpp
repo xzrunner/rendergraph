@@ -1,4 +1,4 @@
-#include "rendergraph/Tex3dRenderer.h"
+#include "rendergraph/VolumeRenderer.h"
 
 #include <unirender/Blackboard.h>
 #include <unirender/RenderContext.h>
@@ -16,61 +16,19 @@
 namespace rg
 {
 
-Tex3dRenderer::Tex3dRenderer()
+VolumeRenderer::VolumeRenderer()
 {
 	InitShader();
-
-	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-
-	m_vbo = rc.CreateBuffer(ur::VERTEXBUFFER, nullptr, 0);
-	m_ebo = rc.CreateBuffer(ur::INDEXBUFFER, nullptr, 0);
 }
 
-Tex3dRenderer::~Tex3dRenderer()
+void VolumeRenderer::Flush()
 {
-	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-	rc.ReleaseBuffer(ur::VERTEXBUFFER, m_vbo);
-	rc.ReleaseBuffer(ur::INDEXBUFFER, m_ebo);
-}
-
-void Tex3dRenderer::Flush()
-{
-	if (m_buf.indices.empty()) {
-		return;
-	}
-
-	m_shader->Use();
-	if (m_buf.indices.empty()) {
-		return;
-	}
-
-	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-	rc.BindTexture(m_tex_id, 0);
-	if (m_buf.indices.empty()) {
-		return;
-	}
-
-	PrepareRenderState();
-
-	m_shader->SetMat4("u_model", sm::mat4().x);
-//    m_shader->UpdateModelMat(sm::mat4().x);
-
-	rc.BindBuffer(ur::VERTEXBUFFER, m_vbo);
-	size_t vbuf_sz = sizeof(Vertex) * m_buf.vertices.size();
-	rc.UpdateBuffer(m_vbo, m_buf.vertices.data(), vbuf_sz);
-
-	rc.BindBuffer(ur::INDEXBUFFER, m_ebo);
-	size_t ibuf_sz = sizeof(unsigned short) * m_buf.indices.size();
-	rc.UpdateBuffer(m_ebo, m_buf.indices.data(), ibuf_sz);
-
-	rc.DrawElements(ur::DRAW_TRIANGLES, 0, m_buf.indices.size());
-
-	m_buf.Clear();
-
+    PrepareRenderState();
+    FlushBuffer(ur::DRAW_TRIANGLES);
 	RestoreRenderState();
 }
 
-void Tex3dRenderer::DrawCube(const float* positions, const float* texcoords, int texid, uint32_t color)
+void VolumeRenderer::DrawCube(const float* positions, const float* texcoords, int texid, uint32_t color)
 {
 	if (m_tex_id != texid) {
 		Flush();
@@ -105,7 +63,7 @@ void Tex3dRenderer::DrawCube(const float* positions, const float* texcoords, int
 	m_buf.curr_index += 4;
 }
 
-void Tex3dRenderer::InitShader()
+void VolumeRenderer::InitShader()
 {
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
@@ -175,10 +133,12 @@ void Tex3dRenderer::InitShader()
 	sp.uniform_names.view_mat  = "u_view";
 	sp.uniform_names.proj_mat  = "u_projection";
 	auto& wc = pt3::Blackboard::Instance()->GetWindowContext();
-	m_shader = std::make_shared<pt3::Shader>(*wc, &rc, sp);
+	auto shader = std::make_shared<pt3::Shader>(&rc, sp);
+    shader->AddNotify(*wc);
+    m_shader = shader;
 }
 
-void Tex3dRenderer::PrepareRenderState()
+void VolumeRenderer::PrepareRenderState()
 {
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
@@ -193,7 +153,7 @@ void Tex3dRenderer::PrepareRenderState()
 	rc.SetCull(ur::CULL_DISABLE);
 }
 
-void Tex3dRenderer::RestoreRenderState()
+void VolumeRenderer::RestoreRenderState()
 {
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
@@ -207,31 +167,6 @@ void Tex3dRenderer::RestoreRenderState()
 	// enable face cull
 	rc.SetFrontFace(true);
 	rc.SetCull(ur::CULL_BACK);
-}
-
-//////////////////////////////////////////////////////////////////////////
-// struct Tex3dRenderer::Buffer
-//////////////////////////////////////////////////////////////////////////
-
-void Tex3dRenderer::Buffer::Reserve(size_t idx_count, size_t vtx_count)
-{
-	size_t sz = vertices.size();
-	vertices.resize(sz + vtx_count);
-	vert_ptr = vertices.data() + sz;
-
-	sz = indices.size();
-	indices.resize(sz + idx_count);
-	index_ptr = indices.data() + sz;
-}
-
-void Tex3dRenderer::Buffer::Clear()
-{
-	vertices.resize(0);
-	indices.resize(0);
-
-	curr_index = 0;
-	vert_ptr = nullptr;
-	index_ptr = nullptr;
 }
 
 }

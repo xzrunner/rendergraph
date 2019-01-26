@@ -9,13 +9,16 @@
     <ClCompile Include="..\..\..\source\SpriteRenderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\Tex3dRenderer.cpp">
+    <ClCompile Include="..\..\..\source\MeshRenderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\VolumeRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\IRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\IRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RenderMgr.h" />
     <ClInclude Include="..\..\..\include\rendergraph\ExternRenderer.h">
       <Filter>renders</Filter>
@@ -23,13 +26,22 @@
     <ClInclude Include="..\..\..\include\rendergraph\SpriteRenderer.h">
       <Filter>renders</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\Tex3dRenderer.h">
+    <ClInclude Include="..\..\..\include\rendergraph\MeshRenderer.h">
       <Filter>renders</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\VolumeRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\IRenderer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\RendererImpl.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\RenderBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="renders">
       <UniqueIdentifier>{e773b86a-1167-46e9-9d8d-1f798fba8ae1}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\include\rendergraph\RendererImpl.inl" />
   </ItemGroup>
 </Project>

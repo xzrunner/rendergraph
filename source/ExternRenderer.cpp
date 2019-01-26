@@ -30,6 +30,8 @@ void ExternRenderer::DrawTexSpr(const std::shared_ptr<pt2::Shader>& shader, cons
 
 	shader->SetMat4(shader->GetModelUniformName().c_str(), mat.x);
 
+//    shader->SetMat4("u_view", sm::mat4().x);
+
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 	rc.DrawElementsVAO(ur::DRAW_TRIANGLES, 0, 6, m_vb_tex.vao);
 }

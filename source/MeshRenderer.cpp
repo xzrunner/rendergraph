@@ -47,9 +47,9 @@ void MeshRenderer::DrawLines(size_t num, const float* positions, uint32_t color)
         v.pos.z = positions[ptr++];
         v.col = color;
 
-        *m_buf.index_ptr++ = m_buf.curr_index + i;
+        *m_buf.index_ptr++ = m_buf.curr_index + static_cast<unsigned short>(i);
     }
-    m_buf.curr_index += num;
+    m_buf.curr_index += static_cast<unsigned short>(num);
 }
 
 void MeshRenderer::BindWindowContext(pt3::WindowContext& wc)

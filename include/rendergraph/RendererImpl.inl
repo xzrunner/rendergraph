@@ -39,7 +39,7 @@ void RendererImpl<T>::FlushBuffer(ur::DRAW_MODE mode)
 		return;
 	}
 
-	m_shader->SetMat4("u_model", sm::mat4().x);
+	m_shader->SetMat4(MODEL_MAT_NAME, sm::mat4().x);
 //    m_shader->UpdateModelMat(sm::mat4().x);
 
 	rc.BindBuffer(ur::VERTEXBUFFER, m_vbo);

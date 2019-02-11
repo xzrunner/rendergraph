@@ -1,4 +1,5 @@
 #include "rendergraph/VolumeRenderer.h"
+#include "rendergraph/UniformNames.h"
 
 #include <unirender/Blackboard.h>
 #include <unirender/RenderContext.h>
@@ -69,20 +70,20 @@ void VolumeRenderer::InitShader()
 
 	// layout
 	std::vector<ur::VertexAttrib> layout;
-	layout.push_back(ur::VertexAttrib("position", 3, sizeof(float),    28, 0));
-	layout.push_back(ur::VertexAttrib("texcoord", 3, sizeof(float),    28, 12));
-	layout.push_back(ur::VertexAttrib("color",    4, sizeof(uint8_t),  28, 24));
+	layout.push_back(ur::VertexAttrib(VERT_POSITION_NAME, 3, sizeof(float),    28, 0));
+	layout.push_back(ur::VertexAttrib(VERT_TEXCOORD_NAME, 3, sizeof(float),    28, 12));
+	layout.push_back(ur::VertexAttrib(VERT_COLOR_NAME,    4, sizeof(uint8_t),  28, 24));
 	auto layout_id = rc.CreateVertexLayout(layout);
 	rc.BindVertexLayout(layout_id);
 
 	// vert
 	std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>("u_projection", sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>("u_view",       sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>("u_model",      sw::t_mat4);
+	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME, sw::t_mat4);
+	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,       sw::t_mat4);
+	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME,      sw::t_mat4);
 
-	auto position   = std::make_shared<sw::node::Input>  ("position",     sw::t_pos3);
+	auto position   = std::make_shared<sw::node::Input>  (VERT_POSITION_NAME,     sw::t_pos3);
 
 	auto pos_trans = std::make_shared<sw::node::PositionTrans>(3);
 	sw::make_connecting({ projection, 0 }, { pos_trans, sw::node::PositionTrans::ID_PROJ });
@@ -92,25 +93,25 @@ void VolumeRenderer::InitShader()
 	vert_nodes.push_back(pos_trans);
 
 	// varying
-	auto vert_in_uv  = std::make_shared<sw::node::Input>("texcoord", sw::t_uvw);
-	auto vert_out_uv = std::make_shared<sw::node::Output>("v_texcoord", sw::t_uvw);
+	auto vert_in_uv  = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uvw);
+	auto vert_out_uv = std::make_shared<sw::node::Output>(FRAG_TEXCOORD_NAME, sw::t_uvw);
 	sw::make_connecting({ vert_in_uv, 0 }, { vert_out_uv, 0 });
 	vert_nodes.push_back(vert_out_uv);
 
-	auto col_in_uv = std::make_shared<sw::node::Input>("color", sw::t_flt4);
-	auto col_out_uv = std::make_shared<sw::node::Output>("v_color", sw::t_flt4);
+	auto col_in_uv = std::make_shared<sw::node::Input>(VERT_COLOR_NAME, sw::t_flt4);
+	auto col_out_uv = std::make_shared<sw::node::Output>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ col_in_uv, 0 }, { col_out_uv, 0 });
 	vert_nodes.push_back(col_out_uv);
 
 	// frag
 	auto tex_sample = std::make_shared<sw::node::SampleTex3D>();
 	auto frag_in_tex = std::make_shared<sw::node::Uniform>("u_texture0", sw::t_tex3d);
-	auto frag_in_uv = std::make_shared<sw::node::Input>("v_texcoord", sw::t_uvw);
+	auto frag_in_uv = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uvw);
 	sw::make_connecting({ frag_in_tex, 0 }, { tex_sample, sw::node::SampleTex3D::ID_TEX });
 	sw::make_connecting({ frag_in_uv,  0 }, { tex_sample, sw::node::SampleTex3D::ID_UV });
 
 	auto mul = std::make_shared<sw::node::Multiply>();
-	auto frag_in_col = std::make_shared<sw::node::Input>("v_color", sw::t_flt4);
+	auto frag_in_col = std::make_shared<sw::node::Input>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ tex_sample, 0 }, { mul, sw::node::Multiply::ID_A});
 	sw::make_connecting({ frag_in_col, 0 }, { mul, sw::node::Multiply::ID_B });
 
@@ -129,9 +130,9 @@ void VolumeRenderer::InitShader()
 	sp.vs = vert.GenShaderStr().c_str();
 	sp.fs = frag.GenShaderStr().c_str();
 
-	sp.uniform_names.model_mat = "u_model";
-	sp.uniform_names.view_mat  = "u_view";
-	sp.uniform_names.proj_mat  = "u_projection";
+	sp.uniform_names[pt0::U_MODEL_MAT] = MODEL_MAT_NAME;
+	sp.uniform_names[pt0::U_VIEW_MAT]  = VIEW_MAT_NAME;
+	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;
 	auto& wc = pt3::Blackboard::Instance()->GetWindowContext();
 	auto shader = std::make_shared<pt3::Shader>(&rc, sp);
     shader->AddNotify(*wc);

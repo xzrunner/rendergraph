@@ -19,6 +19,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\RenderBuffer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RenderMgr.h" />
     <ClInclude Include="..\..\..\include\rendergraph\SpriteRenderer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\UniformNames.h" />
     <ClInclude Include="..\..\..\include\rendergraph\VolumeRenderer.h" />
   </ItemGroup>
   <ItemGroup>

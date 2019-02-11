@@ -34,6 +34,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\IRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RendererImpl.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RenderBuffer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\UniformNames.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="renders">

@@ -1,4 +1,5 @@
 #include "rendergraph/MeshRenderer.h"
+#include "rendergraph/UniformNames.h"
 
 #include <unirender/Blackboard.h>
 #include <unirender/VertexAttrib.h>
@@ -63,19 +64,19 @@ void MeshRenderer::InitShader()
 
 	// layout
 	std::vector<ur::VertexAttrib> layout;
-	layout.push_back(ur::VertexAttrib("position", 3, sizeof(float),    16, 0));
-	layout.push_back(ur::VertexAttrib("color",    4, sizeof(uint8_t),  16, 12));
+	layout.push_back(ur::VertexAttrib(VERT_POSITION_NAME, 3, sizeof(float),    16, 0));
+	layout.push_back(ur::VertexAttrib(VERT_COLOR_NAME,    4, sizeof(uint8_t),  16, 12));
 	auto layout_id = rc.CreateVertexLayout(layout);
 	rc.BindVertexLayout(layout_id);
 
 	// vert
 	std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>("u_projection", sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>("u_view",       sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>("u_model",      sw::t_mat4);
+	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME, sw::t_mat4);
+	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,       sw::t_mat4);
+	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME,      sw::t_mat4);
 
-	auto position   = std::make_shared<sw::node::Input>  ("position",     sw::t_pos3);
+	auto position   = std::make_shared<sw::node::Input>  (VERT_POSITION_NAME,     sw::t_pos3);
 
 	auto pos_trans = std::make_shared<sw::node::PositionTrans>(3);
 	sw::make_connecting({ projection, 0 }, { pos_trans, sw::node::PositionTrans::ID_PROJ });
@@ -85,13 +86,13 @@ void MeshRenderer::InitShader()
 	vert_nodes.push_back(pos_trans);
 
 	// varying
-	auto col_in_uv = std::make_shared<sw::node::Input>("color", sw::t_flt4);
-	auto col_out_uv = std::make_shared<sw::node::Output>("v_color", sw::t_flt4);
+	auto col_in_uv = std::make_shared<sw::node::Input>(VERT_COLOR_NAME, sw::t_flt4);
+	auto col_out_uv = std::make_shared<sw::node::Output>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ col_in_uv, 0 }, { col_out_uv, 0 });
 	vert_nodes.push_back(col_out_uv);
 
 	// frag
-	auto frag_in_col = std::make_shared<sw::node::Input>("v_color", sw::t_flt4);
+	auto frag_in_col = std::make_shared<sw::node::Input>(FRAG_COLOR_NAME, sw::t_flt4);
 
 	// end
 	sw::Evaluator vert(vert_nodes, sw::ST_VERT);
@@ -108,9 +109,9 @@ void MeshRenderer::InitShader()
 	sp.vs = vert.GenShaderStr().c_str();
 	sp.fs = frag.GenShaderStr().c_str();
 
-	sp.uniform_names.model_mat = "u_model";
-	sp.uniform_names.view_mat  = "u_view";
-	sp.uniform_names.proj_mat  = "u_projection";
+	sp.uniform_names[pt0::U_MODEL_MAT] = MODEL_MAT_NAME;
+	sp.uniform_names[pt0::U_VIEW_MAT]  = VIEW_MAT_NAME;
+	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;
 
 	m_shader = std::make_shared<pt3::Shader>(&rc, sp);
 }

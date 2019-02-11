@@ -26,11 +26,7 @@ void ExternRenderer::Flush()
 
 void ExternRenderer::DrawTexSpr(const std::shared_ptr<pt2::Shader>& shader, const sm::mat4& mat) const
 {
-	shader->Use();
-
-	shader->SetMat4(shader->GetModelUniformName().c_str(), mat.x);
-
-//    shader->SetMat4("u_view", sm::mat4().x);
+    shader->UpdateModelMat(mat);
 
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 	rc.DrawElementsVAO(ur::DRAW_TRIANGLES, 0, 6, m_vb_tex.vao);
@@ -38,9 +34,7 @@ void ExternRenderer::DrawTexSpr(const std::shared_ptr<pt2::Shader>& shader, cons
 
 void ExternRenderer::DrawNoTexSpr(const std::shared_ptr<pt2::Shader>& shader, const sm::mat4& mat) const
 {
-	shader->Use();
-
-	shader->SetMat4(shader->GetModelUniformName().c_str(), mat.x);
+    shader->UpdateModelMat(mat);
 
 	auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 	rc.DrawElementsVAO(ur::DRAW_TRIANGLES, 0, 6, m_vb_no_tex.vao);

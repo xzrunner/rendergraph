@@ -9,10 +9,13 @@
     <ClCompile Include="..\..\..\source\SpriteRenderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\VolumeRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\source\MeshRenderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\VolumeRenderer.cpp">
+    <ClCompile Include="..\..\..\source\Shape3Renderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -25,9 +28,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\SpriteRenderer.h">
       <Filter>renders</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\MeshRenderer.h">
-      <Filter>renders</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\VolumeRenderer.h">
       <Filter>renders</Filter>
     </ClInclude>
@@ -35,6 +35,12 @@
     <ClInclude Include="..\..\..\include\rendergraph\RendererImpl.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RenderBuffer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\UniformNames.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\MeshRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\Shape3Renderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="renders">

@@ -1,7 +1,7 @@
 #include "rendergraph/RenderMgr.h"
 #include "rendergraph/IRenderer.h"
 #include "rendergraph/SpriteRenderer.h"
-#include "rendergraph/MeshRenderer.h"
+#include "rendergraph/Shape3Renderer.h"
 #include "rendergraph/VolumeRenderer.h"
 #include "rendergraph/ExternRenderer.h"
 
@@ -37,7 +37,7 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 			break;
         case RenderType::MESH:
             m_renderers[static_cast<int>(RenderType::MESH)]
-                = std::make_shared<MeshRenderer>();
+                = std::make_shared<Shape3Renderer>();
             break;
 		case RenderType::TEX3D:
 			m_renderers[static_cast<int>(RenderType::TEX3D)]
@@ -70,7 +70,7 @@ bool RenderMgr::BindMeshWndCtx(pt3::WindowContext& wc) const
         return false;
     }
 
-    std::static_pointer_cast<MeshRenderer>(rd)->BindWindowContext(wc);
+    std::static_pointer_cast<Shape3Renderer>(rd)->BindWindowContext(wc);
     return true;
 }
 

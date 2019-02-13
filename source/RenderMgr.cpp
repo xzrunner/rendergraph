@@ -1,6 +1,8 @@
 #include "rendergraph/RenderMgr.h"
 #include "rendergraph/IRenderer.h"
 #include "rendergraph/SpriteRenderer.h"
+#include "rendergraph/MeshRenderer.h"
+#include "rendergraph/SkinRenderer.h"
 #include "rendergraph/Shape3Renderer.h"
 #include "rendergraph/VolumeRenderer.h"
 #include "rendergraph/ExternRenderer.h"
@@ -37,6 +39,14 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 			break;
         case RenderType::MESH:
             m_renderers[static_cast<int>(RenderType::MESH)]
+                = std::make_shared<MeshRenderer>();
+            break;
+        case RenderType::SKIN:
+            m_renderers[static_cast<int>(RenderType::SKIN)]
+                = std::make_shared<SkinRenderer>();
+            break;
+        case RenderType::SHAPE3D:
+            m_renderers[static_cast<int>(RenderType::SHAPE3D)]
                 = std::make_shared<Shape3Renderer>();
             break;
 		case RenderType::TEX3D:
@@ -52,25 +62,33 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 	return m_renderers[static_cast<int>(m_curr_render)];
 }
 
-bool RenderMgr::BindSprWndCtx(pt2::WindowContext& wc) const
+bool RenderMgr::BindWndCtx2D(pt2::WindowContext& wc) const
 {
-    auto& rd = m_renderers[static_cast<int>(RenderType::SPRITE)];
-    if (!rd) {
+    if (auto& sprite = m_renderers[static_cast<int>(RenderType::SPRITE)]) {
+        std::static_pointer_cast<SpriteRenderer>(sprite)->BindWindowContext(wc);
+    } else {
         return false;
     }
-
-    std::static_pointer_cast<SpriteRenderer>(rd)->BindWindowContext(wc);
     return true;
 }
 
-bool RenderMgr::BindMeshWndCtx(pt3::WindowContext& wc) const
+bool RenderMgr::BindWndCtx3D(pt3::WindowContext& wc) const
 {
-    auto& rd = m_renderers[static_cast<int>(RenderType::MESH)];
-    if (!rd) {
+    if (auto& shape = m_renderers[static_cast<int>(RenderType::SHAPE3D)]) {
+        std::static_pointer_cast<Shape3Renderer>(shape)->BindWindowContext(wc);
+    } else {
         return false;
     }
-
-    std::static_pointer_cast<Shape3Renderer>(rd)->BindWindowContext(wc);
+    if (auto& mesh = m_renderers[static_cast<int>(RenderType::MESH)]) {
+        std::static_pointer_cast<MeshRenderer>(mesh)->BindWindowContext(wc);
+    } else {
+        return false;
+    }
+    if (auto& skin = m_renderers[static_cast<int>(RenderType::SKIN)]) {
+        std::static_pointer_cast<SkinRenderer>(skin)->BindWindowContext(wc);
+    } else {
+        return false;
+    }
     return true;
 }
 

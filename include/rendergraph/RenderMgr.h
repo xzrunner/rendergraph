@@ -19,6 +19,8 @@ enum class RenderType
 
 	SPRITE,
     MESH,
+    SKIN,
+    SHAPE3D,
 	TEX3D,
 	EXTERN,
 
@@ -30,8 +32,8 @@ class RenderMgr
 public:
 	std::shared_ptr<IRenderer> SetRenderer(RenderType type);
 
-    bool BindSprWndCtx(pt2::WindowContext& wc) const;
-    bool BindMeshWndCtx(pt3::WindowContext& wc) const;
+    bool BindWndCtx2D(pt2::WindowContext& wc) const;
+    bool BindWndCtx3D(pt3::WindowContext& wc) const;
 
 	void Flush();
 

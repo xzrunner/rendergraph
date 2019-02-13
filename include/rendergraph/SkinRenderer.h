@@ -15,17 +15,19 @@ namespace pt3 { class WindowContext; }
 namespace rg
 {
 
-struct MeshVertex
+struct SkinVertex
 {
     sm::vec3 position;
     sm::vec3 normal;
     sm::vec2 texcoord;
+    uint32_t blend_indices;
+    uint32_t blend_weights;
 };
 
-class MeshRenderer : public IRenderer, private RendererImpl<MeshVertex>, private boost::noncopyable
+class SkinRenderer : public IRenderer, private RendererImpl<SkinVertex>, private boost::noncopyable
 {
 public:
-    MeshRenderer();
+    SkinRenderer();
 
     virtual void Flush() override;
 
@@ -37,6 +39,6 @@ public:
 private:
     void InitShader();
 
-}; // MeshRenderer
+}; // SkinRenderer
 
 }

@@ -18,6 +18,9 @@
     <ClCompile Include="..\..\..\source\Shape3Renderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\SkinRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
@@ -39,6 +42,9 @@
       <Filter>renders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\Shape3Renderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\SkinRenderer.h">
       <Filter>renders</Filter>
     </ClInclude>
   </ItemGroup>

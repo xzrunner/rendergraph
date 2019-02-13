@@ -1,4 +1,5 @@
-#include "rendergraph/MeshRenderer.h"
+#include "rendergraph/SkinRenderer.h"
+
 #include "rendergraph/UniformNames.h"
 
 #include <unirender/Blackboard.h>
@@ -16,22 +17,34 @@
 #include <shaderweaver/node/CameraPos.h>
 #include <shaderweaver/node/Vector1.h>
 #include <shaderweaver/node/Vector3.h>
+#include <shaderweaver/node/Skin.h>
+#include <shaderweaver/node/SampleTex2D.h>
+#include <shaderweaver/node/Multiply.h>
 #include <painting3/Shader.h>
+#include <painting3/MaterialMgr.h>
 #include <model/MeshGeometry.h>
+
+namespace
+{
+
+const char* BLEND_INDICES_NAME = "blend_indices";
+const char* BLEND_WEIGHTS_NAME = "blend_weights";
+
+}
 
 namespace rg
 {
 
-MeshRenderer::MeshRenderer()
+SkinRenderer::SkinRenderer()
 {
     InitShader();
 }
 
-void MeshRenderer::Flush()
+void SkinRenderer::Flush()
 {
 }
 
-void MeshRenderer::Draw(const model::MeshGeometry& mesh,
+void SkinRenderer::Draw(const model::MeshGeometry& mesh,
                         const pt0::Material& material,
                         const pt0::RenderContext& ctx) const
 {
@@ -39,44 +52,28 @@ void MeshRenderer::Draw(const model::MeshGeometry& mesh,
 
     m_shader->Use();
 
+	auto mode = m_shader->GetDrawMode();
+
     material.Bind(*m_shader);
     ctx.Bind(*m_shader);
 
 	auto& geo = mesh;
-	auto mode = m_shader->GetDrawMode();
 	for (auto& sub : geo.sub_geometries)
 	{
-		if (geo.vao > 0)
-		{
-			if (sub.index) {
-				ur::Blackboard::Instance()->GetRenderContext().DrawElementsVAO(
-					mode, sub.offset, sub.count, geo.vao);
-			} else {
-				ur::Blackboard::Instance()->GetRenderContext().DrawArraysVAO(
-					mode, sub.offset, sub.count, geo.vao);
-			}
-		}
-		else
-		{
-			auto& sub = geo.sub_geometries[0];
-			if (geo.ebo) {
-				rc.BindBuffer(ur::INDEXBUFFER, geo.ebo);
-				rc.BindBuffer(ur::VERTEXBUFFER, geo.vbo);
-				rc.DrawElements(mode, sub.offset, sub.count);
-			} else {
-				rc.BindBuffer(ur::VERTEXBUFFER, geo.vbo);
-				rc.DrawArrays(mode, sub.offset, sub.count);
-			}
+		if (sub.index) {
+			rc.DrawElementsVAO(mode, sub.offset, sub.count, geo.vao);
+		} else {
+			rc.DrawArraysVAO(mode, sub.offset, sub.count, geo.vao);
 		}
 	}
 }
 
-void MeshRenderer::BindWindowContext(pt3::WindowContext& wc)
+void SkinRenderer::BindWindowContext(pt3::WindowContext& wc)
 {
     std::static_pointer_cast<pt3::Shader>(m_shader)->AddNotify(wc);
 }
 
-void MeshRenderer::InitShader()
+void SkinRenderer::InitShader()
 {
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
@@ -85,9 +82,11 @@ void MeshRenderer::InitShader()
     //////////////////////////////////////////////////////////////////////////
 
     std::vector<ur::VertexAttrib> layout;
-    layout.push_back(ur::VertexAttrib(VERT_POSITION_NAME, 3, 4, 32, 0));
-    layout.push_back(ur::VertexAttrib(VERT_NORMAL_NAME,   3, 4, 32, 12));
-    layout.push_back(ur::VertexAttrib(VERT_TEXCOORD_NAME, 2, 4, 32, 24));
+    layout.emplace_back(VERT_POSITION_NAME, 3, 4, 40, 0);
+    layout.emplace_back(VERT_NORMAL_NAME,   3, 4, 40, 12);
+    layout.emplace_back(VERT_TEXCOORD_NAME, 2, 4, 40, 24);
+    layout.emplace_back(BLEND_INDICES_NAME, 4, 1, 40, 32);
+    layout.emplace_back(BLEND_WEIGHTS_NAME, 4, 1, 40, 36);
     auto layout_id = rc.CreateVertexLayout(layout);
     rc.BindVertexLayout(layout_id);
 
@@ -97,25 +96,39 @@ void MeshRenderer::InitShader()
 
     std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME,  sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,  sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME, sw::t_mat4);
-
+    // input attribute
     auto position = std::make_shared<sw::node::Input>(VERT_POSITION_NAME, sw::t_flt3);
 	auto normal   = std::make_shared<sw::node::Input>(VERT_NORMAL_NAME,   sw::t_nor3);
     auto texcoord = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uv);
 
+    // calc bone
+    // vec4 obj_pos = u_bone_matrix[round2int(blend_indices.x)] * position * blend_weights.x;
+    // obj_pos += u_bone_matrix[round2int(blend_indices.y)] * position * blend_weights.y;
+    // obj_pos += u_bone_matrix[round2int(blend_indices.z)] * position * blend_weights.z;
+    // obj_pos += u_bone_matrix[round2int(blend_indices.w)] * position * blend_weights.w;
+    auto blend_indices = std::make_shared<sw::node::Input>(BLEND_INDICES_NAME, sw::t_flt4);
+    auto blend_weights = std::make_shared<sw::node::Input>(BLEND_WEIGHTS_NAME, sw::t_flt4);
+    auto skinned_pos = std::make_shared<sw::node::Skin>();
+    sw::make_connecting({ position, 0 },      { skinned_pos, sw::node::Skin::ID_POSITION });
+    sw::make_connecting({ blend_indices, 0 }, { skinned_pos, sw::node::Skin::ID_BLEND_INDICES });
+    sw::make_connecting({ blend_weights, 0 }, { skinned_pos, sw::node::Skin::ID_BLEND_WEIGHTS });
+
+    // prepare mvp mat
+	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME,  sw::t_mat4);
+	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,  sw::t_mat4);
+	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME, sw::t_mat4);
+
     // gl_Position =  u_projection * u_view * u_model * a_pos;
 	auto pos_trans = std::make_shared<sw::node::PositionTrans>(3);
-	sw::make_connecting({ projection, 0 }, { pos_trans, sw::node::PositionTrans::ID_PROJ });
-	sw::make_connecting({ view, 0 },       { pos_trans, sw::node::PositionTrans::ID_VIEW });
-	sw::make_connecting({ model, 0 },      { pos_trans, sw::node::PositionTrans::ID_MODEL });
-	sw::make_connecting({ position, 0 },   { pos_trans, sw::node::PositionTrans::ID_POS });
+	sw::make_connecting({ projection, 0 },  { pos_trans, sw::node::PositionTrans::ID_PROJ });
+	sw::make_connecting({ view, 0 },        { pos_trans, sw::node::PositionTrans::ID_VIEW });
+	sw::make_connecting({ model, 0 },       { pos_trans, sw::node::PositionTrans::ID_MODEL });
+	sw::make_connecting({ skinned_pos, 0 }, { pos_trans, sw::node::PositionTrans::ID_POS });
 	vert_nodes.push_back(pos_trans);
 
 	auto frag_pos_trans = std::make_shared<sw::node::FragPosTrans>();
-	sw::make_connecting({ model, 0 },    { frag_pos_trans, sw::node::FragPosTrans::ID_MODEL });
-	sw::make_connecting({ position, 0 }, { frag_pos_trans, sw::node::FragPosTrans::ID_POS });
+	sw::make_connecting({ model, 0 },       { frag_pos_trans, sw::node::FragPosTrans::ID_MODEL });
+	sw::make_connecting({ skinned_pos, 0 }, { frag_pos_trans, sw::node::FragPosTrans::ID_POS });
 
     auto normal_mat = std::make_shared<sw::node::Uniform>(sw::node::NormalTrans::NormalMatName(), sw::t_mat3);
 	auto norm_trans = std::make_shared<sw::node::NormalTrans>();
@@ -141,6 +154,7 @@ void MeshRenderer::InitShader()
     // frag
     //////////////////////////////////////////////////////////////////////////
 
+    // phong = ambient + diffuse + specular + emission;
     auto phong = std::make_shared<sw::node::Phong>();
 
     auto cam_pos = std::make_shared<sw::node::CameraPos>();
@@ -150,7 +164,8 @@ void MeshRenderer::InitShader()
 	sw::make_connecting({ frag_in_pos, 0 }, { phong, sw::node::Phong::ID_FRAG_POS });
 	sw::make_connecting({ frag_in_nor, 0 }, { phong, sw::node::Phong::ID_NORMAL });
 
-    auto lit_pos      = std::make_shared<sw::node::Vector3>("", sm::vec3(1.2f, 1.0f, 2.0f));
+    auto& lit_pos_name = pt3::MaterialMgr::PositionUniforms::light_pos.name;
+    auto lit_pos      = std::make_shared<sw::node::Uniform>(lit_pos_name, sw::t_flt3);
     auto lit_ambient  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.2f, 0.2f, 0.2f));
     auto lit_diffuse  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.5f, 0.5f, 0.5f));
     auto lit_specular = std::make_shared<sw::node::Vector3>("", sm::vec3(1.0f, 1.0f, 1.0f));
@@ -163,21 +178,32 @@ void MeshRenderer::InitShader()
     //auto mat_specular  = std::make_shared<sw::node::Uniform>("mat_specular",  sw::t_flt3);
     //auto mat_shininess = std::make_shared<sw::node::Uniform>("mat_shininess", sw::t_flt1);
     //auto mat_emission  = std::make_shared<sw::node::Uniform>("mat_emission",  sw::t_flt3);
-    auto mat_diffuse   = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 0, 0));
-    auto mat_specular  = std::make_shared<sw::node::Vector3>("", sm::vec3(0, 0.5f, 0));
-    auto mat_shininess = std::make_shared<sw::node::Vector1>("", 64.0f);
+    auto mat_diffuse   = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
+    auto mat_specular  = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
+    auto mat_shininess = std::make_shared<sw::node::Vector1>("", 50.0f);
     auto mat_emission  = std::make_shared<sw::node::Vector3>("", sm::vec3(0, 0, 0));
     sw::make_connecting({ mat_diffuse,   0 }, { phong, sw::node::Phong::ID_MAT_DIFFUSE });
     sw::make_connecting({ mat_specular,  0 }, { phong, sw::node::Phong::ID_MAT_SPECULAR });
     sw::make_connecting({ mat_shininess, 0 }, { phong, sw::node::Phong::ID_MAT_SHININESS });
     sw::make_connecting({ mat_emission,  0 }, { phong, sw::node::Phong::ID_MAT_EMISSION });
 
+    // frag_color = phong * texture2D(u_texture0, v_texcoord);
+    auto tex_sample = std::make_shared<sw::node::SampleTex2D>();
+	auto frag_in_tex = std::make_shared<sw::node::Uniform>("u_texture0", sw::t_tex2d);
+	auto frag_in_uv = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uv);
+	sw::make_connecting({ frag_in_tex, 0 }, { tex_sample, sw::node::SampleTex2D::ID_TEX });
+	sw::make_connecting({ frag_in_uv,  0 }, { tex_sample, sw::node::SampleTex2D::ID_UV });
+
+    auto frag_color = std::make_shared<sw::node::Multiply>();
+    sw::make_connecting({ tex_sample, 0 }, { frag_color, sw::node::Multiply::ID_A });
+    sw::make_connecting({ phong, 0 },      { frag_color, sw::node::Multiply::ID_B });
+
     //////////////////////////////////////////////////////////////////////////
     // end
     //////////////////////////////////////////////////////////////////////////
 
 	sw::Evaluator vert(vert_nodes, sw::ST_VERT);
-	sw::Evaluator frag({ phong }, sw::ST_FRAG);
+	sw::Evaluator frag({ frag_color }, sw::ST_FRAG);
 
 	//printf("//////////////////////////////////////////////////////////////////////////\n");
 	//printf("%s\n", vert.GenShaderStr().c_str());

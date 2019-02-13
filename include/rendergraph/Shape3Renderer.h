@@ -7,7 +7,6 @@
 
 #include <boost/noncopyable.hpp>
 
-namespace pt0 { class Shader; }
 namespace pt3 { class WindowContext; }
 
 namespace rg

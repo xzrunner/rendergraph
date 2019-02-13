@@ -17,6 +17,8 @@
 #include <shaderweaver/node/PositionTrans.h>
 #include <shaderweaver/node/SampleTex2D.h>
 #include <shaderweaver/node/Multiply.h>
+#include <shaderweaver/node/VertexShader.h>
+#include <shaderweaver/node/FragmentShader.h>
 #include <painting2/Shader.h>
 
 namespace
@@ -183,7 +185,8 @@ void SpriteRenderer::InitShader()
 	sw::make_connecting({ view,       0 }, { pos_trans, sw::node::PositionTrans::ID_VIEW });
 	sw::make_connecting({ model,      0 }, { pos_trans, sw::node::PositionTrans::ID_MODEL });
 	sw::make_connecting({ position,   0 }, { pos_trans, sw::node::PositionTrans::ID_POS });
-	vert_nodes.push_back(pos_trans);
+    auto vert_end = std::make_shared<sw::node::VertexShader>();
+    sw::make_connecting({ pos_trans, 0 }, { vert_end, 0 });
 
 	// varying
 	auto vert_in_uv  = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uv);
@@ -195,6 +198,8 @@ void SpriteRenderer::InitShader()
 	auto col_out_uv = std::make_shared<sw::node::Output>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ col_in_uv, 0 }, { col_out_uv, 0 });
 	vert_nodes.push_back(col_out_uv);
+
+    vert_nodes.push_back(vert_end);
 
 	// frag
 	auto tex_sample = std::make_shared<sw::node::SampleTex2D>();
@@ -208,9 +213,12 @@ void SpriteRenderer::InitShader()
 	sw::make_connecting({ tex_sample, 0 }, { mul, sw::node::Multiply::ID_A});
 	sw::make_connecting({ frag_in_col, 0 }, { mul, sw::node::Multiply::ID_B });
 
+    auto frag_end = std::make_shared<sw::node::FragmentShader>();
+    sw::make_connecting({ mul, 0 }, { frag_end, 0 });
+
 	// end
-	sw::Evaluator vert(vert_nodes, sw::ST_VERT);
-	sw::Evaluator frag({ mul }, sw::ST_FRAG);
+	sw::Evaluator vert(vert_nodes);
+	sw::Evaluator frag({ frag_end });
 
 	//printf("//////////////////////////////////////////////////////////////////////////\n");
 	//printf("%s\n", vert.GenShaderStr().c_str());

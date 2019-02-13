@@ -12,6 +12,8 @@
 #include <shaderweaver/node/Output.h>
 #include <shaderweaver/node/PositionTrans.h>
 #include <shaderweaver/node/Multiply.h>
+#include <shaderweaver/node/VertexShader.h>
+#include <shaderweaver/node/FragmentShader.h>
 
 namespace rg
 {
@@ -83,7 +85,10 @@ void Shape3Renderer::InitShader()
 	sw::make_connecting({ view,       0 }, { pos_trans, sw::node::PositionTrans::ID_VIEW });
 	sw::make_connecting({ model,      0 }, { pos_trans, sw::node::PositionTrans::ID_MODEL });
 	sw::make_connecting({ position,   0 }, { pos_trans, sw::node::PositionTrans::ID_POS });
-	vert_nodes.push_back(pos_trans);
+    auto vert_end = std::make_shared<sw::node::VertexShader>();
+    sw::make_connecting({ pos_trans, 0 }, { vert_end, 0 });
+
+	vert_nodes.push_back(vert_end);
 
 	// varying
 	auto col_in_uv = std::make_shared<sw::node::Input>(VERT_COLOR_NAME, sw::t_flt4);
@@ -93,10 +98,12 @@ void Shape3Renderer::InitShader()
 
 	// frag
 	auto frag_in_col = std::make_shared<sw::node::Input>(FRAG_COLOR_NAME, sw::t_flt4);
+    auto frag_end = std::make_shared<sw::node::FragmentShader>();
+    sw::make_connecting({ frag_in_col, 0 }, { frag_end, 0 });
 
 	// end
-	sw::Evaluator vert(vert_nodes, sw::ST_VERT);
-	sw::Evaluator frag({ frag_in_col }, sw::ST_FRAG);
+	sw::Evaluator vert(vert_nodes);
+	sw::Evaluator frag({ frag_end });
 
 	//printf("//////////////////////////////////////////////////////////////////////////\n");
 	//printf("%s\n", vert.GenShaderStr().c_str());

@@ -16,6 +16,8 @@
 #include <shaderweaver/node/CameraPos.h>
 #include <shaderweaver/node/Vector1.h>
 #include <shaderweaver/node/Vector3.h>
+#include <shaderweaver/node/VertexShader.h>
+#include <shaderweaver/node/FragmentShader.h>
 #include <painting3/Shader.h>
 #include <model/MeshGeometry.h>
 
@@ -111,7 +113,8 @@ void MeshRenderer::InitShader()
 	sw::make_connecting({ view, 0 },       { pos_trans, sw::node::PositionTrans::ID_VIEW });
 	sw::make_connecting({ model, 0 },      { pos_trans, sw::node::PositionTrans::ID_MODEL });
 	sw::make_connecting({ position, 0 },   { pos_trans, sw::node::PositionTrans::ID_POS });
-	vert_nodes.push_back(pos_trans);
+    auto vert_end = std::make_shared<sw::node::VertexShader>();
+    sw::make_connecting({ pos_trans, 0 }, { vert_end, 0 });
 
 	auto frag_pos_trans = std::make_shared<sw::node::FragPosTrans>();
 	sw::make_connecting({ model, 0 },    { frag_pos_trans, sw::node::FragPosTrans::ID_MODEL });
@@ -136,6 +139,8 @@ void MeshRenderer::InitShader()
     auto v_normal = std::make_shared<sw::node::Output>(FRAG_NORMAL_NAME, sw::t_nor3);
     sw::make_connecting({ norm_trans, 0 }, { v_normal, 0 });
     vert_nodes.push_back(v_normal);
+
+    vert_nodes.push_back(vert_end);
 
     //////////////////////////////////////////////////////////////////////////
     // frag
@@ -172,12 +177,15 @@ void MeshRenderer::InitShader()
     sw::make_connecting({ mat_shininess, 0 }, { phong, sw::node::Phong::ID_MAT_SHININESS });
     sw::make_connecting({ mat_emission,  0 }, { phong, sw::node::Phong::ID_MAT_EMISSION });
 
+    auto frag_end = std::make_shared<sw::node::FragmentShader>();
+    sw::make_connecting({ phong, 0 }, { frag_end, 0 });
+
     //////////////////////////////////////////////////////////////////////////
     // end
     //////////////////////////////////////////////////////////////////////////
 
-	sw::Evaluator vert(vert_nodes, sw::ST_VERT);
-	sw::Evaluator frag({ phong }, sw::ST_FRAG);
+	sw::Evaluator vert(vert_nodes);
+	sw::Evaluator frag({ frag_end });
 
 	//printf("//////////////////////////////////////////////////////////////////////////\n");
 	//printf("%s\n", vert.GenShaderStr().c_str());

@@ -87,7 +87,6 @@ void Shape3Renderer::InitShader()
 	sw::make_connecting({ position,   0 }, { pos_trans, sw::node::PositionTrans::ID_POS });
     auto vert_end = std::make_shared<sw::node::VertexShader>();
     sw::make_connecting({ pos_trans, 0 }, { vert_end, 0 });
-
 	vert_nodes.push_back(vert_end);
 
 	// varying

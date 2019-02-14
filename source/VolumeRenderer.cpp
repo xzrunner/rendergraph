@@ -94,6 +94,7 @@ void VolumeRenderer::InitShader()
 	sw::make_connecting({ position,   0 }, { pos_trans, sw::node::PositionTrans::ID_POS });
     auto vert_end = std::make_shared<sw::node::VertexShader>();
     sw::make_connecting({ pos_trans, 0 }, { vert_end, 0 });
+    vert_nodes.push_back(vert_end);
 
 	// varying
 	auto vert_in_uv  = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uvw);
@@ -105,8 +106,6 @@ void VolumeRenderer::InitShader()
 	auto col_out_uv = std::make_shared<sw::node::Output>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ col_in_uv, 0 }, { col_out_uv, 0 });
 	vert_nodes.push_back(col_out_uv);
-
-    vert_nodes.push_back(vert_end);
 
 	// frag
 	auto tex_sample = std::make_shared<sw::node::SampleTex3D>();

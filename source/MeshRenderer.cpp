@@ -108,7 +108,7 @@ void MeshRenderer::InitShader()
     auto texcoord = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uv);
 
     // gl_Position =  u_projection * u_view * u_model * a_pos;
-	auto pos_trans = std::make_shared<sw::node::PositionTrans>(3);
+	auto pos_trans = std::make_shared<sw::node::PositionTrans>(4);
 	sw::make_connecting({ projection, 0 }, { pos_trans, sw::node::PositionTrans::ID_PROJ });
 	sw::make_connecting({ view, 0 },       { pos_trans, sw::node::PositionTrans::ID_VIEW });
 	sw::make_connecting({ model, 0 },      { pos_trans, sw::node::PositionTrans::ID_MODEL });

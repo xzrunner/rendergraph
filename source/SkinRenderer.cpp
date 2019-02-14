@@ -121,7 +121,7 @@ void SkinRenderer::InitShader()
 	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME, sw::t_mat4);
 
     // gl_Position =  u_projection * u_view * u_model * a_pos;
-	auto pos_trans = std::make_shared<sw::node::PositionTrans>(3);
+	auto pos_trans = std::make_shared<sw::node::PositionTrans>(4);
 	sw::make_connecting({ projection, 0 },  { pos_trans, sw::node::PositionTrans::ID_PROJ });
 	sw::make_connecting({ view, 0 },        { pos_trans, sw::node::PositionTrans::ID_VIEW });
 	sw::make_connecting({ model, 0 },       { pos_trans, sw::node::PositionTrans::ID_MODEL });

@@ -87,7 +87,7 @@ void VolumeRenderer::InitShader()
 
 	auto position   = std::make_shared<sw::node::Input>  (VERT_POSITION_NAME,     sw::t_pos3);
 
-	auto pos_trans = std::make_shared<sw::node::PositionTrans>(3);
+	auto pos_trans = std::make_shared<sw::node::PositionTrans>(4);
 	sw::make_connecting({ projection, 0 }, { pos_trans, sw::node::PositionTrans::ID_PROJ });
 	sw::make_connecting({ view,       0 }, { pos_trans, sw::node::PositionTrans::ID_VIEW });
 	sw::make_connecting({ model,      0 }, { pos_trans, sw::node::PositionTrans::ID_MODEL });

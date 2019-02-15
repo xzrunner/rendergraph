@@ -21,6 +21,12 @@
     <ClCompile Include="..\..\..\source\SkinRenderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\BSPRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\MorphRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
@@ -45,6 +51,12 @@
       <Filter>renders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\SkinRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\BSPRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\MorphRenderer.h">
       <Filter>renders</Filter>
     </ClInclude>
   </ItemGroup>

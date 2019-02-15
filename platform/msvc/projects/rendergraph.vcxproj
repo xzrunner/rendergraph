@@ -11,7 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\rendergraph\BSPRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\MeshRenderer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\MorphRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RendererImpl.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
     <ClInclude Include="..\..\..\include\rendergraph\ExternRenderer.h" />
@@ -25,9 +27,11 @@
     <ClInclude Include="..\..\..\include\rendergraph\VolumeRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\BSPRenderer.cpp" />
     <ClCompile Include="..\..\..\source\Callback.cpp" />
     <ClCompile Include="..\..\..\source\ExternRenderer.cpp" />
     <ClCompile Include="..\..\..\source\MeshRenderer.cpp" />
+    <ClCompile Include="..\..\..\source\MorphRenderer.cpp" />
     <ClCompile Include="..\..\..\source\Shape3Renderer.cpp" />
     <ClCompile Include="..\..\..\source\RenderMgr.cpp" />
     <ClCompile Include="..\..\..\source\SkinRenderer.cpp" />

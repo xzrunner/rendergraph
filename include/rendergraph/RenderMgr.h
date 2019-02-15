@@ -22,6 +22,8 @@ enum class RenderType
     SKIN,
     SHAPE3D,
 	TEX3D,
+    BSP,
+    MORPH,
 	EXTERN,
 
 	MAX_COUNT

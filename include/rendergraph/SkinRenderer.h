@@ -10,7 +10,6 @@
 #include <boost/noncopyable.hpp>
 
 namespace model { struct MeshGeometry; }
-namespace pt3 { class WindowContext; }
 
 namespace rg
 {
@@ -33,8 +32,6 @@ public:
 
     void Draw(const model::MeshGeometry& mesh, const pt0::Material& material,
         const pt0::RenderContext& ctx) const;
-
-    void BindWindowContext(pt3::WindowContext& wc);
 
 private:
     void InitShader();

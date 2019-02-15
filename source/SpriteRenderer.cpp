@@ -56,7 +56,7 @@ SpriteRenderer::SpriteRenderer()
 
 void SpriteRenderer::Flush()
 {
-    FlushBuffer(ur::DRAW_TRIANGLES);
+    FlushBuffer(ur::DRAW_TRIANGLES, m_shader);
 }
 
 void SpriteRenderer::DrawQuad(const float* positions, const float* texcoords, int texid, uint32_t color)
@@ -152,11 +152,6 @@ void SpriteRenderer::DrawPainter(const tess::Painter& pt, const sm::mat4& mat)
 			copy_vertex_buffer(mat, m_buf, pt.GetBuffer());
 		}
 	}
-}
-
-void SpriteRenderer::BindWindowContext(pt2::WindowContext& wc)
-{
-    std::static_pointer_cast<pt2::Shader>(m_shader)->AddNotify(wc);
 }
 
 void SpriteRenderer::InitShader()

@@ -8,7 +8,6 @@
 
 #include <boost/noncopyable.hpp>
 
-namespace pt2 { class WindowContext; }
 namespace tess { class Painter; class Palette; }
 
 namespace rg
@@ -31,11 +30,7 @@ public:
 	void DrawQuad(const float* positions, const float* texcoords, int texid, uint32_t color);
 	void DrawPainter(const tess::Painter& pt, const sm::mat4& mat = sm::mat4());
 
-	auto GetShader() { return m_shader; }
-
 	auto& GetPalette() const { return *m_palette; }
-
-    void BindWindowContext(pt2::WindowContext& wc);
 
 private:
 	void InitShader();

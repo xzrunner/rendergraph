@@ -73,11 +73,6 @@ void MeshRenderer::Draw(const model::MeshGeometry& mesh,
 	}
 }
 
-void MeshRenderer::BindWindowContext(pt3::WindowContext& wc)
-{
-    std::static_pointer_cast<pt3::Shader>(m_shader)->AddNotify(wc);
-}
-
 void MeshRenderer::InitShader()
 {
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();

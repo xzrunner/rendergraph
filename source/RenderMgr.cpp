@@ -5,7 +5,12 @@
 #include "rendergraph/SkinRenderer.h"
 #include "rendergraph/Shape3Renderer.h"
 #include "rendergraph/VolumeRenderer.h"
+#include "rendergraph/BSPRenderer.h"
+#include "rendergraph/MorphRenderer.h"
 #include "rendergraph/ExternRenderer.h"
+
+#include <painting2/Shader.h>
+#include <painting3/Shader.h>
 
 namespace rg
 {
@@ -53,6 +58,14 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 			m_renderers[static_cast<int>(RenderType::TEX3D)]
 				= std::make_shared<VolumeRenderer>();
 			break;
+        case RenderType::BSP:
+            m_renderers[static_cast<int>(RenderType::BSP)]
+                = std::make_shared<BSPRenderer>();
+            break;
+        case RenderType::MORPH:
+            m_renderers[static_cast<int>(RenderType::MORPH)]
+                = std::make_shared<MorphRenderer>();
+            break;
 		case RenderType::EXTERN:
 			m_renderers[static_cast<int>(RenderType::EXTERN)]
 				= std::make_shared<ExternRenderer>();
@@ -62,34 +75,34 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
 	return m_renderers[static_cast<int>(m_curr_render)];
 }
 
-bool RenderMgr::BindWndCtx2D(pt2::WindowContext& wc) const
+void RenderMgr::BindWndCtx2D(std::shared_ptr<pt2::WindowContext>& wc) const
 {
-    if (auto& sprite = m_renderers[static_cast<int>(RenderType::SPRITE)]) {
-        std::static_pointer_cast<SpriteRenderer>(sprite)->BindWindowContext(wc);
-    } else {
-        return false;
+    for (int i = 0; i < static_cast<int>(RenderType::MAX_COUNT); ++i)
+    {
+        auto& rd = m_renderers[i];
+        if (!rd) {
+            continue;
+        }
+        auto& shader = rd->GetShader();
+        if (shader->get_type() == rttr::type::get<pt2::Shader>()) {
+            std::static_pointer_cast<pt2::Shader>(shader)->AddNotify(wc);
+        }
     }
-    return true;
 }
 
-bool RenderMgr::BindWndCtx3D(pt3::WindowContext& wc) const
+void RenderMgr::BindWndCtx3D(std::shared_ptr<pt3::WindowContext>& wc) const
 {
-    if (auto& shape = m_renderers[static_cast<int>(RenderType::SHAPE3D)]) {
-        std::static_pointer_cast<Shape3Renderer>(shape)->BindWindowContext(wc);
-    } else {
-        return false;
+    for (int i = 0; i < static_cast<int>(RenderType::MAX_COUNT); ++i)
+    {
+        auto& rd = m_renderers[i];
+        if (!rd) {
+            continue;
+        }
+        auto& shader = rd->GetShader();
+        if (shader->get_type() == rttr::type::get<pt3::Shader>()) {
+            std::static_pointer_cast<pt3::Shader>(shader)->AddNotify(wc);
+        }
     }
-    if (auto& mesh = m_renderers[static_cast<int>(RenderType::MESH)]) {
-        std::static_pointer_cast<MeshRenderer>(mesh)->BindWindowContext(wc);
-    } else {
-        return false;
-    }
-    if (auto& skin = m_renderers[static_cast<int>(RenderType::SKIN)]) {
-        std::static_pointer_cast<SkinRenderer>(skin)->BindWindowContext(wc);
-    } else {
-        return false;
-    }
-    return true;
 }
 
 void RenderMgr::Flush()

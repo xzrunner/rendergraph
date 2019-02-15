@@ -25,7 +25,7 @@ Shape3Renderer::Shape3Renderer()
 
 void Shape3Renderer::Flush()
 {
-    FlushBuffer(m_draw_mode);
+    FlushBuffer(m_draw_mode, m_shader);
 }
 
 void Shape3Renderer::DrawLines(size_t num, const float* positions, uint32_t color)
@@ -53,11 +53,6 @@ void Shape3Renderer::DrawLines(size_t num, const float* positions, uint32_t colo
         *m_buf.index_ptr++ = m_buf.curr_index + static_cast<unsigned short>(i);
     }
     m_buf.curr_index += static_cast<unsigned short>(num);
-}
-
-void Shape3Renderer::BindWindowContext(pt3::WindowContext& wc)
-{
-    std::static_pointer_cast<pt3::Shader>(m_shader)->AddNotify(wc);
 }
 
 void Shape3Renderer::InitShader()

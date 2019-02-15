@@ -27,10 +27,6 @@ public:
 
     void DrawLines(size_t num, const float* positions, uint32_t color);
 
-    auto GetShader() { return m_shader; }
-
-    void BindWindowContext(pt3::WindowContext& wc);
-
 private:
     void InitShader();
 

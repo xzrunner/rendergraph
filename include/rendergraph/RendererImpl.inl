@@ -22,13 +22,13 @@ RendererImpl<T>::~RendererImpl()
 }
 
 template<typename T>
-void RendererImpl<T>::FlushBuffer(ur::DRAW_MODE mode)
+void RendererImpl<T>::FlushBuffer(ur::DRAW_MODE mode, const std::shared_ptr<pt0::Shader>& shader)
 {
 	if (m_buf.indices.empty()) {
 		return;
 	}
 
-	m_shader->Use();
+	shader->Use();
 	if (m_buf.indices.empty()) {
 		return;
 	}
@@ -39,8 +39,8 @@ void RendererImpl<T>::FlushBuffer(ur::DRAW_MODE mode)
 		return;
 	}
 
-	m_shader->SetMat4(MODEL_MAT_NAME, sm::mat4().x);
-//    m_shader->UpdateModelMat(sm::mat4().x);
+	shader->SetMat4(MODEL_MAT_NAME, sm::mat4().x);
+//    shader->UpdateModelMat(sm::mat4().x);
 
 	rc.BindBuffer(ur::VERTEXBUFFER, m_vbo);
 	size_t vbuf_sz = sizeof(T) * m_buf.vertices.size();

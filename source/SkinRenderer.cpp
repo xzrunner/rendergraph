@@ -70,11 +70,6 @@ void SkinRenderer::Draw(const model::MeshGeometry& mesh,
 	}
 }
 
-void SkinRenderer::BindWindowContext(pt3::WindowContext& wc)
-{
-    std::static_pointer_cast<pt3::Shader>(m_shader)->AddNotify(wc);
-}
-
 void SkinRenderer::InitShader()
 {
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();

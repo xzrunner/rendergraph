@@ -27,7 +27,7 @@ VolumeRenderer::VolumeRenderer()
 void VolumeRenderer::Flush()
 {
     PrepareRenderState();
-    FlushBuffer(ur::DRAW_TRIANGLES, m_shader);
+    FlushBuffer(ur::DRAW_TRIANGLES, m_shaders[0]);
 	RestoreRenderState();
 }
 
@@ -143,7 +143,7 @@ void VolumeRenderer::InitShader()
 	auto& wc = pt3::Blackboard::Instance()->GetWindowContext();
 	auto shader = std::make_shared<pt3::Shader>(&rc, sp);
     shader->AddNotify(std::const_pointer_cast<pt3::WindowContext>(wc));
-    m_shader = shader;
+    m_shaders.push_back(shader);
 }
 
 void VolumeRenderer::PrepareRenderState()

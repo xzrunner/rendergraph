@@ -83,9 +83,10 @@ void RenderMgr::BindWndCtx2D(std::shared_ptr<pt2::WindowContext>& wc) const
         if (!rd) {
             continue;
         }
-        auto& shader = rd->GetShader();
-        if (shader->get_type() == rttr::type::get<pt2::Shader>()) {
-            std::static_pointer_cast<pt2::Shader>(shader)->AddNotify(wc);
+        for (auto& shader : rd->GetAllShaders()) {
+            if (shader->get_type() == rttr::type::get<pt2::Shader>()) {
+                std::static_pointer_cast<pt2::Shader>(shader)->AddNotify(wc);
+            }
         }
     }
 }
@@ -98,9 +99,10 @@ void RenderMgr::BindWndCtx3D(std::shared_ptr<pt3::WindowContext>& wc) const
         if (!rd) {
             continue;
         }
-        auto& shader = rd->GetShader();
-        if (shader->get_type() == rttr::type::get<pt3::Shader>()) {
-            std::static_pointer_cast<pt3::Shader>(shader)->AddNotify(wc);
+        for (auto& shader : rd->GetAllShaders()) {
+            if (shader->get_type() == rttr::type::get<pt3::Shader>()) {
+                std::static_pointer_cast<pt3::Shader>(shader)->AddNotify(wc);
+            }
         }
     }
 }

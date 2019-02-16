@@ -6,10 +6,9 @@
 #include <SM_Vector.h>
 #include <painting0/Material.h>
 #include <painting0/RenderContext.h>
+#include <model/Model.h>
 
 #include <boost/noncopyable.hpp>
-
-namespace model { struct MeshGeometry; }
 
 namespace rg
 {
@@ -30,11 +29,13 @@ public:
 
     virtual void Flush() override;
 
-    void Draw(const model::MeshGeometry& mesh, const pt0::Material& material,
-        const pt0::RenderContext& ctx) const;
+    void Draw(const model::Model& model, const model::Model::Mesh& mesh,
+        const pt0::Material& material, const pt0::RenderContext& ctx) const;
 
 private:
     void InitShader();
+
+    static std::shared_ptr<pt0::Shader> BuildShader(bool tex_map);
 
 }; // SkinRenderer
 

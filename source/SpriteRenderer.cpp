@@ -56,7 +56,7 @@ SpriteRenderer::SpriteRenderer()
 
 void SpriteRenderer::Flush()
 {
-    FlushBuffer(ur::DRAW_TRIANGLES, m_shader);
+    FlushBuffer(ur::DRAW_TRIANGLES, m_shaders[0]);
 }
 
 void SpriteRenderer::DrawQuad(const float* positions, const float* texcoords, int texid, uint32_t color)
@@ -229,7 +229,7 @@ void SpriteRenderer::InitShader()
 	sp.uniform_names[pt0::U_VIEW_MAT]  = VIEW_MAT_NAME;
 	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;
 
-	m_shader = std::make_shared<pt2::Shader>(&rc, sp);
+    m_shaders.push_back(std::make_shared<pt2::Shader>(&rc, sp));
 }
 
 }

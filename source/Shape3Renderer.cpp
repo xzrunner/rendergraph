@@ -25,7 +25,7 @@ Shape3Renderer::Shape3Renderer()
 
 void Shape3Renderer::Flush()
 {
-    FlushBuffer(m_draw_mode, m_shader);
+    FlushBuffer(m_draw_mode, m_shaders[0]);
 }
 
 void Shape3Renderer::DrawLines(size_t num, const float* positions, uint32_t color)
@@ -114,7 +114,7 @@ void Shape3Renderer::InitShader()
 	sp.uniform_names[pt0::U_VIEW_MAT]  = VIEW_MAT_NAME;
 	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;
 
-	m_shader = std::make_shared<pt3::Shader>(&rc, sp);
+    m_shaders.push_back(std::make_shared<pt3::Shader>(&rc, sp));
 }
 
 }

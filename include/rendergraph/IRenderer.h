@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 namespace pt0 { class Shader; }
 
@@ -13,10 +14,10 @@ public:
 	virtual ~IRenderer() {}
 	virtual void Flush() = 0;
 
-    auto& GetShader() const { return m_shader; }
+    auto& GetAllShaders() const { return m_shaders; }
 
 protected:
-    std::shared_ptr<pt0::Shader> m_shader = nullptr;
+    std::vector<std::shared_ptr<pt0::Shader>> m_shaders;
 
 }; // IRenderer
 

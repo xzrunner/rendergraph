@@ -41,7 +41,7 @@ MorphRenderer::MorphRenderer()
 
 void MorphRenderer::Draw() const
 {
-    m_shader->Use();
+    m_shaders[0]->Use();
 }
 
 void MorphRenderer::InitShader()
@@ -162,7 +162,7 @@ void MorphRenderer::InitShader()
 	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;
     sp.uniform_names[pt0::U_CAM_POS]   = sw::node::CameraPos::CamPosName();
 
-	m_shader = std::make_shared<pt3::Shader>(&rc, sp);
+    m_shaders.push_back(std::make_shared<pt3::Shader>(&rc, sp));
 }
 
 }

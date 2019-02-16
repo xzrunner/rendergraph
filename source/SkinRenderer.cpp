@@ -25,12 +25,19 @@
 #include <painting3/Shader.h>
 #include <painting3/MaterialMgr.h>
 #include <model/MeshGeometry.h>
+#include <model/typedef.h>
 
 namespace
 {
 
 const char* BLEND_INDICES_NAME = "blend_indices";
 const char* BLEND_WEIGHTS_NAME = "blend_weights";
+
+enum ShaderType
+{
+    SHADER_TEX_MAP = 0,
+    SHADER_NO_TEX_MAP,
+};
 
 }
 
@@ -46,20 +53,36 @@ void SkinRenderer::Flush()
 {
 }
 
-void SkinRenderer::Draw(const model::MeshGeometry& mesh,
+void SkinRenderer::Draw(const model::Model& model,
+                        const model::Model::Mesh& mesh,
                         const pt0::Material& material,
                         const pt0::RenderContext& ctx) const
 {
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
-    m_shader->Use();
+    auto& geo = mesh.geometry;
 
-	auto mode = m_shader->GetDrawMode();
+    bool do_tex_map = false;
+    if ((geo.vertex_type & model::VERTEX_FLAG_TEXCOORDS))
+    {
+        auto& model_mat = model.materials[mesh.material];
+        if (model_mat->diffuse_tex != -1) 
+        {
+            int tex_id = model.textures[model_mat->diffuse_tex].second->TexID();
+            ur::Blackboard::Instance()->GetRenderContext().BindTexture(tex_id, 0);
 
-    material.Bind(*m_shader);
-    ctx.Bind(*m_shader);
+            do_tex_map = true;
+        }
+    }
 
-	auto& geo = mesh;
+    auto shader = do_tex_map ? m_shaders[SHADER_TEX_MAP] : m_shaders[SHADER_NO_TEX_MAP];
+    shader->Use();
+
+	auto mode = shader->GetDrawMode();
+
+    material.Bind(*shader);
+    ctx.Bind(*shader);
+
 	for (auto& sub : geo.sub_geometries)
 	{
 		if (sub.index) {
@@ -71,6 +94,13 @@ void SkinRenderer::Draw(const model::MeshGeometry& mesh,
 }
 
 void SkinRenderer::InitShader()
+{
+    m_shaders.resize(2);
+    m_shaders[SHADER_TEX_MAP]    = BuildShader(true);
+    m_shaders[SHADER_NO_TEX_MAP] = BuildShader(false);
+}
+
+std::shared_ptr<pt0::Shader> SkinRenderer::BuildShader(bool tex_map)
 {
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
@@ -173,32 +203,48 @@ void SkinRenderer::InitShader()
     sw::make_connecting({ lit_diffuse, 0 },  { phong, sw::node::Phong::ID_LIT_DIFFUSE });
     sw::make_connecting({ lit_specular, 0 }, { phong, sw::node::Phong::ID_LIT_SPECULAR });
 
-    //auto mat_diffuse   = std::make_shared<sw::node::Uniform>("mat_diffuse",   sw::t_flt3);
-    //auto mat_specular  = std::make_shared<sw::node::Uniform>("mat_specular",  sw::t_flt3);
-    //auto mat_shininess = std::make_shared<sw::node::Uniform>("mat_shininess", sw::t_flt1);
+    auto mat_diffuse   = std::make_shared<sw::node::Uniform>(
+        pt3::MaterialMgr::PhongUniforms::diffuse.name,   sw::t_flt3);
+    auto mat_specular  = std::make_shared<sw::node::Uniform>(
+        pt3::MaterialMgr::PhongUniforms::specular.name,  sw::t_flt3);
+    auto mat_shininess = std::make_shared<sw::node::Uniform>(
+        pt3::MaterialMgr::PhongUniforms::shininess.name, sw::t_flt1);
     //auto mat_emission  = std::make_shared<sw::node::Uniform>("mat_emission",  sw::t_flt3);
-    auto mat_diffuse   = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
-    auto mat_specular  = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
-    auto mat_shininess = std::make_shared<sw::node::Vector1>("", 50.0f);
+    //auto mat_diffuse   = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
+    //auto mat_specular  = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
+    //auto mat_shininess = std::make_shared<sw::node::Vector1>("", 50.0f);
     auto mat_emission  = std::make_shared<sw::node::Vector3>("", sm::vec3(0, 0, 0));
     sw::make_connecting({ mat_diffuse,   0 }, { phong, sw::node::Phong::ID_MAT_DIFFUSE });
     sw::make_connecting({ mat_specular,  0 }, { phong, sw::node::Phong::ID_MAT_SPECULAR });
     sw::make_connecting({ mat_shininess, 0 }, { phong, sw::node::Phong::ID_MAT_SHININESS });
     sw::make_connecting({ mat_emission,  0 }, { phong, sw::node::Phong::ID_MAT_EMISSION });
 
-    // frag_color = phong * texture2D(u_texture0, v_texcoord);
-    auto tex_sample = std::make_shared<sw::node::SampleTex2D>();
-	auto frag_in_tex = std::make_shared<sw::node::Uniform>("u_texture0", sw::t_tex2d);
-	auto frag_in_uv = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uv);
-	sw::make_connecting({ frag_in_tex, 0 }, { tex_sample, sw::node::SampleTex2D::ID_TEX });
-	sw::make_connecting({ frag_in_uv,  0 }, { tex_sample, sw::node::SampleTex2D::ID_UV });
+    sw::NodePtr frag_end = std::make_shared<sw::node::FragmentShader>();
+    std::vector<sw::NodePtr> cache_nodes;
+    if (tex_map)
+    {
+        // frag_color = phong * texture2D(u_texture0, v_texcoord);
+        auto tex_sample  = std::make_shared<sw::node::SampleTex2D>();
+	    auto frag_in_tex = std::make_shared<sw::node::Uniform>("u_texture0", sw::t_tex2d);
+	    auto frag_in_uv  = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uv);
+	    sw::make_connecting({ frag_in_tex, 0 }, { tex_sample, sw::node::SampleTex2D::ID_TEX });
+	    sw::make_connecting({ frag_in_uv,  0 }, { tex_sample, sw::node::SampleTex2D::ID_UV });
+        cache_nodes.push_back(tex_sample);
+        cache_nodes.push_back(frag_in_tex);
+        cache_nodes.push_back(frag_in_uv);
 
-    auto frag_color = std::make_shared<sw::node::Multiply>();
-    sw::make_connecting({ tex_sample, 0 }, { frag_color, sw::node::Multiply::ID_A });
-    sw::make_connecting({ phong, 0 },      { frag_color, sw::node::Multiply::ID_B });
+        auto frag_color = std::make_shared<sw::node::Multiply>();
+        sw::make_connecting({ tex_sample, 0 }, { frag_color, sw::node::Multiply::ID_A });
+        sw::make_connecting({ phong, 0 },      { frag_color, sw::node::Multiply::ID_B });
+        cache_nodes.push_back(frag_color);
 
-    auto frag_end = std::make_shared<sw::node::FragmentShader>();
-    sw::make_connecting({ frag_color, 0 }, { frag_end, 0 });
+        sw::make_connecting({ frag_color, 0 }, { frag_end, 0 });
+    }
+    else
+    {
+        // frag_color = phong;
+        sw::make_connecting({ phong, 0 }, { frag_end, 0 });
+    }
 
     //////////////////////////////////////////////////////////////////////////
     // end
@@ -217,13 +263,13 @@ void SkinRenderer::InitShader()
 	pt3::Shader::Params sp(texture_names, layout);
 	sp.vs = vert.GenShaderStr().c_str();
 	sp.fs = frag.GenShaderStr().c_str();
-
+    
 	sp.uniform_names[pt0::U_MODEL_MAT] = MODEL_MAT_NAME;
 	sp.uniform_names[pt0::U_VIEW_MAT]  = VIEW_MAT_NAME;
 	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;
     sp.uniform_names[pt0::U_CAM_POS]   = sw::node::CameraPos::CamPosName();
 
-	m_shader = std::make_shared<pt3::Shader>(&rc, sp);
+	return std::make_shared<pt3::Shader>(&rc, sp);
 }
 
 }

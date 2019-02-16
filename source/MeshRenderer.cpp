@@ -39,13 +39,14 @@ void MeshRenderer::Draw(const model::MeshGeometry& mesh,
 {
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
-    m_shader->Use();
+    auto& shader = m_shaders[0];
+    shader->Use();
 
-    material.Bind(*m_shader);
-    ctx.Bind(*m_shader);
+    material.Bind(*shader);
+    ctx.Bind(*shader);
 
 	auto& geo = mesh;
-	auto mode = m_shader->GetDrawMode();
+	auto mode = shader->GetDrawMode();
 	for (auto& sub : geo.sub_geometries)
 	{
 		if (geo.vao > 0)
@@ -197,7 +198,7 @@ void MeshRenderer::InitShader()
 	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;
     sp.uniform_names[pt0::U_CAM_POS]   = sw::node::CameraPos::CamPosName();
 
-	m_shader = std::make_shared<pt3::Shader>(&rc, sp);
+    m_shaders.push_back(std::make_shared<pt3::Shader>(&rc, sp));
 }
 
 }

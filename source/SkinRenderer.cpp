@@ -195,8 +195,8 @@ std::shared_ptr<pt0::Shader> SkinRenderer::BuildShader(bool tex_map)
 
     auto& lit_pos_name = pt3::MaterialMgr::PositionUniforms::light_pos.name;
     auto lit_pos      = std::make_shared<sw::node::Uniform>(lit_pos_name, sw::t_flt3);
-    auto lit_ambient  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.2f, 0.2f, 0.2f));
-    auto lit_diffuse  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.5f, 0.5f, 0.5f));
+    auto lit_ambient  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.5f, 0.5f, 0.5f));
+    auto lit_diffuse  = std::make_shared<sw::node::Vector3>("", sm::vec3(1.0f, 1.0f, 1.0f));
     auto lit_specular = std::make_shared<sw::node::Vector3>("", sm::vec3(1.0f, 1.0f, 1.0f));
     sw::make_connecting({ lit_pos, 0 },      { phong, sw::node::Phong::ID_LIT_POSITION });
     sw::make_connecting({ lit_ambient, 0 },  { phong, sw::node::Phong::ID_LIT_AMBIENT });

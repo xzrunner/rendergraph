@@ -35,18 +35,19 @@ void MeshRenderer::Flush()
 
 void MeshRenderer::Draw(const model::MeshGeometry& mesh,
                         const pt0::Material& material,
-                        const pt0::RenderContext& ctx) const
+                        const pt0::RenderContext& ctx,
+                        const std::shared_ptr<pt0::Shader>& shader) const
 {
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();
 
-    auto& shader = m_shaders[0];
-    shader->Use();
+    auto sd = shader ? shader : m_shaders[0];
+    sd->Use();
 
-    material.Bind(*shader);
-    ctx.Bind(*shader);
+    material.Bind(*sd);
+    ctx.Bind(*sd);
 
 	auto& geo = mesh;
-	auto mode = shader->GetDrawMode();
+	auto mode = sd->GetDrawMode();
 	for (auto& sub : geo.sub_geometries)
 	{
 		if (geo.vao > 0)

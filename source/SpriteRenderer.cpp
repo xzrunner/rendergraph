@@ -163,8 +163,7 @@ void SpriteRenderer::InitShader()
 	layout.push_back(ur::VertexAttrib(VERT_POSITION_NAME, 2, sizeof(float),    20, 0));
 	layout.push_back(ur::VertexAttrib(VERT_TEXCOORD_NAME, 2, sizeof(float),    20, 8));
 	layout.push_back(ur::VertexAttrib(VERT_COLOR_NAME,    4, sizeof(uint8_t),  20, 16));
-	auto layout_id = rc.CreateVertexLayout(layout);
-	rc.BindVertexLayout(layout_id);
+	rc.CreateVertexLayout(layout);
 
 	// vert
 	std::vector<sw::NodePtr> vert_nodes;

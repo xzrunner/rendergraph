@@ -66,7 +66,7 @@ void SkinRenderer::Draw(const model::Model& model,
     if ((geo.vertex_type & model::VERTEX_FLAG_TEXCOORDS))
     {
         auto& model_mat = model.materials[mesh.material];
-        if (model_mat->diffuse_tex != -1) 
+        if (model_mat->diffuse_tex != -1)
         {
             int tex_id = model.textures[model_mat->diffuse_tex].second->TexID();
             ur::Blackboard::Instance()->GetRenderContext().BindTexture(tex_id, 0);
@@ -114,8 +114,7 @@ std::shared_ptr<pt0::Shader> SkinRenderer::BuildShader(bool tex_map)
     layout.emplace_back(VERT_TEXCOORD_NAME, 2, 4, 40, 24);
     layout.emplace_back(BLEND_INDICES_NAME, 4, 1, 40, 32);
     layout.emplace_back(BLEND_WEIGHTS_NAME, 4, 1, 40, 36);
-    auto layout_id = rc.CreateVertexLayout(layout);
-    rc.BindVertexLayout(layout_id);
+    rc.CreateVertexLayout(layout);
 
     //////////////////////////////////////////////////////////////////////////
     // vert
@@ -263,7 +262,7 @@ std::shared_ptr<pt0::Shader> SkinRenderer::BuildShader(bool tex_map)
 	pt3::Shader::Params sp(texture_names, layout);
 	sp.vs = vert.GenShaderStr().c_str();
 	sp.fs = frag.GenShaderStr().c_str();
-    
+
 	sp.uniform_names[pt0::U_MODEL_MAT] = MODEL_MAT_NAME;
 	sp.uniform_names[pt0::U_VIEW_MAT]  = VIEW_MAT_NAME;
 	sp.uniform_names[pt0::U_PROJ_MAT]  = PROJ_MAT_NAME;

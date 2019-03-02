@@ -58,8 +58,7 @@ void MorphRenderer::InitShader()
 	layout.emplace_back(VERT_POSE2_VERTEX_NAME, 3, 4, 24,  0);
 	layout.emplace_back(VERT_POSE2_NORMAL_NAME, 3, 4, 24, 12);
 	layout.emplace_back(VERT_TEXCOORD_NAME,     2, 4,  0,  0);
-    auto layout_id = rc.CreateVertexLayout(layout);
-    rc.BindVertexLayout(layout_id);
+    rc.CreateVertexLayout(layout);
 
     //////////////////////////////////////////////////////////////////////////
     // vert

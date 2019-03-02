@@ -49,8 +49,7 @@ void BSPRenderer::InitShader()
     layout.emplace_back(VERT_POSITION_NAME,       3, 4, 28, 0);
     layout.emplace_back(VERT_TEXCOORD_NAME,       2, 4, 28, 12);
     layout.emplace_back(VERT_TEXCOORD_LIGHT_NAME, 2, 4, 28, 20);
-    auto layout_id = rc.CreateVertexLayout(layout);
-    rc.BindVertexLayout(layout_id);
+    rc.CreateVertexLayout(layout);
 
     //////////////////////////////////////////////////////////////////////////
     // vert

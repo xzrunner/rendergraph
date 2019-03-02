@@ -75,8 +75,7 @@ void VolumeRenderer::InitShader()
 	layout.push_back(ur::VertexAttrib(VERT_POSITION_NAME, 3, sizeof(float),    28, 0));
 	layout.push_back(ur::VertexAttrib(VERT_TEXCOORD_NAME, 3, sizeof(float),    28, 12));
 	layout.push_back(ur::VertexAttrib(VERT_COLOR_NAME,    4, sizeof(uint8_t),  28, 24));
-	auto layout_id = rc.CreateVertexLayout(layout);
-	rc.BindVertexLayout(layout_id);
+	rc.CreateVertexLayout(layout);
 
 	// vert
 	std::vector<sw::NodePtr> vert_nodes;

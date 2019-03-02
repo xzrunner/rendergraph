@@ -87,8 +87,7 @@ void MeshRenderer::InitShader()
     layout.push_back(ur::VertexAttrib(VERT_POSITION_NAME, 3, 4, 32, 0));
     layout.push_back(ur::VertexAttrib(VERT_NORMAL_NAME,   3, 4, 32, 12));
     layout.push_back(ur::VertexAttrib(VERT_TEXCOORD_NAME, 2, 4, 32, 24));
-    auto layout_id = rc.CreateVertexLayout(layout);
-    rc.BindVertexLayout(layout_id);
+    rc.CreateVertexLayout(layout);
 
     //////////////////////////////////////////////////////////////////////////
     // vert

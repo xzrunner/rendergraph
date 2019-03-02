@@ -63,8 +63,7 @@ void Shape3Renderer::InitShader()
 	std::vector<ur::VertexAttrib> layout;
 	layout.push_back(ur::VertexAttrib(VERT_POSITION_NAME, 3, sizeof(float),    16, 0));
 	layout.push_back(ur::VertexAttrib(VERT_COLOR_NAME,    4, sizeof(uint8_t),  16, 12));
-	auto layout_id = rc.CreateVertexLayout(layout);
-	rc.BindVertexLayout(layout_id);
+	rc.CreateVertexLayout(layout);
 
 	// vert
 	std::vector<sw::NodePtr> vert_nodes;

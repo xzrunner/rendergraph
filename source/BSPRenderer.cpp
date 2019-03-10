@@ -7,9 +7,9 @@
 #include <painting3/Shader.h>
 #include <shaderweaver/typedef.h>
 #include <shaderweaver/Evaluator.h>
-#include <shaderweaver/node/Uniform.h>
-#include <shaderweaver/node/Input.h>
-#include <shaderweaver/node/Output.h>
+#include <shaderweaver/node/ShaderUniform.h>
+#include <shaderweaver/node/ShaderInput.h>
+#include <shaderweaver/node/ShaderOutput.h>
 #include <shaderweaver/node/PositionTrans.h>
 #include <shaderweaver/node/VertexShader.h>
 #include <shaderweaver/node/FragmentShader.h>
@@ -57,13 +57,13 @@ void BSPRenderer::InitShader()
 
     std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME,  sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,  sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME, sw::t_mat4);
+	auto projection = std::make_shared<sw::node::ShaderUniform>(PROJ_MAT_NAME,  sw::t_mat4);
+	auto view       = std::make_shared<sw::node::ShaderUniform>(VIEW_MAT_NAME,  sw::t_mat4);
+	auto model      = std::make_shared<sw::node::ShaderUniform>(MODEL_MAT_NAME, sw::t_mat4);
 
-    auto position       = std::make_shared<sw::node::Input>(VERT_POSITION_NAME, sw::t_flt3);
-    auto texcoord       = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uv);
-    auto texcoord_light = std::make_shared<sw::node::Input>(VERT_TEXCOORD_LIGHT_NAME, sw::t_uv);
+    auto position       = std::make_shared<sw::node::ShaderInput>(VERT_POSITION_NAME, sw::t_flt3);
+    auto texcoord       = std::make_shared<sw::node::ShaderInput>(VERT_TEXCOORD_NAME, sw::t_uv);
+    auto texcoord_light = std::make_shared<sw::node::ShaderInput>(VERT_TEXCOORD_LIGHT_NAME, sw::t_uv);
 
     // gl_Position =  u_projection * u_view * u_model * a_pos;
 	auto pos_trans = std::make_shared<sw::node::PositionTrans>(3);
@@ -75,12 +75,12 @@ void BSPRenderer::InitShader()
     sw::make_connecting({ pos_trans, 0 }, { vert_end, 0 });
 
     // v_texcoord = a_texcoord;
-    auto v_texcoord = std::make_shared<sw::node::Output>(FRAG_TEXCOORD_NAME, sw::t_uv);
+    auto v_texcoord = std::make_shared<sw::node::ShaderOutput>(FRAG_TEXCOORD_NAME, sw::t_uv);
     sw::make_connecting({ texcoord, 0 }, { v_texcoord, 0 });
     vert_nodes.push_back(v_texcoord);
 
     // v_texcoord_light = a_texcoord_light;
-    auto v_texcoord_light = std::make_shared<sw::node::Output>(VERT_TEXCOORD_LIGHT_NAME, sw::t_uv);
+    auto v_texcoord_light = std::make_shared<sw::node::ShaderOutput>(VERT_TEXCOORD_LIGHT_NAME, sw::t_uv);
     sw::make_connecting({ texcoord_light, 0 }, { v_texcoord_light, 0 });
     vert_nodes.push_back(v_texcoord_light);
 
@@ -90,15 +90,15 @@ void BSPRenderer::InitShader()
 
     // vec4 base = texture2D(u_base_tex, v_texcoord);
     auto base_tex_sample  = std::make_shared<sw::node::SampleTex2D>();
-    auto frag_in_base_tex = std::make_shared<sw::node::Uniform>("u_base_tex", sw::t_tex2d);
-    auto frag_in_base_uv  = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uv);
+    auto frag_in_base_tex = std::make_shared<sw::node::ShaderUniform>("u_base_tex", sw::t_tex2d);
+    auto frag_in_base_uv  = std::make_shared<sw::node::ShaderInput>(FRAG_TEXCOORD_NAME, sw::t_uv);
     sw::make_connecting({ frag_in_base_tex, 0 }, { base_tex_sample, sw::node::SampleTex2D::ID_TEX });
     sw::make_connecting({ frag_in_base_uv,  0 }, { base_tex_sample, sw::node::SampleTex2D::ID_UV });
 
     // vec4 light = texture2D(u_light_tex, v_texcoord_light);
     auto light_tex_sample  = std::make_shared<sw::node::SampleTex2D>();
-    auto frag_in_light_tex = std::make_shared<sw::node::Uniform>("u_light_tex", sw::t_tex2d);
-    auto frag_in_light_uv  = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uv);
+    auto frag_in_light_tex = std::make_shared<sw::node::ShaderUniform>("u_light_tex", sw::t_tex2d);
+    auto frag_in_light_uv  = std::make_shared<sw::node::ShaderInput>(FRAG_TEXCOORD_NAME, sw::t_uv);
     sw::make_connecting({ frag_in_light_tex, 0 }, { light_tex_sample, sw::node::SampleTex2D::ID_TEX });
     sw::make_connecting({ frag_in_light_uv,  0 }, { light_tex_sample, sw::node::SampleTex2D::ID_UV });
 

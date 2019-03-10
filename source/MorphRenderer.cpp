@@ -8,9 +8,9 @@
 #include <painting3/MaterialMgr.h>
 #include <shaderweaver/typedef.h>
 #include <shaderweaver/Evaluator.h>
-#include <shaderweaver/node/Uniform.h>
-#include <shaderweaver/node/Input.h>
-#include <shaderweaver/node/Output.h>
+#include <shaderweaver/node/ShaderUniform.h>
+#include <shaderweaver/node/ShaderInput.h>
+#include <shaderweaver/node/ShaderOutput.h>
 #include <shaderweaver/node/PositionTrans.h>
 #include <shaderweaver/node/VertexShader.h>
 #include <shaderweaver/node/FragmentShader.h>
@@ -66,22 +66,22 @@ void MorphRenderer::InitShader()
 
     std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME,  sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,  sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME, sw::t_mat4);
+	auto projection = std::make_shared<sw::node::ShaderUniform>(PROJ_MAT_NAME,  sw::t_mat4);
+	auto view       = std::make_shared<sw::node::ShaderUniform>(VIEW_MAT_NAME,  sw::t_mat4);
+	auto model      = std::make_shared<sw::node::ShaderUniform>(MODEL_MAT_NAME, sw::t_mat4);
 
-    auto vertex1  = std::make_shared<sw::node::Input>(VERT_POSE1_VERTEX_NAME, sw::t_flt3);
-    auto normall  = std::make_shared<sw::node::Input>(VERT_POSE1_NORMAL_NAME, sw::t_flt3);
-    auto vertex2  = std::make_shared<sw::node::Input>(VERT_POSE2_VERTEX_NAME, sw::t_flt3);
-    auto normal2  = std::make_shared<sw::node::Input>(VERT_POSE2_NORMAL_NAME, sw::t_flt3);
-    auto texcoord = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uv);
+    auto vertex1  = std::make_shared<sw::node::ShaderInput>(VERT_POSE1_VERTEX_NAME, sw::t_flt3);
+    auto normall  = std::make_shared<sw::node::ShaderInput>(VERT_POSE1_NORMAL_NAME, sw::t_flt3);
+    auto vertex2  = std::make_shared<sw::node::ShaderInput>(VERT_POSE2_VERTEX_NAME, sw::t_flt3);
+    auto normal2  = std::make_shared<sw::node::ShaderInput>(VERT_POSE2_NORMAL_NAME, sw::t_flt3);
+    auto texcoord = std::make_shared<sw::node::ShaderInput>(VERT_TEXCOORD_NAME, sw::t_uv);
 
     // 	vec4 pos = vertex1 + (vertex2 - vertex1) * u_blend;
     auto pos_tot = std::make_shared<sw::node::Subtract>();
     sw::make_connecting({ vertex2, 0 }, { pos_tot, sw::node::Subtract::ID_A});
     sw::make_connecting({ vertex1, 0 }, { pos_tot, sw::node::Subtract::ID_B});
     auto pos_off = std::make_shared<sw::node::Multiply>();
-    auto blend = std::make_shared<sw::node::Uniform>(
+    auto blend = std::make_shared<sw::node::ShaderUniform>(
         pt3::MaterialMgr::AnimUniforms::blend.name, sw::t_flt1
     );
     sw::make_connecting({ pos_tot, 0 }, { pos_off, sw::node::Multiply::ID_A });
@@ -100,7 +100,7 @@ void MorphRenderer::InitShader()
     sw::make_connecting({ pos_trans, 0 }, { vert_end, 0 });
 
     // v_texcoord = a_texcoord;
-    auto v_texcoord = std::make_shared<sw::node::Output>(FRAG_TEXCOORD_NAME, sw::t_uv);
+    auto v_texcoord = std::make_shared<sw::node::ShaderOutput>(FRAG_TEXCOORD_NAME, sw::t_uv);
     sw::make_connecting({ texcoord, 0 }, { v_texcoord, 0 });
     vert_nodes.push_back(v_texcoord);
 
@@ -109,7 +109,7 @@ void MorphRenderer::InitShader()
     auto times = std::make_shared<sw::node::Vector1>("", 0.001f);
     sw::make_connecting({ normall, 0 }, { color, sw::node::Multiply::ID_A });
     sw::make_connecting({ times,   0 }, { color, sw::node::Multiply::ID_B });
-    auto v_color = std::make_shared<sw::node::Output>(FRAG_TEXCOORD_NAME, sw::t_uv);
+    auto v_color = std::make_shared<sw::node::ShaderOutput>(FRAG_TEXCOORD_NAME, sw::t_uv);
     sw::make_connecting({ color, 0 }, { v_color, 0 });
     vert_nodes.push_back(v_color);
 
@@ -119,8 +119,8 @@ void MorphRenderer::InitShader()
 
     // vec4 base = texture2D(u_texture0, v_texcoord);
     auto tex_sample = std::make_shared<sw::node::SampleTex2D>();
-    auto frag_in_tex = std::make_shared<sw::node::Uniform>("u_texture0", sw::t_tex2d);
-    auto frag_in_uv = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uv);
+    auto frag_in_tex = std::make_shared<sw::node::ShaderUniform>("u_texture0", sw::t_tex2d);
+    auto frag_in_uv = std::make_shared<sw::node::ShaderInput>(FRAG_TEXCOORD_NAME, sw::t_uv);
     sw::make_connecting({ frag_in_tex, 0 }, { tex_sample, sw::node::SampleTex2D::ID_TEX });
     sw::make_connecting({ frag_in_uv,  0 }, { tex_sample, sw::node::SampleTex2D::ID_UV });
 

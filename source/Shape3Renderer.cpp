@@ -7,9 +7,9 @@
 #include <painting3/Shader.h>
 #include <shaderweaver/typedef.h>
 #include <shaderweaver/Evaluator.h>
-#include <shaderweaver/node/Uniform.h>
-#include <shaderweaver/node/Input.h>
-#include <shaderweaver/node/Output.h>
+#include <shaderweaver/node/ShaderUniform.h>
+#include <shaderweaver/node/ShaderInput.h>
+#include <shaderweaver/node/ShaderOutput.h>
 #include <shaderweaver/node/PositionTrans.h>
 #include <shaderweaver/node/Multiply.h>
 #include <shaderweaver/node/VertexShader.h>
@@ -68,11 +68,11 @@ void Shape3Renderer::InitShader()
 	// vert
 	std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME, sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,       sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME,      sw::t_mat4);
+	auto projection = std::make_shared<sw::node::ShaderUniform>(PROJ_MAT_NAME, sw::t_mat4);
+	auto view       = std::make_shared<sw::node::ShaderUniform>(VIEW_MAT_NAME,       sw::t_mat4);
+	auto model      = std::make_shared<sw::node::ShaderUniform>(MODEL_MAT_NAME,      sw::t_mat4);
 
-	auto position   = std::make_shared<sw::node::Input>  (VERT_POSITION_NAME,     sw::t_pos3);
+	auto position   = std::make_shared<sw::node::ShaderInput>  (VERT_POSITION_NAME,     sw::t_pos3);
 
 	auto pos_trans = std::make_shared<sw::node::PositionTrans>(4);
 	sw::make_connecting({ projection, 0 }, { pos_trans, sw::node::PositionTrans::ID_PROJ });
@@ -84,13 +84,13 @@ void Shape3Renderer::InitShader()
 	vert_nodes.push_back(vert_end);
 
 	// varying
-	auto col_in_uv = std::make_shared<sw::node::Input>(VERT_COLOR_NAME, sw::t_flt4);
-	auto col_out_uv = std::make_shared<sw::node::Output>(FRAG_COLOR_NAME, sw::t_flt4);
+	auto col_in_uv = std::make_shared<sw::node::ShaderInput>(VERT_COLOR_NAME, sw::t_flt4);
+	auto col_out_uv = std::make_shared<sw::node::ShaderOutput>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ col_in_uv, 0 }, { col_out_uv, 0 });
 	vert_nodes.push_back(col_out_uv);
 
 	// frag
-	auto frag_in_col = std::make_shared<sw::node::Input>(FRAG_COLOR_NAME, sw::t_flt4);
+	auto frag_in_col = std::make_shared<sw::node::ShaderInput>(FRAG_COLOR_NAME, sw::t_flt4);
     auto frag_end = std::make_shared<sw::node::FragmentShader>();
     sw::make_connecting({ frag_in_col, 0 }, { frag_end, 0 });
 

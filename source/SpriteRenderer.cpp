@@ -11,9 +11,9 @@
 #include <unirender/RenderContext.h>
 #include <shaderweaver/typedef.h>
 #include <shaderweaver/Evaluator.h>
-#include <shaderweaver/node/Uniform.h>
-#include <shaderweaver/node/Input.h>
-#include <shaderweaver/node/Output.h>
+#include <shaderweaver/node/ShaderUniform.h>
+#include <shaderweaver/node/ShaderInput.h>
+#include <shaderweaver/node/ShaderOutput.h>
 #include <shaderweaver/node/PositionTrans.h>
 #include <shaderweaver/node/SampleTex2D.h>
 #include <shaderweaver/node/Multiply.h>
@@ -168,11 +168,11 @@ void SpriteRenderer::InitShader()
 	// vert
 	std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME, sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,       sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME,      sw::t_mat4);
+	auto projection = std::make_shared<sw::node::ShaderUniform>(PROJ_MAT_NAME, sw::t_mat4);
+	auto view       = std::make_shared<sw::node::ShaderUniform>(VIEW_MAT_NAME,       sw::t_mat4);
+	auto model      = std::make_shared<sw::node::ShaderUniform>(MODEL_MAT_NAME,      sw::t_mat4);
 
-	auto position   = std::make_shared<sw::node::Input>  (VERT_POSITION_NAME,     sw::t_pos2);
+	auto position   = std::make_shared<sw::node::ShaderInput>  (VERT_POSITION_NAME,     sw::t_pos2);
 
 	auto pos_trans = std::make_shared<sw::node::PositionTrans>(2);
 	sw::make_connecting({ projection, 0 }, { pos_trans, sw::node::PositionTrans::ID_PROJ });
@@ -184,25 +184,25 @@ void SpriteRenderer::InitShader()
     vert_nodes.push_back(vert_end);
 
 	// varying
-	auto vert_in_uv  = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uv);
-	auto vert_out_uv = std::make_shared<sw::node::Output>(FRAG_TEXCOORD_NAME, sw::t_uv);
+	auto vert_in_uv  = std::make_shared<sw::node::ShaderInput>(VERT_TEXCOORD_NAME, sw::t_uv);
+	auto vert_out_uv = std::make_shared<sw::node::ShaderOutput>(FRAG_TEXCOORD_NAME, sw::t_uv);
 	sw::make_connecting({ vert_in_uv, 0 }, { vert_out_uv, 0 });
 	vert_nodes.push_back(vert_out_uv);
 
-	auto col_in_uv = std::make_shared<sw::node::Input>(VERT_COLOR_NAME, sw::t_flt4);
-	auto col_out_uv = std::make_shared<sw::node::Output>(FRAG_COLOR_NAME, sw::t_flt4);
+	auto col_in_uv = std::make_shared<sw::node::ShaderInput>(VERT_COLOR_NAME, sw::t_flt4);
+	auto col_out_uv = std::make_shared<sw::node::ShaderOutput>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ col_in_uv, 0 }, { col_out_uv, 0 });
 	vert_nodes.push_back(col_out_uv);
 
 	// frag
 	auto tex_sample = std::make_shared<sw::node::SampleTex2D>();
-	auto frag_in_tex = std::make_shared<sw::node::Uniform>("u_texture0", sw::t_tex2d);
-	auto frag_in_uv = std::make_shared<sw::node::Input>(FRAG_TEXCOORD_NAME, sw::t_uv);
+	auto frag_in_tex = std::make_shared<sw::node::ShaderUniform>("u_texture0", sw::t_tex2d);
+	auto frag_in_uv = std::make_shared<sw::node::ShaderInput>(FRAG_TEXCOORD_NAME, sw::t_uv);
 	sw::make_connecting({ frag_in_tex, 0 }, { tex_sample, sw::node::SampleTex2D::ID_TEX });
 	sw::make_connecting({ frag_in_uv,  0 }, { tex_sample, sw::node::SampleTex2D::ID_UV });
 
 	auto mul = std::make_shared<sw::node::Multiply>();
-	auto frag_in_col = std::make_shared<sw::node::Input>(FRAG_COLOR_NAME, sw::t_flt4);
+	auto frag_in_col = std::make_shared<sw::node::ShaderInput>(FRAG_COLOR_NAME, sw::t_flt4);
 	sw::make_connecting({ tex_sample, 0 }, { mul, sw::node::Multiply::ID_A});
 	sw::make_connecting({ frag_in_col, 0 }, { mul, sw::node::Multiply::ID_B });
 

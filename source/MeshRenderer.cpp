@@ -6,9 +6,9 @@
 #include <unirender/VertexAttrib.h>
 #include <shaderweaver/typedef.h>
 #include <shaderweaver/Evaluator.h>
-#include <shaderweaver/node/Uniform.h>
-#include <shaderweaver/node/Input.h>
-#include <shaderweaver/node/Output.h>
+#include <shaderweaver/node/ShaderUniform.h>
+#include <shaderweaver/node/ShaderInput.h>
+#include <shaderweaver/node/ShaderOutput.h>
 #include <shaderweaver/node/PositionTrans.h>
 #include <shaderweaver/node/FragPosTrans.h>
 #include <shaderweaver/node/NormalTrans.h>
@@ -95,13 +95,13 @@ void MeshRenderer::InitShader()
 
     std::vector<sw::NodePtr> vert_nodes;
 
-	auto projection = std::make_shared<sw::node::Uniform>(PROJ_MAT_NAME,  sw::t_mat4);
-	auto view       = std::make_shared<sw::node::Uniform>(VIEW_MAT_NAME,  sw::t_mat4);
-	auto model      = std::make_shared<sw::node::Uniform>(MODEL_MAT_NAME, sw::t_mat4);
+	auto projection = std::make_shared<sw::node::ShaderUniform>(PROJ_MAT_NAME,  sw::t_mat4);
+	auto view       = std::make_shared<sw::node::ShaderUniform>(VIEW_MAT_NAME,  sw::t_mat4);
+	auto model      = std::make_shared<sw::node::ShaderUniform>(MODEL_MAT_NAME, sw::t_mat4);
 
-    auto position = std::make_shared<sw::node::Input>(VERT_POSITION_NAME, sw::t_flt3);
-	auto normal   = std::make_shared<sw::node::Input>(VERT_NORMAL_NAME,   sw::t_nor3);
-    auto texcoord = std::make_shared<sw::node::Input>(VERT_TEXCOORD_NAME, sw::t_uv);
+    auto position = std::make_shared<sw::node::ShaderInput>(VERT_POSITION_NAME, sw::t_flt3);
+	auto normal   = std::make_shared<sw::node::ShaderInput>(VERT_NORMAL_NAME,   sw::t_nor3);
+    auto texcoord = std::make_shared<sw::node::ShaderInput>(VERT_TEXCOORD_NAME, sw::t_uv);
 
     // gl_Position =  u_projection * u_view * u_model * a_pos;
 	auto pos_trans = std::make_shared<sw::node::PositionTrans>(4);
@@ -117,23 +117,23 @@ void MeshRenderer::InitShader()
 	sw::make_connecting({ model, 0 },    { frag_pos_trans, sw::node::FragPosTrans::ID_MODEL });
 	sw::make_connecting({ position, 0 }, { frag_pos_trans, sw::node::FragPosTrans::ID_POS });
 
-    auto normal_mat = std::make_shared<sw::node::Uniform>(sw::node::NormalTrans::NormalMatName(), sw::t_mat3);
+    auto normal_mat = std::make_shared<sw::node::ShaderUniform>(sw::node::NormalTrans::NormalMatName(), sw::t_mat3);
 	auto norm_trans = std::make_shared<sw::node::NormalTrans>();
 	sw::make_connecting({ normal_mat, 0 }, { norm_trans, sw::node::NormalTrans::ID_NORMAL_MAT });
 	sw::make_connecting({ normal, 0 },     { norm_trans, sw::node::NormalTrans::ID_NORMAL });
 
     // v_texcoord = a_texcoord;
-    auto v_texcoord = std::make_shared<sw::node::Output>(FRAG_TEXCOORD_NAME, sw::t_uv);
+    auto v_texcoord = std::make_shared<sw::node::ShaderOutput>(FRAG_TEXCOORD_NAME, sw::t_uv);
     sw::make_connecting({ texcoord, 0 }, { v_texcoord, 0 });
     vert_nodes.push_back(v_texcoord);
 
     // v_world_pos = vec3(u_model * a_pos);
-    auto v_world_pos = std::make_shared<sw::node::Output>(FRAG_POSITION_NAME, sw::t_flt3);
+    auto v_world_pos = std::make_shared<sw::node::ShaderOutput>(FRAG_POSITION_NAME, sw::t_flt3);
     sw::make_connecting({ frag_pos_trans, 0 }, { v_world_pos, 0 });
     vert_nodes.push_back(v_world_pos);
 
     // v_normal = mat3(transpose(inverse(u_model))) * a_normal;
-    auto v_normal = std::make_shared<sw::node::Output>(FRAG_NORMAL_NAME, sw::t_nor3);
+    auto v_normal = std::make_shared<sw::node::ShaderOutput>(FRAG_NORMAL_NAME, sw::t_nor3);
     sw::make_connecting({ norm_trans, 0 }, { v_normal, 0 });
     vert_nodes.push_back(v_normal);
 
@@ -144,8 +144,8 @@ void MeshRenderer::InitShader()
     auto phong = std::make_shared<sw::node::Phong>();
 
     auto cam_pos = std::make_shared<sw::node::CameraPos>();
-	auto frag_in_pos = std::make_shared<sw::node::Input>(FRAG_POSITION_NAME, sw::t_flt3);
-	auto frag_in_nor = std::make_shared<sw::node::Input>(FRAG_NORMAL_NAME, sw::t_nor3);
+	auto frag_in_pos = std::make_shared<sw::node::ShaderInput>(FRAG_POSITION_NAME, sw::t_flt3);
+	auto frag_in_nor = std::make_shared<sw::node::ShaderInput>(FRAG_NORMAL_NAME, sw::t_nor3);
     sw::make_connecting({ cam_pos, 0 },     { phong, sw::node::Phong::ID_VIEW_POS });
 	sw::make_connecting({ frag_in_pos, 0 }, { phong, sw::node::Phong::ID_FRAG_POS });
 	sw::make_connecting({ frag_in_nor, 0 }, { phong, sw::node::Phong::ID_NORMAL });
@@ -159,10 +159,10 @@ void MeshRenderer::InitShader()
     sw::make_connecting({ lit_diffuse, 0 },  { phong, sw::node::Phong::ID_LIT_DIFFUSE });
     sw::make_connecting({ lit_specular, 0 }, { phong, sw::node::Phong::ID_LIT_SPECULAR });
 
-    //auto mat_diffuse   = std::make_shared<sw::node::Uniform>("mat_diffuse",   sw::t_flt3);
-    //auto mat_specular  = std::make_shared<sw::node::Uniform>("mat_specular",  sw::t_flt3);
-    //auto mat_shininess = std::make_shared<sw::node::Uniform>("mat_shininess", sw::t_flt1);
-    //auto mat_emission  = std::make_shared<sw::node::Uniform>("mat_emission",  sw::t_flt3);
+    //auto mat_diffuse   = std::make_shared<sw::node::ShaderUniform>("mat_diffuse",   sw::t_flt3);
+    //auto mat_specular  = std::make_shared<sw::node::ShaderUniform>("mat_specular",  sw::t_flt3);
+    //auto mat_shininess = std::make_shared<sw::node::ShaderUniform>("mat_shininess", sw::t_flt1);
+    //auto mat_emission  = std::make_shared<sw::node::ShaderUniform>("mat_emission",  sw::t_flt3);
     auto mat_diffuse   = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 0, 0));
     auto mat_specular  = std::make_shared<sw::node::Vector3>("", sm::vec3(0, 0.5f, 0));
     auto mat_shininess = std::make_shared<sw::node::Vector1>("", 64.0f);

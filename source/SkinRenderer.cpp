@@ -66,11 +66,7 @@ void SkinRenderer::Draw(const model::Model& model,
     if ((geo.vertex_type & model::VERTEX_FLAG_TEXCOORDS))
     {
         auto& model_mat = model.materials[mesh.material];
-        if (model_mat->diffuse_tex != -1)
-        {
-            int tex_id = model.textures[model_mat->diffuse_tex].second->TexID();
-            ur::Blackboard::Instance()->GetRenderContext().BindTexture(tex_id, 0);
-
+        if (model_mat->diffuse_tex != -1) {
             do_tex_map = true;
         }
     }

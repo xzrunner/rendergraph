@@ -18,7 +18,10 @@
 #include <shaderweaver/node/Vector3.h>
 #include <shaderweaver/node/VertexShader.h>
 #include <shaderweaver/node/FragmentShader.h>
+#include <shaderweaver/node/SampleTex2D.h>
+#include <shaderweaver/node/Multiply.h>
 #include <painting3/Shader.h>
+#include <painting3/MaterialMgr.h>
 #include <model/MeshGeometry.h>
 
 namespace rg
@@ -141,6 +144,7 @@ void MeshRenderer::InitShader()
     // frag
     //////////////////////////////////////////////////////////////////////////
 
+    // phong = ambient + diffuse + specular + emission;
     auto phong = std::make_shared<sw::node::Phong>();
 
     auto cam_pos = std::make_shared<sw::node::CameraPos>();
@@ -150,22 +154,26 @@ void MeshRenderer::InitShader()
 	sw::make_connecting({ frag_in_pos, 0 }, { phong, sw::node::Phong::ID_FRAG_POS });
 	sw::make_connecting({ frag_in_nor, 0 }, { phong, sw::node::Phong::ID_NORMAL });
 
-    auto lit_pos      = std::make_shared<sw::node::Vector3>("", sm::vec3(1.2f, 1.0f, 2.0f));
-    auto lit_ambient  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.2f, 0.2f, 0.2f));
-    auto lit_diffuse  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.5f, 0.5f, 0.5f));
+    auto& lit_pos_name = pt3::MaterialMgr::PositionUniforms::light_pos.name;
+    auto lit_pos      = std::make_shared<sw::node::ShaderUniform>(lit_pos_name, sw::t_flt3);
+    auto lit_ambient  = std::make_shared<sw::node::Vector3>("", sm::vec3(0.5f, 0.5f, 0.5f));
+    auto lit_diffuse  = std::make_shared<sw::node::Vector3>("", sm::vec3(1.0f, 1.0f, 1.0f));
     auto lit_specular = std::make_shared<sw::node::Vector3>("", sm::vec3(1.0f, 1.0f, 1.0f));
     sw::make_connecting({ lit_pos, 0 },      { phong, sw::node::Phong::ID_LIT_POSITION });
     sw::make_connecting({ lit_ambient, 0 },  { phong, sw::node::Phong::ID_LIT_AMBIENT });
     sw::make_connecting({ lit_diffuse, 0 },  { phong, sw::node::Phong::ID_LIT_DIFFUSE });
     sw::make_connecting({ lit_specular, 0 }, { phong, sw::node::Phong::ID_LIT_SPECULAR });
 
-    //auto mat_diffuse   = std::make_shared<sw::node::ShaderUniform>("mat_diffuse",   sw::t_flt3);
-    //auto mat_specular  = std::make_shared<sw::node::ShaderUniform>("mat_specular",  sw::t_flt3);
-    //auto mat_shininess = std::make_shared<sw::node::ShaderUniform>("mat_shininess", sw::t_flt1);
+    auto mat_diffuse   = std::make_shared<sw::node::ShaderUniform>(
+        pt3::MaterialMgr::PhongUniforms::diffuse.name,   sw::t_flt3);
+    auto mat_specular  = std::make_shared<sw::node::ShaderUniform>(
+        pt3::MaterialMgr::PhongUniforms::specular.name,  sw::t_flt3);
+    auto mat_shininess = std::make_shared<sw::node::ShaderUniform>(
+        pt3::MaterialMgr::PhongUniforms::shininess.name, sw::t_flt1);
     //auto mat_emission  = std::make_shared<sw::node::ShaderUniform>("mat_emission",  sw::t_flt3);
-    auto mat_diffuse   = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 0, 0));
-    auto mat_specular  = std::make_shared<sw::node::Vector3>("", sm::vec3(0, 0.5f, 0));
-    auto mat_shininess = std::make_shared<sw::node::Vector1>("", 64.0f);
+    //auto mat_diffuse   = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
+    //auto mat_specular  = std::make_shared<sw::node::Vector3>("", sm::vec3(1, 1, 1));
+    //auto mat_shininess = std::make_shared<sw::node::Vector1>("", 50.0f);
     auto mat_emission  = std::make_shared<sw::node::Vector3>("", sm::vec3(0, 0, 0));
     sw::make_connecting({ mat_diffuse,   0 }, { phong, sw::node::Phong::ID_MAT_DIFFUSE });
     sw::make_connecting({ mat_specular,  0 }, { phong, sw::node::Phong::ID_MAT_SPECULAR });
@@ -173,7 +181,31 @@ void MeshRenderer::InitShader()
     sw::make_connecting({ mat_emission,  0 }, { phong, sw::node::Phong::ID_MAT_EMISSION });
 
     auto frag_end = std::make_shared<sw::node::FragmentShader>();
-    sw::make_connecting({ phong, 0 }, { frag_end, 0 });
+    std::vector<sw::NodePtr> cache_nodes;
+    if (true/*tex_map*/)
+    {
+        // frag_color = phong * texture2D(u_texture0, v_texcoord);
+        auto tex_sample  = std::make_shared<sw::node::SampleTex2D>();
+	    auto frag_in_tex = std::make_shared<sw::node::ShaderUniform>("u_texture0", sw::t_tex2d);
+	    auto frag_in_uv  = std::make_shared<sw::node::ShaderInput>(FRAG_TEXCOORD_NAME, sw::t_uv);
+	    sw::make_connecting({ frag_in_tex, 0 }, { tex_sample, sw::node::SampleTex2D::ID_TEX });
+	    sw::make_connecting({ frag_in_uv,  0 }, { tex_sample, sw::node::SampleTex2D::ID_UV });
+        cache_nodes.push_back(tex_sample);
+        cache_nodes.push_back(frag_in_tex);
+        cache_nodes.push_back(frag_in_uv);
+
+        auto frag_color = std::make_shared<sw::node::Multiply>();
+        sw::make_connecting({ tex_sample, 0 }, { frag_color, sw::node::Multiply::ID_A });
+        sw::make_connecting({ phong, 0 },      { frag_color, sw::node::Multiply::ID_B });
+        cache_nodes.push_back(frag_color);
+
+        sw::make_connecting({ frag_color, 0 }, { frag_end, 0 });
+    }
+    else
+    {
+        // frag_color = phong;
+        sw::make_connecting({ phong, 0 }, { frag_end, 0 });
+    }
 
     //////////////////////////////////////////////////////////////////////////
     // end

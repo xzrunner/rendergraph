@@ -27,6 +27,9 @@
     <ClCompile Include="..\..\..\source\MorphRenderer.cpp">
       <Filter>renders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\SkyboxRenderer.cpp">
+      <Filter>renders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
@@ -57,6 +60,9 @@
       <Filter>renders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\MorphRenderer.h">
+      <Filter>renders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\SkyboxRenderer.h">
       <Filter>renders</Filter>
     </ClInclude>
   </ItemGroup>

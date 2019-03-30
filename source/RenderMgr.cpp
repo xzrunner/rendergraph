@@ -7,6 +7,7 @@
 #include "rendergraph/VolumeRenderer.h"
 #include "rendergraph/BSPRenderer.h"
 #include "rendergraph/MorphRenderer.h"
+#include "rendergraph/SkyboxRenderer.h"
 #include "rendergraph/ExternRenderer.h"
 
 #include <painting2/Shader.h>
@@ -65,6 +66,10 @@ std::shared_ptr<IRenderer> RenderMgr::SetRenderer(RenderType type)
         case RenderType::MORPH:
             m_renderers[static_cast<int>(RenderType::MORPH)]
                 = std::make_shared<MorphRenderer>();
+            break;
+        case RenderType::SKYBOX:
+            m_renderers[static_cast<int>(RenderType::SKYBOX)]
+                = std::make_shared<SkyboxRenderer>();
             break;
 		case RenderType::EXTERN:
 			m_renderers[static_cast<int>(RenderType::EXTERN)]

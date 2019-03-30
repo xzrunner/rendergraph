@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\BSPRenderer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\SkyboxRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\MeshRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\MorphRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RendererImpl.h" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\source\BSPRenderer.cpp" />
     <ClCompile Include="..\..\..\source\Callback.cpp" />
+    <ClCompile Include="..\..\..\source\SkyboxRenderer.cpp" />
     <ClCompile Include="..\..\..\source\ExternRenderer.cpp" />
     <ClCompile Include="..\..\..\source\MeshRenderer.cpp" />
     <ClCompile Include="..\..\..\source\MorphRenderer.cpp" />

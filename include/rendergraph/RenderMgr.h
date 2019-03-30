@@ -24,6 +24,7 @@ enum class RenderType
 	TEX3D,
     BSP,
     MORPH,
+    SKYBOX,
 	EXTERN,
 
 	MAX_COUNT

@@ -39,7 +39,7 @@ void SkyboxRenderer::Draw(const ur::TextureCube& tcube) const
     m_shaders[0]->Use();
 
     auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-    rc.BindTexture(tcube.TexID(), 0);
+    rc.BindTexture(tcube.GetTexID(), 0);
     rc.RenderCube();
 }
 

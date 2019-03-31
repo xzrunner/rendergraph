@@ -12,6 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\BSPRenderer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\CubemapHelper.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\HDREquirectangularToCubemap.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\CreateIrradianceCubemap.h" />
     <ClInclude Include="..\..\..\include\rendergraph\SkyboxRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\MeshRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\MorphRenderer.h" />
@@ -30,6 +33,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\source\BSPRenderer.cpp" />
     <ClCompile Include="..\..\..\source\Callback.cpp" />
+    <ClCompile Include="..\..\..\source\CubemapHelper.cpp" />
+    <ClCompile Include="..\..\..\source\HDREquirectangularToCubemap.cpp" />
+    <ClCompile Include="..\..\..\source\CreateIrradianceCubemap.cpp" />
     <ClCompile Include="..\..\..\source\SkyboxRenderer.cpp" />
     <ClCompile Include="..\..\..\source\ExternRenderer.cpp" />
     <ClCompile Include="..\..\..\source\MeshRenderer.cpp" />
@@ -42,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\rendergraph\RendererImpl.inl" />
+    <None Include="..\..\..\shader\cubemap.vert" />
+    <None Include="..\..\..\shader\equirectangular_to_cubemap.frag" />
+    <None Include="..\..\..\shader\irradiance_convolution.frag" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>3.rendergraph</ProjectName>
@@ -86,7 +95,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\ds\src\ds;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\shaderweaver\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\ds\src\ds;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\shaderweaver\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;..\..\..\..\external\glm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;EASY_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -100,7 +109,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\ds\src\ds;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\shaderweaver\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\ds\src\ds;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\shaderweaver\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;..\..\..\..\external\glm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;EASY_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

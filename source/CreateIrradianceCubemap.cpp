@@ -51,7 +51,7 @@ unsigned int CreateIrradianceCubemap(unsigned int cubemap)
 
         rc.RenderCube();
     }
-    rc.BindRenderTarget(0);
+    rc.UnbindRenderTarget();
     rc.ReleaseRenderTarget(rt);
 
     return irr_cubemap;

@@ -39,6 +39,12 @@
     <ClCompile Include="..\..\..\source\CubemapHelper.cpp">
       <Filter>pass</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\CreatePrefilterCubemap.cpp">
+      <Filter>pass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\CreateBrdfLutTex.cpp">
+      <Filter>pass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
@@ -83,6 +89,12 @@
     <ClInclude Include="..\..\..\include\rendergraph\CubemapHelper.h">
       <Filter>pass</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\CreatePrefilterCubemap.h">
+      <Filter>pass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\CreateBrdfLutTex.h">
+      <Filter>pass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="renderer">
@@ -104,6 +116,15 @@
       <Filter>shader</Filter>
     </None>
     <None Include="..\..\..\shader\irradiance_convolution.frag">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\..\..\shader\prefilter.frag">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\..\..\shader\brdf.vert">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="..\..\..\shader\brdf.frag">
       <Filter>shader</Filter>
     </None>
   </ItemGroup>

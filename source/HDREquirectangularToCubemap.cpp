@@ -51,7 +51,7 @@ unsigned int HDREquirectangularToCubemap(unsigned int equirectangular_map)
 
         rc.RenderCube();
     }
-    rc.BindRenderTarget(0);
+    rc.UnbindRenderTarget();
     rc.ReleaseRenderTarget(rt);
 
     return cubemap;

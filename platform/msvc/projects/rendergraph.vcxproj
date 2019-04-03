@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\BSPRenderer.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\CreateBrdfLutTex.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\CreatePrefilterCubemap.h" />
     <ClInclude Include="..\..\..\include\rendergraph\CubemapHelper.h" />
     <ClInclude Include="..\..\..\include\rendergraph\HDREquirectangularToCubemap.h" />
     <ClInclude Include="..\..\..\include\rendergraph\CreateIrradianceCubemap.h" />
@@ -33,6 +35,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\source\BSPRenderer.cpp" />
     <ClCompile Include="..\..\..\source\Callback.cpp" />
+    <ClCompile Include="..\..\..\source\CreateBrdfLutTex.cpp" />
+    <ClCompile Include="..\..\..\source\CreatePrefilterCubemap.cpp" />
     <ClCompile Include="..\..\..\source\CubemapHelper.cpp" />
     <ClCompile Include="..\..\..\source\HDREquirectangularToCubemap.cpp" />
     <ClCompile Include="..\..\..\source\CreateIrradianceCubemap.cpp" />
@@ -48,9 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\rendergraph\RendererImpl.inl" />
+    <None Include="..\..\..\shader\brdf.frag" />
+    <None Include="..\..\..\shader\brdf.vert" />
     <None Include="..\..\..\shader\cubemap.vert" />
     <None Include="..\..\..\shader\equirectangular_to_cubemap.frag" />
     <None Include="..\..\..\shader\irradiance_convolution.frag" />
+    <None Include="..\..\..\shader\prefilter.frag" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>3.rendergraph</ProjectName>

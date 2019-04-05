@@ -17,6 +17,15 @@
     <ClInclude Include="..\..\..\include\rendergraph\CubemapHelper.h" />
     <ClInclude Include="..\..\..\include\rendergraph\HDREquirectangularToCubemap.h" />
     <ClInclude Include="..\..\..\include\rendergraph\CreateIrradianceCubemap.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\Node.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\RenderGraph.h" />
     <ClInclude Include="..\..\..\include\rendergraph\SkyboxRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\MeshRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\MorphRenderer.h" />
@@ -30,6 +39,8 @@
     <ClInclude Include="..\..\..\include\rendergraph\SkinRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\SpriteRenderer.h" />
     <ClInclude Include="..\..\..\include\rendergraph\UniformNames.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\Variable.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\VariableType.h" />
     <ClInclude Include="..\..\..\include\rendergraph\VolumeRenderer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +51,16 @@
     <ClCompile Include="..\..\..\source\CubemapHelper.cpp" />
     <ClCompile Include="..\..\..\source\HDREquirectangularToCubemap.cpp" />
     <ClCompile Include="..\..\..\source\CreateIrradianceCubemap.cpp" />
+    <ClCompile Include="..\..\..\source\Node.cpp" />
+    <ClCompile Include="..\..\..\source\node\Bind.cpp" />
+    <ClCompile Include="..\..\..\source\node\Clear.cpp" />
+    <ClCompile Include="..\..\..\source\node\RenderTarget.cpp" />
+    <ClCompile Include="..\..\..\source\node\Shader.cpp" />
+    <ClCompile Include="..\..\..\source\node\Texture.cpp" />
+    <ClCompile Include="..\..\..\source\node\Unbind.cpp" />
+    <ClCompile Include="..\..\..\source\node\Viewport.cpp" />
+    <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
+    <ClCompile Include="..\..\..\source\RenderGraph.cpp" />
     <ClCompile Include="..\..\..\source\SkyboxRenderer.cpp" />
     <ClCompile Include="..\..\..\source\ExternRenderer.cpp" />
     <ClCompile Include="..\..\..\source\MeshRenderer.cpp" />

@@ -45,6 +45,32 @@
     <ClCompile Include="..\..\..\source\CreateBrdfLutTex.cpp">
       <Filter>pass</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\Node.cpp">
+      <Filter>dataset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Viewport.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Shader.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Texture.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\RenderTarget.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Clear.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Bind.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Unbind.cpp">
+      <Filter>nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
+    <ClCompile Include="..\..\..\source\RenderGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Callback.h" />
@@ -95,6 +121,37 @@
     <ClInclude Include="..\..\..\include\rendergraph\CreateBrdfLutTex.h">
       <Filter>pass</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\Node.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h">
+      <Filter>nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\Variable.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\VariableType.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\RenderGraph.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="renderer">
@@ -105,6 +162,12 @@
     </Filter>
     <Filter Include="shader">
       <UniqueIdentifier>{2af1de1b-376f-4ce3-bcd8-23bef7359803}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dataset">
+      <UniqueIdentifier>{6cde9704-4f60-4ca4-a14a-9c1f22aff258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes">
+      <UniqueIdentifier>{d8aec64a-33c0-4426-a7d1-60c4284e7d95}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

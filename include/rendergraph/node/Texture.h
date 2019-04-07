@@ -27,6 +27,9 @@ public:
 
     unsigned int GetTexID() const { return m_texid; }
 
+    // todo
+    void SetTexID(unsigned int texid) { m_texid = texid; }
+
 private:
     std::string m_filepath;
 

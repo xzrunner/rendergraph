@@ -22,6 +22,8 @@ public:
 
     virtual void Execute(ur::RenderContext& rc) override;
 
+    void SetParams(int x, int y, int w, int h);
+
 private:
     int m_x = 0, m_y = 0;
     int m_w = 0, m_h = 0;

@@ -13,7 +13,11 @@ public:
     RenderTarget()
     {
         m_imports = {
+            {{ VariableType::Port,    "prev" }},
             {{ VariableType::Texture, "tex" }}
+        };
+        m_exports = {
+            {{ VariableType::Port, "next" }}
         };
     }
 

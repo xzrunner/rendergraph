@@ -12,6 +12,16 @@ namespace node
 class Clear : public Node
 {
 public:
+    Clear()
+    {
+        m_imports = {
+            {{ VariableType::Port, "prev" }},
+        };
+        m_exports = {
+            {{ VariableType::Port, "next" }}
+        };
+    }
+
     virtual void Execute(ur::RenderContext& rc) override;
 
     void SetClearType(uint32_t type) { m_clear_type = type; }

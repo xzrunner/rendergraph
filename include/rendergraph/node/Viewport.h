@@ -10,6 +10,16 @@ namespace node
 class Viewport : public Node
 {
 public:
+    Viewport()
+    {
+        m_imports = {
+            {{ VariableType::Port, "prev" }}
+        };
+        m_exports = {
+            {{ VariableType::Port, "next" }}
+        };
+    }
+
     virtual void Execute(ur::RenderContext& rc) override;
 
 private:

@@ -50,9 +50,6 @@ public:
 	};
 
 protected:
-    Port m_prev = Port({ VariableType::Port, "in" });
-    Port m_next = Port({ VariableType::Port, "out" });
-
     std::vector<Port> m_imports, m_exports;
 
     RTTR_ENABLE()

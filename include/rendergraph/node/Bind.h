@@ -13,7 +13,11 @@ public:
     Bind()
     {
         m_imports = {
+            {{ VariableType::Port, "prev" }},
             {{ VariableType::Any,  "obj" }}
+        };
+        m_exports = {
+            {{ VariableType::Port, "next" }}
         };
     }
 

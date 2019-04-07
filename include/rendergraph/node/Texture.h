@@ -10,6 +10,16 @@ namespace node
 class Texture : public Node
 {
 public:
+    Texture()
+    {
+        m_imports = {
+            {{ VariableType::Port, "prev" }}
+        };
+        m_exports = {
+            {{ VariableType::Port, "next" }}
+        };
+    }
+
     virtual void Execute(ur::RenderContext& rc) override;
 
     void SetFilepath(const std::string& filepath) { m_filepath = filepath; }

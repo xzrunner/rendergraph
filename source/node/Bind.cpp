@@ -17,9 +17,11 @@ void Bind::Execute(ur::RenderContext& rc)
         return;
     }
 
-    auto node = m_imports[0].conns[0].node.lock();
+    auto node = m_imports[1].conns[0].node.lock();
     if (node)
     {
+        node->Execute(rc);
+
         auto type = node->get_type();
         if (type == rttr::type::get<node::Texture>())
         {

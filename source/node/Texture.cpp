@@ -10,6 +10,10 @@ namespace node
 
 void Texture::Execute(ur::RenderContext& rc)
 {
+    if (m_texid != 0) {
+        return;
+    }
+
     if (!m_filepath.empty())
     {
         ;

@@ -14,6 +14,12 @@ DrawList::DrawList(const NodePtr& node)
     TopologicalSorting();
 }
 
+DrawList::DrawList(const std::vector<NodePtr>& all_nodes)
+    : m_nodes(all_nodes)
+{
+    TopologicalSorting();
+}
+
 void DrawList::Draw(ur::RenderContext& rc) const
 {
     for (auto& n : m_nodes) {

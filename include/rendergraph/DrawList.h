@@ -13,6 +13,7 @@ class DrawList
 {
 public:
     DrawList(const NodePtr& node);
+    DrawList(const std::vector<NodePtr>& all_nodes);
 
     void Draw(ur::RenderContext& rc) const;
 

@@ -15,6 +15,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\Node.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\DrawCube.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h" />
@@ -30,6 +31,7 @@
     <ClCompile Include="..\..\..\source\Node.cpp" />
     <ClCompile Include="..\..\..\source\node\Bind.cpp" />
     <ClCompile Include="..\..\..\source\node\Clear.cpp" />
+    <ClCompile Include="..\..\..\source\node\DrawCube.cpp" />
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp" />
     <ClCompile Include="..\..\..\source\node\Shader.cpp" />
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />

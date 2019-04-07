@@ -7,15 +7,6 @@
     <ClCompile Include="..\..\..\source\node\Viewport.cpp">
       <Filter>nodes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Shader.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Texture.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\RenderTarget.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\node\Clear.cpp">
       <Filter>nodes</Filter>
     </ClCompile>
@@ -30,21 +21,24 @@
     <ClCompile Include="..\..\..\source\DrawList.cpp">
       <Filter>dataset</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\RenderTarget.cpp">
+      <Filter>nodes\asset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Texture.cpp">
+      <Filter>nodes\asset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Shader.cpp">
+      <Filter>nodes\asset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\DrawCube.cpp">
+      <Filter>nodes\draw</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
       <Filter>dataset</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h">
-      <Filter>nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h">
-      <Filter>nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h">
-      <Filter>nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h">
       <Filter>nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h">
@@ -67,6 +61,18 @@
     <ClInclude Include="..\..\..\include\rendergraph\DrawList.h">
       <Filter>dataset</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\DrawCube.h">
+      <Filter>nodes\draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h">
+      <Filter>nodes\asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h">
+      <Filter>nodes\asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h">
+      <Filter>nodes\asset</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -74,6 +80,12 @@
     </Filter>
     <Filter Include="nodes">
       <UniqueIdentifier>{d8aec64a-33c0-4426-a7d1-60c4284e7d95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\draw">
+      <UniqueIdentifier>{00e17a72-40ac-403d-bffc-a330418d2ca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\asset">
+      <UniqueIdentifier>{1f31dfc8-c455-4a3a-8e3a-1d7b51118864}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

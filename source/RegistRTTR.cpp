@@ -7,6 +7,7 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/Bind.h"
 #include "rendergraph/node/Unbind.h"
+#include "rendergraph/node/DrawCube.h"
 
 #define REGIST_NODE_TYPE(name)                                \
 	rttr::registration::class_<rg::node::name>("rg::"#name)   \
@@ -23,6 +24,7 @@ REGIST_NODE_TYPE(RenderTarget)
 REGIST_NODE_TYPE(Shader)
 REGIST_NODE_TYPE(Bind)
 REGIST_NODE_TYPE(Unbind)
+REGIST_NODE_TYPE(DrawCube)
 
 }
 

@@ -33,6 +33,9 @@
     <ClCompile Include="..\..\..\source\node\DrawCube.cpp">
       <Filter>nodes\draw</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\Evaluator.cpp">
+      <Filter>eval</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -49,12 +52,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h">
       <Filter>nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\Variable.h">
-      <Filter>dataset</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\VariableType.h">
-      <Filter>dataset</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\RenderGraph.h" />
     <ClInclude Include="..\..\..\include\rendergraph\typedef.h" />
@@ -73,6 +70,21 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h">
       <Filter>nodes\asset</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\Evaluator.h">
+      <Filter>eval</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\Variable.h">
+      <Filter>dataset\var</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\VariableType.h">
+      <Filter>dataset\var</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\ShaderVariant.h">
+      <Filter>dataset\var</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Value.h">
+      <Filter>nodes\value</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -86,6 +98,15 @@
     </Filter>
     <Filter Include="nodes\asset">
       <UniqueIdentifier>{1f31dfc8-c455-4a3a-8e3a-1d7b51118864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\value">
+      <UniqueIdentifier>{282905c5-e0c1-4398-8e23-e38d7f5aff06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="eval">
+      <UniqueIdentifier>{8805e41c-b583-4b9e-a3e6-62b8e2e99c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dataset\var">
+      <UniqueIdentifier>{ccf862a4-de04-4960-b7dc-f056ec2e9f64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

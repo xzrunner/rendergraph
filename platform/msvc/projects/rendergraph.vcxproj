@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\DrawList.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\Evaluator.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Node.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h" />
@@ -20,14 +21,17 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Value.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RenderGraph.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\ShaderVariant.h" />
     <ClInclude Include="..\..\..\include\rendergraph\typedef.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Variable.h" />
     <ClInclude Include="..\..\..\include\rendergraph\VariableType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\DrawList.cpp" />
+    <ClCompile Include="..\..\..\source\Evaluator.cpp" />
     <ClCompile Include="..\..\..\source\Node.cpp" />
     <ClCompile Include="..\..\..\source\node\Bind.cpp" />
     <ClCompile Include="..\..\..\source\node\Clear.cpp" />

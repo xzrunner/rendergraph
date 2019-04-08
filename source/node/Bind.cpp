@@ -41,10 +41,7 @@ void Bind::Execute(ur::RenderContext& rc)
         }
         else if (type == rttr::type::get<node::Shader>())
         {
-            auto shader = std::static_pointer_cast<node::Shader>(node)->GetShader();
-            if (shader) {
-                shader->Use();
-            }
+            std::static_pointer_cast<node::Shader>(node)->Bind();
         }
     }
 }

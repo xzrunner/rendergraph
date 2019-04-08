@@ -26,7 +26,7 @@ public:
 
     void SetCodes(const std::string& vert, const std::string& frag);
 
-    auto GetShader() { return m_shader; }
+    void Bind();
 
 private:
     std::string m_vert, m_frag;

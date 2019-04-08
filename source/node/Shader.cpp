@@ -1,5 +1,6 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/Evaluator.h"
+#include "rendergraph/Variable.h"
 
 #include <unirender/Shader.h>
 #include <unirender/VertexAttrib.h>
@@ -36,6 +37,14 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
     m_frag = frag;
 
     m_shader.reset();
+
+    m_imports.erase(m_imports.begin() + 1, m_imports.end());
+    std::vector<Variable> uniforms;
+    GetCodeUniforms(m_vert, uniforms);
+    GetCodeUniforms(m_frag, uniforms);
+    for (auto& u : uniforms) {
+        m_imports.push_back(u);
+    }
 }
 
 void Shader::Bind()
@@ -86,11 +95,58 @@ void Shader::Bind()
         case VariableType::Matrix4:
         {
             auto v = Evaluator::Calc(m_imports[i], VariableType::Vector4);
-            m_shader->SetVec4(var.name, v.mat4.x);
+            m_shader->SetMat4(var.name, v.mat4.x);
         }
             break;
         }
     }
+}
+
+void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms)
+{
+    std::vector<std::string> tokens;
+
+    auto fixed = code;
+    cpputil::StringHelper::ReplaceAll(fixed, "\\n", "\n");
+    cpputil::StringHelper::Split(fixed, "\n; ", tokens);
+
+    if (tokens.empty()) {
+        return;
+    }
+
+    int ptr = 0;
+    do {
+        if (tokens[ptr] != "uniform") {
+            continue;
+        }
+
+        assert(ptr < static_cast<int>(tokens.size() - 2));
+        ++ptr;
+        auto& type_str = tokens[ptr];
+        VariableType type;
+        if (type_str == "float") {
+            type = VariableType::Vector1;
+        } else if (type_str == "vec2") {
+            type = VariableType::Vector2;
+        } else if (type_str == "vec3") {
+            type = VariableType::Vector3;
+        } else if (type_str == "vec4") {
+            type = VariableType::Vector4;
+        } else if (type_str == "mat2") {
+            type = VariableType::Matrix2;
+        } else if (type_str == "mat3") {
+            type = VariableType::Matrix3;
+        } else if (type_str == "mat4") {
+            type = VariableType::Matrix4;
+        } else if (type_str == "sampler2D") {
+            type = VariableType::Sampler2D;
+        }
+
+        ++ptr;
+        auto& name = tokens[ptr];
+        
+        uniforms.push_back(Variable({ type, name }));
+    } while (++ptr != tokens.size());
 }
 
 }

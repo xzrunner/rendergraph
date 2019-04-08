@@ -82,8 +82,14 @@
     <ClInclude Include="..\..\..\include\rendergraph\ShaderVariant.h">
       <Filter>dataset\var</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Value.h">
-      <Filter>nodes\value</Filter>
+    <ClInclude Include="..\..\..\include\rendergraph\node\value_nodes.h">
+      <Filter>nodes\other</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h">
+      <Filter>nodes\other</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\math_nodes.h">
+      <Filter>nodes\other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -99,14 +105,14 @@
     <Filter Include="nodes\asset">
       <UniqueIdentifier>{1f31dfc8-c455-4a3a-8e3a-1d7b51118864}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nodes\value">
-      <UniqueIdentifier>{282905c5-e0c1-4398-8e23-e38d7f5aff06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="eval">
       <UniqueIdentifier>{8805e41c-b583-4b9e-a3e6-62b8e2e99c78}</UniqueIdentifier>
     </Filter>
     <Filter Include="dataset\var">
       <UniqueIdentifier>{ccf862a4-de04-4960-b7dc-f056ec2e9f64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\other">
+      <UniqueIdentifier>{282905c5-e0c1-4398-8e23-e38d7f5aff06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

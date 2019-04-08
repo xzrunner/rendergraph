@@ -1,71 +1,78 @@
 #include "rendergraph/Evaluator.h"
-#include "rendergraph/node/Value.h"
+#include "rendergraph/node/value_nodes.h"
+#include "rendergraph/node/math_nodes.h"
+#include "rendergraph/node/input_nodes.h"
 
 namespace rg
 {
 
 ShaderVariant Evaluator::Calc(const Node::Port& in_port, VariableType type)
 {
+    return Calc(in_port, DefaultValue(type));
+}
+
+ShaderVariant Evaluator::Calc(const Node::Port& in_port, ShaderVariant expect)
+{
     auto& conns = in_port.conns;
     if (conns.empty()) {
-        return DefaultValue(type);
+        return expect;
     }
 
     auto node = conns[0].node.lock();
     if (!node) {
-        return DefaultValue(type);
+        return expect;
     }
 
-    ShaderVariant ret = DefaultValue(type);
+    ShaderVariant ret = expect;
     auto node_type = node->get_type();
     if (node_type == rttr::type::get<node::Vector1>())
     {
-        if (type == VariableType::Vector1) {
+        if (expect.type == VariableType::Vector1) {
             ret.vec1 = std::static_pointer_cast<node::Vector1>(node)->GetValue();
         }
     }
     else if (node_type == rttr::type::get<node::Vector2>())
     {
-        if (type == VariableType::Vector2) {
+        if (expect.type == VariableType::Vector2) {
             ret.vec2 = std::static_pointer_cast<node::Vector2>(node)->GetValue();
         }
     }
     else if (node_type == rttr::type::get<node::Vector3>())
     {
-        if (type == VariableType::Vector3) {
+        if (expect.type == VariableType::Vector3) {
             ret.vec3 = std::static_pointer_cast<node::Vector3>(node)->GetValue();
         }
     }
     else if (node_type == rttr::type::get<node::Vector4>())
     {
-        if (type == VariableType::Vector4) {
+        if (expect.type == VariableType::Vector4) {
             ret.vec4 = std::static_pointer_cast<node::Vector4>(node)->GetValue();
         }
     }
     else if (node_type == rttr::type::get<node::Matrix2>())
     {
-        if (type == VariableType::Matrix2) {
+        if (expect.type == VariableType::Matrix2) {
             ret.mat2 = std::static_pointer_cast<node::Matrix2>(node)->GetValue();
         }
     }
     else if (node_type == rttr::type::get<node::Matrix3>())
     {
-        if (type == VariableType::Matrix3) {
+        if (expect.type == VariableType::Matrix3) {
             ret.mat3 = std::static_pointer_cast<node::Matrix3>(node)->GetValue();
         }
     }
     else if (node_type == rttr::type::get<node::Matrix4>())
     {
-        if (type == VariableType::Matrix4) {
+        if (expect.type == VariableType::Matrix4) {
             ret.mat4 = std::static_pointer_cast<node::Matrix4>(node)->GetValue();
         }
     }
     else if (node_type == rttr::type::get<node::Add>())
     {
         auto& inputs = node->GetImports();
-        auto a = Calc(inputs[0], type);
-        auto b = Calc(inputs[1], type);
-        switch (type)
+        auto a = Calc(inputs[0], DefaultValue(expect.type));
+        auto b = Calc(inputs[1], DefaultValue(expect.type));
+        switch (expect.type)
         {
         case VariableType::Vector1:
             ret.vec1 = a.vec1 + b.vec1;
@@ -81,9 +88,9 @@ ShaderVariant Evaluator::Calc(const Node::Port& in_port, VariableType type)
     else if (node_type == rttr::type::get<node::Mul>())
     {
         auto& inputs = node->GetImports();
-        auto a = Calc(inputs[0], type);
-        auto b = Calc(inputs[1], type);
-        switch (type)
+        auto a = Calc(inputs[0], DefaultValue(expect.type));
+        auto b = Calc(inputs[1], DefaultValue(expect.type));
+        switch (expect.type)
         {
         case VariableType::Vector1:
             ret.vec1 = a.vec1 * b.vec1;
@@ -96,29 +103,32 @@ ShaderVariant Evaluator::Calc(const Node::Port& in_port, VariableType type)
     else if (node_type == rttr::type::get<node::PerspectiveMat>())
     {
         auto& inputs = node->GetImports();
-        auto fovy   = Calc(inputs[node::PerspectiveMat::ID_FOVY],   VariableType::Vector1);
-        auto aspect = Calc(inputs[node::PerspectiveMat::ID_ASPECT], VariableType::Vector1);
-        auto near   = Calc(inputs[node::PerspectiveMat::ID_NEAR],   VariableType::Vector1);
-        auto far    = Calc(inputs[node::PerspectiveMat::ID_FAR],    VariableType::Vector1);
-        ret.mat4 = sm::mat4::Perspective(fovy.vec1, aspect.vec1, near.vec1, far.vec1);
+        auto pm = std::static_pointer_cast<node::PerspectiveMat>(node);
+        auto fovy   = Calc(inputs[node::PerspectiveMat::ID_FOVY],   ShaderVariant(pm->fovy));
+        auto aspect = Calc(inputs[node::PerspectiveMat::ID_ASPECT], ShaderVariant(pm->aspect));
+        auto znear  = Calc(inputs[node::PerspectiveMat::ID_NEAR],   ShaderVariant(pm->znear));
+        auto zfar   = Calc(inputs[node::PerspectiveMat::ID_FAR],    ShaderVariant(pm->zfar));
+        ret.mat4 = sm::mat4::Perspective(fovy.vec1, aspect.vec1, znear.vec1, zfar.vec1);
     }
     else if (node_type == rttr::type::get<node::OrthoMat>())
     {
         auto& inputs = node->GetImports();
-        auto left   = Calc(inputs[node::OrthoMat::ID_LEFT],   VariableType::Vector1);
-        auto right  = Calc(inputs[node::OrthoMat::ID_RIGHT],  VariableType::Vector1);
-        auto bottom = Calc(inputs[node::OrthoMat::ID_BOTTOM], VariableType::Vector1);
-        auto top    = Calc(inputs[node::OrthoMat::ID_TOP],    VariableType::Vector1);
-        auto znear  = Calc(inputs[node::OrthoMat::ID_ZNEAR],  VariableType::Vector1);
-        auto zfar   = Calc(inputs[node::OrthoMat::ID_ZFAR],   VariableType::Vector1);
+        auto om = std::static_pointer_cast<node::OrthoMat>(node);
+        auto left   = Calc(inputs[node::OrthoMat::ID_LEFT],   ShaderVariant(om->left));
+        auto right  = Calc(inputs[node::OrthoMat::ID_RIGHT],  ShaderVariant(om->right));
+        auto bottom = Calc(inputs[node::OrthoMat::ID_BOTTOM], ShaderVariant(om->bottom));
+        auto top    = Calc(inputs[node::OrthoMat::ID_TOP],    ShaderVariant(om->top));
+        auto znear  = Calc(inputs[node::OrthoMat::ID_ZNEAR],  ShaderVariant(om->znear));
+        auto zfar   = Calc(inputs[node::OrthoMat::ID_ZFAR],   ShaderVariant(om->zfar));
         ret.mat4 = sm::mat4::Orthographic(left.vec1, right.vec1, bottom.vec1, top.vec1, znear.vec1, zfar.vec1);
     }
     else if (node_type == rttr::type::get<node::LookAtMat>())
     {
         auto& inputs = node->GetImports();
-        auto eye    = Calc(inputs[node::LookAtMat::ID_EYE],    VariableType::Vector3);
-        auto center = Calc(inputs[node::LookAtMat::ID_CENTER], VariableType::Vector3);
-        auto up     = Calc(inputs[node::LookAtMat::ID_UP],     VariableType::Vector3);
+        auto lm = std::static_pointer_cast<node::LookAtMat>(node);
+        auto eye    = Calc(inputs[node::LookAtMat::ID_EYE],    ShaderVariant(lm->eye));
+        auto center = Calc(inputs[node::LookAtMat::ID_CENTER], ShaderVariant(lm->center));
+        auto up     = Calc(inputs[node::LookAtMat::ID_UP],     ShaderVariant(lm->up));
 
         float distance = (center.vec3 - eye.vec3).Length();
         auto n = (center.vec3 - eye.vec3).Normalized();

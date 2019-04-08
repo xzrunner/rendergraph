@@ -28,6 +28,8 @@ public:
 
     void Bind();
 
+    static void GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms);
+
 private:
     std::string m_vert, m_frag;
 

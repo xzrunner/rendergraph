@@ -8,7 +8,9 @@
 #include "rendergraph/node/Bind.h"
 #include "rendergraph/node/Unbind.h"
 #include "rendergraph/node/DrawCube.h"
-#include "rendergraph/node/Value.h"
+#include "rendergraph/node/value_nodes.h"
+#include "rendergraph/node/math_nodes.h"
+#include "rendergraph/node/input_nodes.h"
 
 #define REGIST_NODE_TYPE(name)                                \
 	rttr::registration::class_<rg::node::name>("rg::"#name)   \
@@ -35,11 +37,17 @@ REGIST_NODE_TYPE(Vector4)
 REGIST_NODE_TYPE(Matrix2)
 REGIST_NODE_TYPE(Matrix3)
 REGIST_NODE_TYPE(Matrix4)
+// math
 REGIST_NODE_TYPE(Add)
 REGIST_NODE_TYPE(Mul)
 REGIST_NODE_TYPE(PerspectiveMat)
 REGIST_NODE_TYPE(OrthoMat)
 REGIST_NODE_TYPE(LookAtMat)
+// input
+REGIST_NODE_TYPE(CamProjMat)
+REGIST_NODE_TYPE(CamViewMat)
+REGIST_NODE_TYPE(CameraPosition)
+REGIST_NODE_TYPE(LightPosition)
 
 }
 

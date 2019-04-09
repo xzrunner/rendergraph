@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\..\source\Evaluator.cpp">
       <Filter>eval</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Cull.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -91,6 +94,18 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\math_nodes.h">
       <Filter>nodes\other</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\RenderContext.h">
+      <Filter>dataset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Cull.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZWrite.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZTest.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -113,6 +128,9 @@
     </Filter>
     <Filter Include="nodes\other">
       <UniqueIdentifier>{282905c5-e0c1-4398-8e23-e38d7f5aff06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\state">
+      <UniqueIdentifier>{dc7cbfb3-24ed-4cf7-a71b-626d3267f50b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

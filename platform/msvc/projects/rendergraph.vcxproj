@@ -16,6 +16,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\Node.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Cull.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\DrawCube.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\math_nodes.h" />
@@ -25,6 +26,9 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\value_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZTest.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZWrite.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\RenderContext.h" />
     <ClInclude Include="..\..\..\include\rendergraph\RenderGraph.h" />
     <ClInclude Include="..\..\..\include\rendergraph\ShaderVariant.h" />
     <ClInclude Include="..\..\..\include\rendergraph\typedef.h" />
@@ -37,6 +41,7 @@
     <ClCompile Include="..\..\..\source\Node.cpp" />
     <ClCompile Include="..\..\..\source\node\Bind.cpp" />
     <ClCompile Include="..\..\..\source\node\Clear.cpp" />
+    <ClCompile Include="..\..\..\source\node\Cull.cpp" />
     <ClCompile Include="..\..\..\source\node\DrawCube.cpp" />
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp" />
     <ClCompile Include="..\..\..\source\node\Shader.cpp" />

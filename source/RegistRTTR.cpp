@@ -11,6 +11,7 @@
 #include "rendergraph/node/value_nodes.h"
 #include "rendergraph/node/math_nodes.h"
 #include "rendergraph/node/input_nodes.h"
+#include "rendergraph/node/Cull.h"
 
 #define REGIST_NODE_TYPE(name)                                \
 	rttr::registration::class_<rg::node::name>("rg::"#name)   \
@@ -48,6 +49,8 @@ REGIST_NODE_TYPE(CamProjMat)
 REGIST_NODE_TYPE(CamViewMat)
 REGIST_NODE_TYPE(CameraPosition)
 REGIST_NODE_TYPE(LightPosition)
+// state
+REGIST_NODE_TYPE(Cull)
 
 }
 

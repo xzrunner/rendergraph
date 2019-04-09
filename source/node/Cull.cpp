@@ -11,16 +11,19 @@ namespace node
 void Cull::Execute(const RenderContext& rc)
 {
     ur::CULL_MODE cull;
-    switch (m_type)
+    switch (m_mode)
     {
-    case CullType::Off:
+    case Mode::Off:
         cull = ur::CULL_DISABLE;
         break;
-    case CullType::Back:
+    case Mode::Front:
+        cull = ur::CULL_FRONT;
+        break;
+    case Mode::Back:
         cull = ur::CULL_BACK;
         break;
-    case CullType::Front:
-        cull = ur::CULL_FRONT;
+    case Mode::FrontAndBack:
+        cull = ur::CULL_FRONT_AND_BACK;
         break;
     }
     rc.rc.SetCull(cull);

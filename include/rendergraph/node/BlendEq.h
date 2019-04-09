@@ -7,10 +7,10 @@ namespace rg
 namespace node
 {
 
-class Cull : public Node
+class BlendEq : public Node
 {
 public:
-    Cull()
+    BlendEq()
     {
         m_imports = {
             {{ VariableType::Port, "prev" }}
@@ -24,20 +24,21 @@ public:
 
     enum class Mode
     {
-        Off = 0,
-        Front,
-        Back,
-        FrontAndBack,
+        FuncAdd, 
+        FuncSubtract, 
+        FuncReverseSubtract, 
+        Min, 
+        Max
     };
 
     void SetMode(Mode mode) { m_mode = mode; }
 
 private:
-    Mode m_mode = Mode::Back;
+    Mode m_mode = Mode::FuncAdd;
 
     RTTR_ENABLE(Node)
 
-}; // Cull
+}; // BlendEq
 
 }
 }

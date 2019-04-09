@@ -14,7 +14,10 @@
     <ClInclude Include="..\..\..\include\rendergraph\DrawList.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Evaluator.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Node.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\AlphaTest.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendEq.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendFunc.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Cull.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\DrawCube.h" />
@@ -39,7 +42,10 @@
     <ClCompile Include="..\..\..\source\DrawList.cpp" />
     <ClCompile Include="..\..\..\source\Evaluator.cpp" />
     <ClCompile Include="..\..\..\source\Node.cpp" />
+    <ClCompile Include="..\..\..\source\node\AlphaTest.cpp" />
     <ClCompile Include="..\..\..\source\node\Bind.cpp" />
+    <ClCompile Include="..\..\..\source\node\BlendEq.cpp" />
+    <ClCompile Include="..\..\..\source\node\BlendFunc.cpp" />
     <ClCompile Include="..\..\..\source\node\Clear.cpp" />
     <ClCompile Include="..\..\..\source\node\Cull.cpp" />
     <ClCompile Include="..\..\..\source\node\DrawCube.cpp" />
@@ -48,6 +54,8 @@
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />
     <ClCompile Include="..\..\..\source\node\Unbind.cpp" />
     <ClCompile Include="..\..\..\source\node\Viewport.cpp" />
+    <ClCompile Include="..\..\..\source\node\ZTest.cpp" />
+    <ClCompile Include="..\..\..\source\node\ZWrite.cpp" />
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
     <ClCompile Include="..\..\..\source\RenderGraph.cpp" />
   </ItemGroup>

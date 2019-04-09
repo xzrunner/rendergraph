@@ -7,10 +7,10 @@ namespace rg
 namespace node
 {
 
-class Cull : public Node
+class AlphaTest : public Node
 {
 public:
-    Cull()
+    AlphaTest()
     {
         m_imports = {
             {{ VariableType::Port, "prev" }}
@@ -22,22 +22,29 @@ public:
 
     virtual void Execute(const RenderContext& rc) override;
 
-    enum class Mode
+    enum class Func
     {
         Off = 0,
-        Front,
-        Back,
-        FrontAndBack,
+        Never,
+        Less,
+        Equal,
+        LEqual,
+        Greater,
+        NotEqual,
+        GEqual,
+        Always
     };
 
-    void SetMode(Mode mode) { m_mode = mode; }
+    void SetFunc(Func func) { m_func = func; }
 
 private:
-    Mode m_mode = Mode::Back;
+    Func m_func = Func::Always;
+
+    float m_ref = 0;
 
     RTTR_ENABLE(Node)
 
-}; // Cull
+}; // AlphaTest
 
 }
 }

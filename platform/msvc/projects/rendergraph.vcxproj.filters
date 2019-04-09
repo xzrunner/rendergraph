@@ -39,6 +39,21 @@
     <ClCompile Include="..\..\..\source\node\Cull.cpp">
       <Filter>nodes\state</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ZWrite.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ZTest.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\AlphaTest.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\BlendFunc.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\BlendEq.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -104,6 +119,15 @@
       <Filter>nodes\state</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ZTest.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\AlphaTest.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendFunc.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendEq.h">
       <Filter>nodes\state</Filter>
     </ClInclude>
   </ItemGroup>

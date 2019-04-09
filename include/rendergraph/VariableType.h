@@ -12,6 +12,8 @@ enum class VariableType
     Texture,
     RenderTarget,
 
+    Model,
+
     // shader
     Vector1,
     Vector2,

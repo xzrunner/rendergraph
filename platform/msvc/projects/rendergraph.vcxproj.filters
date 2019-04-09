@@ -4,34 +4,19 @@
     <ClCompile Include="..\..\..\source\Node.cpp">
       <Filter>dataset</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Viewport.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Clear.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Bind.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Unbind.cpp">
-      <Filter>nodes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
     <ClCompile Include="..\..\..\source\RenderGraph.cpp" />
     <ClCompile Include="..\..\..\source\DrawList.cpp">
       <Filter>dataset</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp">
-      <Filter>nodes\asset</Filter>
+      <Filter>nodes\resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\Texture.cpp">
-      <Filter>nodes\asset</Filter>
+      <Filter>nodes\resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\Shader.cpp">
-      <Filter>nodes\asset</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\DrawCube.cpp">
-      <Filter>nodes\draw</Filter>
+      <Filter>nodes\resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\Evaluator.cpp">
       <Filter>eval</Filter>
@@ -54,39 +39,39 @@
     <ClCompile Include="..\..\..\source\node\BlendEq.cpp">
       <Filter>nodes\state</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Bind.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Unbind.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Clear.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Viewport.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Draw.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
       <Filter>dataset</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h">
-      <Filter>nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h">
-      <Filter>nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h">
-      <Filter>nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h">
-      <Filter>nodes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\RenderGraph.h" />
     <ClInclude Include="..\..\..\include\rendergraph\typedef.h" />
     <ClInclude Include="..\..\..\include\rendergraph\DrawList.h">
       <Filter>dataset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\DrawCube.h">
-      <Filter>nodes\draw</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h">
-      <Filter>nodes\asset</Filter>
+      <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h">
-      <Filter>nodes\asset</Filter>
+      <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h">
-      <Filter>nodes\asset</Filter>
+      <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\Evaluator.h">
       <Filter>eval</Filter>
@@ -130,6 +115,27 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\BlendEq.h">
       <Filter>nodes\state</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Bind.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Draw.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\VertexArray.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -137,12 +143,6 @@
     </Filter>
     <Filter Include="nodes">
       <UniqueIdentifier>{d8aec64a-33c0-4426-a7d1-60c4284e7d95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="nodes\draw">
-      <UniqueIdentifier>{00e17a72-40ac-403d-bffc-a330418d2ca3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="nodes\asset">
-      <UniqueIdentifier>{1f31dfc8-c455-4a3a-8e3a-1d7b51118864}</UniqueIdentifier>
     </Filter>
     <Filter Include="eval">
       <UniqueIdentifier>{8805e41c-b583-4b9e-a3e6-62b8e2e99c78}</UniqueIdentifier>
@@ -155,6 +155,12 @@
     </Filter>
     <Filter Include="nodes\state">
       <UniqueIdentifier>{dc7cbfb3-24ed-4cf7-a71b-626d3267f50b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\op">
+      <UniqueIdentifier>{a5e71e47-b952-432c-ab82-51784ff2d858}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\resource">
+      <UniqueIdentifier>{1f31dfc8-c455-4a3a-8e3a-1d7b51118864}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

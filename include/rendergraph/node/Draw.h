@@ -7,13 +7,14 @@ namespace rg
 namespace node
 {
 
-class DrawCube : public Node
+class Draw : public Node
 {
 public:
-    DrawCube()
+    Draw()
     {
         m_imports = {
-            {{ VariableType::Port, "prev" }}
+            {{ VariableType::Port, "prev" }},
+            {{ VariableType::Any,  "obj" }}
         };
         m_exports = {
             {{ VariableType::Port, "next" }}
@@ -24,7 +25,7 @@ public:
 
     RTTR_ENABLE(Node)
 
-}; // DrawCube
+}; // Draw
 
 }
 }

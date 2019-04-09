@@ -16,7 +16,8 @@ public:
             {{ VariableType::Port, "prev" }}
         };
         m_exports = {
-            {{ VariableType::Port, "next" }}
+            {{ VariableType::Port,    "next" }},
+            {{ VariableType::Texture, "tex" }}
         };
     }
 

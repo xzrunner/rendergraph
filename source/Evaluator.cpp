@@ -149,6 +149,23 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc,
         m[2] = n.x; m[6] = n.y; m[10] = n.z; m[14] = 0;
         m[3] = 0;   m[7] = 0;   m[11] = 0;   m[15] = 1.0;
     }
+    // input
+    else if (node_type == rttr::type::get<node::CamProjMat>())
+    {
+        ret.mat4 = rc.cam_proj_mat;
+    }
+    else if (node_type == rttr::type::get<node::CamViewMat>())
+    {
+        ret.mat4 = rc.cam_view_mat;
+    }
+    else if (node_type == rttr::type::get<node::CameraPosition>())
+    {
+        ret.vec3 = rc.cam_position;
+    }
+    else if (node_type == rttr::type::get<node::LightPosition>())
+    {
+        ret.vec3 = rc.light_position;
+    }
 
     return ret;
 }
@@ -178,6 +195,8 @@ ShaderVariant Evaluator::DefaultValue(VariableType type)
         break;
     case VariableType::Matrix4:
         ret = ShaderVariant(sm::mat4());
+        break;
+    case VariableType::Sampler2D:
         break;
     default:
         assert(0);

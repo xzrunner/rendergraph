@@ -20,7 +20,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override {}
+    virtual void Execute(const RenderContext& rc) override {}
 
     auto& GetValue() const { return m_val; }
     void  SetValue(float val) { m_val = val; }
@@ -42,7 +42,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override {}
+    virtual void Execute(const RenderContext& rc) override {}
 
     auto& GetValue() const { return m_val; }
     void  SetValue(const sm::vec2& val) { m_val = val; }
@@ -64,7 +64,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override {}
+    virtual void Execute(const RenderContext& rc) override {}
 
     auto& GetValue() const { return m_val; }
     void  SetValue(const sm::vec3& val) { m_val = val; }
@@ -86,7 +86,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override {}
+    virtual void Execute(const RenderContext& rc) override {}
 
     auto& GetValue() const { return m_val; }
     void  SetValue(const sm::vec4& val) { m_val = val; }
@@ -108,7 +108,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override {}
+    virtual void Execute(const RenderContext& rc) override {}
 
     auto& GetValue() const { return m_val; }
     void  SetValue(const sm::mat2& val) { m_val = val; }
@@ -130,7 +130,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override {}
+    virtual void Execute(const RenderContext& rc) override {}
 
     auto& GetValue() const { return m_val; }
     void  SetValue(const sm::mat3& val) { m_val = val; }
@@ -152,7 +152,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override {}
+    virtual void Execute(const RenderContext& rc) override {}
 
     auto& GetValue() const { return m_val; }
     void  SetValue(const sm::mat4& val) { m_val = val; }

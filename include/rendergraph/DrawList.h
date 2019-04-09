@@ -4,10 +4,10 @@
 
 #include <vector>
 
-namespace ur { class RenderContext; }
-
 namespace rg
 {
+
+class RenderContext;
 
 class DrawList
 {
@@ -15,7 +15,7 @@ public:
     DrawList(const NodePtr& node);
     DrawList(const std::vector<NodePtr>& all_nodes);
 
-    void Draw(ur::RenderContext& rc) const;
+    void Draw(const RenderContext& rc) const;
 
 private:
     void PrepareNodes(const NodePtr& node);

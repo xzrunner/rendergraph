@@ -21,7 +21,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override;
+    virtual void Execute(const RenderContext& rc) override;
 
     unsigned int GetID() const { return m_id; }
 

@@ -1,6 +1,7 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/Variable.h"
+#include "rendergraph/RenderContext.h"
 
 #include <unirender/Shader.h>
 #include <unirender/VertexAttrib.h>
@@ -11,7 +12,7 @@ namespace rg
 namespace node
 {
 
-void Shader::Execute(ur::RenderContext& rc)
+void Shader::Execute(const RenderContext& rc)
 {
     if (!m_shader && !m_vert.empty() && !m_frag.empty())
     {
@@ -22,7 +23,7 @@ void Shader::Execute(ur::RenderContext& rc)
         cpputil::StringHelper::ReplaceAll(vert, "\\n", "\n");
         cpputil::StringHelper::ReplaceAll(frag, "\\n", "\n");
         m_shader = std::make_shared<ur::Shader>(
-            &rc, vert.c_str(), frag.c_str(), textures, va_list, true
+            &rc.rc, vert.c_str(), frag.c_str(), textures, va_list, true
         );
     }
 }
@@ -47,7 +48,7 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
     }
 }
 
-void Shader::Bind()
+void Shader::Bind(const RenderContext& rc)
 {
     if (!m_shader) {
         return;
@@ -58,45 +59,28 @@ void Shader::Bind()
     for (int i = 1, n = m_imports.size(); i < n; ++i)
     {
         auto& var = m_imports[i].var;
+        auto v = Evaluator::Calc(rc, m_imports[i], var.type);
         switch (var.type)
         {
         case VariableType::Vector1:
-        {
-            auto v = Evaluator::Calc(m_imports[i], VariableType::Vector1);
             m_shader->SetFloat(var.name, v.vec1);
-        }
             break;
         case VariableType::Vector2:
-        {
-            auto v = Evaluator::Calc(m_imports[i], VariableType::Vector2);
             m_shader->SetVec2(var.name, v.vec2.xy);
-        }
             break;
         case VariableType::Vector3:
-        {
-            auto v = Evaluator::Calc(m_imports[i], VariableType::Vector3);
             m_shader->SetVec3(var.name, v.vec3.xyz);
-        }
             break;
         case VariableType::Vector4:
-        {
-            auto v = Evaluator::Calc(m_imports[i], VariableType::Vector4);
             m_shader->SetVec4(var.name, v.vec4.xyzw);
-        }
             break;
         case VariableType::Matrix2:
             break;
         case VariableType::Matrix3:
-        {
-            auto v = Evaluator::Calc(m_imports[i], VariableType::Matrix3);
             m_shader->SetMat3(var.name, v.mat3.x);
-        }
             break;
         case VariableType::Matrix4:
-        {
-            auto v = Evaluator::Calc(m_imports[i], VariableType::Vector4);
             m_shader->SetMat4(var.name, v.mat4.x);
-        }
             break;
         }
     }
@@ -144,7 +128,7 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
 
         ++ptr;
         auto& name = tokens[ptr];
-        
+
         uniforms.push_back(Variable({ type, name }));
     } while (++ptr != tokens.size());
 }

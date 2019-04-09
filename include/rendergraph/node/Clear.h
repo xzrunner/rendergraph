@@ -22,7 +22,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override;
+    virtual void Execute(const RenderContext& rc) override;
 
     void SetClearType(uint32_t type) { m_clear_type = type; }
 

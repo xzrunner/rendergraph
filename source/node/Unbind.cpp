@@ -1,5 +1,6 @@
 #include "rendergraph/node/Unbind.h"
 #include "rendergraph/node/RenderTarget.h"
+#include "rendergraph/RenderContext.h"
 
 #include <unirender/RenderContext.h>
 
@@ -8,7 +9,7 @@ namespace rg
 namespace node
 {
 
-void Unbind::Execute(ur::RenderContext& rc)
+void Unbind::Execute(const RenderContext& rc)
 {
     if (m_imports.empty() || m_imports[0].conns.empty()) {
         return;
@@ -21,7 +22,7 @@ void Unbind::Execute(ur::RenderContext& rc)
         if (type == rttr::type::get<node::RenderTarget>())
         {
             //auto rt = std::static_pointer_cast<node::RenderTarget>(node);
-            rc.UnbindRenderTarget();
+            rc.rc.UnbindRenderTarget();
         }
     }
 }

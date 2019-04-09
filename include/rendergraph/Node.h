@@ -7,17 +7,17 @@
 #include <memory>
 #include <vector>
 
-namespace ur { class RenderContext; }
-
 namespace rg
 {
+
+class RenderContext;
 
 class Node
 {
 public:
     Node();
 
-    virtual void Execute(ur::RenderContext& rc) = 0;
+    virtual void Execute(const RenderContext& rc) = 0;
 
     auto& GetImports() const { return m_imports; }
     auto& GetExports() const { return m_exports; }

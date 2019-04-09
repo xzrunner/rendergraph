@@ -20,7 +20,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override;
+    virtual void Execute(const RenderContext& rc) override;
 
     RTTR_ENABLE(Node)
 

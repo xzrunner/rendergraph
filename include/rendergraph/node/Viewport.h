@@ -20,7 +20,7 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override;
+    virtual void Execute(const RenderContext& rc) override;
 
     void SetParams(int x, int y, int w, int h);
 

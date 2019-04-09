@@ -22,11 +22,11 @@ public:
         };
     }
 
-    virtual void Execute(ur::RenderContext& rc) override;
+    virtual void Execute(const RenderContext& rc) override;
 
     void SetCodes(const std::string& vert, const std::string& frag);
 
-    void Bind();
+    void Bind(const RenderContext& rc);
 
     static void GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms);
 

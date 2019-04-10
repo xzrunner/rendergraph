@@ -25,6 +25,7 @@ public:
     };
 
     Type GetType() const { return m_type; }
+    void SetType(Type type) { m_type = type; }
 
 private:
     Type m_type = Type::Cube;

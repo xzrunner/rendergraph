@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\..\source\node\Draw.cpp">
       <Filter>nodes\op</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\VertexArray.cpp">
+      <Filter>nodes\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">

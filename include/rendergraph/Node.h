@@ -16,6 +16,7 @@ class Node
 {
 public:
     Node();
+    virtual ~Node() {}
 
     virtual void Execute(const RenderContext& rc) = 0;
 

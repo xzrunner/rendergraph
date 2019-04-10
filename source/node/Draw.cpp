@@ -1,5 +1,6 @@
 #include "rendergraph/node/Draw.h"
 #include "rendergraph/node/PrimitiveShape.h"
+#include "rendergraph/node/VertexArray.h"
 #include "rendergraph/RenderContext.h"
 
 #include <unirender/RenderContext.h>
@@ -34,6 +35,10 @@ void Draw::Execute(const RenderContext& rc)
                 rc.rc.RenderCube();
                 break;
             }
+        }
+        else if (type == rttr::type::get<VertexArray>())
+        {
+            std::static_pointer_cast<VertexArray>(node)->Draw(rc);
         }
     }
 

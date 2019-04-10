@@ -4,6 +4,7 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/RenderTarget.h"
 #include "rendergraph/node/Texture.h"
+#include "rendergraph/node/VertexArray.h"
 #include "rendergraph/node/PrimitiveShape.h"
 // op
 #include "rendergraph/node/Clear.h"
@@ -35,6 +36,7 @@ RTTR_REGISTRATION
 REGIST_NODE_TYPE(Shader)
 REGIST_NODE_TYPE(RenderTarget)
 REGIST_NODE_TYPE(Texture)
+REGIST_NODE_TYPE(VertexArray)
 REGIST_NODE_TYPE(PrimitiveShape)
 // op
 REGIST_NODE_TYPE(Clear)

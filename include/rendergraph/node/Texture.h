@@ -31,6 +31,23 @@ public:
     // todo
     void SetTexID(unsigned int texid) { m_texid = texid; }
 
+    enum class Wrapping
+    {
+        Repeat,
+        MirroredRepeat,
+        ClampToEdge,
+        ClampToBorder,
+    };
+
+    enum class Filtering
+    {
+        Nearest,
+        Linear,
+    };
+
+    void SetWrapping(Wrapping wrap) { m_wrap = wrap; }
+    void SetFiltering(Filtering filter) { m_filter = filter; }
+
 private:
     std::string m_filepath;
 
@@ -40,6 +57,9 @@ private:
     int m_format = 0;
 
     unsigned int m_texid = 0;
+
+    Wrapping  m_wrap   = Wrapping::Repeat;
+    Filtering m_filter = Filtering::Linear;
 
     RTTR_ENABLE(Node)
 

@@ -51,24 +51,45 @@ void Texture::Execute(const RenderContext& rc)
     {
         switch (m_type)
         {
-        case ur::TEXTURE_2D:
-            rc.rc.ReleaseTexture(m_texid);
-            m_texid = rc.rc.CreateTexture(nullptr, m_width, m_height, m_format, 0, wrap, filter);
+        case Type::Tex2D:
+        {
+            int format = 0;
+            switch (m_format)
+            {
+            case Format::RGBA8:
+                format = ur::TEXTURE_RGBA8;
+                break;
+            case Format::RGBA4:
+                format = ur::TEXTURE_RGBA4;
+                break;
+            case Format::RGB:
+                format = ur::TEXTURE_RGB;
+                break;
+            case Format::RGB565:
+                format = ur::TEXTURE_RGB565;
+                break;
+            case Format::A8:
+                format = ur::TEXTURE_A8;
+                break;
+            case Format::Depth:
+                format = ur::TEXTURE_DEPTH;
+                break;
+            }
+
+            if (m_texid != 0) {
+                rc.rc.ReleaseTexture(m_texid);
+            }
+            m_texid = rc.rc.CreateTexture(nullptr, m_width, m_height, format, 0, wrap, filter);
+        }
             break;
-        case ur::TEXTURE_CUBE:
-            rc.rc.ReleaseTexture(m_texid);
+        case Type::TexCube:
+            if (m_texid != 0) {
+                rc.rc.ReleaseTexture(m_texid);
+            }
             m_texid = rc.rc.CreateTextureCube(m_width, m_height);
             break;
         }
     }
-}
-
-void Texture::SetParams(int type, int width, int height, int format)
-{
-    m_type   = type;
-    m_width  = width;
-    m_height = height;
-    m_format = format;
 }
 
 }

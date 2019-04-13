@@ -15,14 +15,17 @@ void Unbind::Execute(const RenderContext& rc)
         return;
     }
 
-    auto node = m_imports[0].conns[0].node.lock();
+    auto node = m_imports[1].conns[0].node.lock();
     if (node)
     {
         auto type = node->get_type();
         if (type == rttr::type::get<node::RenderTarget>())
         {
-            //auto rt = std::static_pointer_cast<node::RenderTarget>(node);
-            rc.rc.UnbindRenderTarget();
+            auto rt = std::static_pointer_cast<node::RenderTarget>(node);
+            if (rt->IsBinded()) {
+                rc.rc.UnbindRenderTarget();
+                rt->SetBinded(false);
+            }
         }
     }
 }

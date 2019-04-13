@@ -26,8 +26,13 @@ public:
 
     unsigned int GetID() const { return m_id; }
 
+    bool IsBinded() const { return m_binded; }
+    void SetBinded(bool binded) { m_binded = binded; }
+
 private:
     unsigned int m_id = 0;
+
+    bool m_binded = false;
 
     RTTR_ENABLE(Node)
 

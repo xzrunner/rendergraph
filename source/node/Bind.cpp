@@ -32,12 +32,22 @@ void Bind::Execute(const RenderContext& rc)
         {
             auto rt = std::static_pointer_cast<node::RenderTarget>(node);
             rc.rc.BindRenderTarget(rt->GetID());
-            auto& conns = rt->GetImports()[0].conns;
+            auto& conns = rt->GetImports()[1].conns;
             if (!conns.empty()) {
                 auto tex_node = conns[0].node.lock();
                 if (tex_node && tex_node->get_type() == rttr::type::get<node::Texture>()) {
-                    rc.rc.BindRenderTargetTex(std::static_pointer_cast<node::Texture>(tex_node)->GetTexID());
+                    auto tex = std::static_pointer_cast<node::Texture>(tex_node);
+                    if (tex->GetTexID() == 0) {
+                        tex->Execute(rc);
+                    }
+                    rc.rc.BindRenderTargetTex(tex->GetTexID());
                 }
+            }
+            if (rc.rc.CheckRenderTargetStatus() == 0) {
+                rc.rc.UnbindRenderTarget();
+                rt->SetBinded(false);
+            } else {
+                rt->SetBinded(true);
             }
         }
         else if (type == rttr::type::get<node::Shader>())

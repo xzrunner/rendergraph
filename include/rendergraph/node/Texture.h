@@ -20,6 +20,7 @@ public:
             {{ VariableType::Texture, "tex" }}
         };
     }
+    virtual ~Texture();
 
     virtual void Execute(const RenderContext& rc) override;
 

@@ -1,12 +1,20 @@
 #include "rendergraph/node/RenderTarget.h"
 #include "rendergraph/RenderContext.h"
 
+#include <unirender/Blackboard.h>
 #include <unirender/RenderContext.h>
 
 namespace rg
 {
 namespace node
 {
+
+RenderTarget::~RenderTarget()
+{
+    if (m_id != 0) {
+        ur::Blackboard::Instance()->GetRenderContext().ReleaseRenderTarget(m_id);
+    }
+}
 
 void RenderTarget::Execute(const RenderContext& rc)
 {

@@ -2,12 +2,20 @@
 #include "rendergraph/RenderContext.h"
 
 #include <unirender/typedef.h>
+#include <unirender/Blackboard.h>
 #include <unirender/RenderContext.h>
 
 namespace rg
 {
 namespace node
 {
+
+Texture::~Texture()
+{
+    if (m_texid != 0) {
+        ur::Blackboard::Instance()->GetRenderContext().ReleaseTexture(m_texid);
+    }
+}
 
 void Texture::Execute(const RenderContext& rc)
 {

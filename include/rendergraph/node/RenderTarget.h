@@ -20,6 +20,7 @@ public:
             {{ VariableType::Port, "next" }}
         };
     }
+    virtual ~RenderTarget();
 
     virtual void Execute(const RenderContext& rc) override;
 

@@ -20,11 +20,20 @@ DrawList::DrawList(const std::vector<NodePtr>& all_nodes)
     TopologicalSorting();
 }
 
-void DrawList::Draw(const RenderContext& rc) const
+bool DrawList::Draw(const RenderContext& rc, NodePtr end) const
 {
-    for (auto& n : m_nodes) {
-        n->Execute(rc);
+    bool finished = false;
+    for (auto& n : m_nodes)
+    {
+        if (n->IsEnable()) {
+            n->Execute(rc);
+        }
+        if (n == end) {
+            finished = true;
+            break;
+        }
     }
+    return finished;
 }
 
 void DrawList::PrepareNodes(const NodePtr& node)

@@ -15,7 +15,7 @@ public:
     DrawList(const NodePtr& node);
     DrawList(const std::vector<NodePtr>& all_nodes);
 
-    void Draw(const RenderContext& rc) const;
+    bool Draw(const RenderContext& rc, NodePtr end = nullptr) const;
 
 private:
     void PrepareNodes(const NodePtr& node);

@@ -27,6 +27,9 @@ public:
     void SetImports(const std::vector<Port>& imports) { m_imports = imports; }
     void SetExports(const std::vector<Port>& exports) { m_exports = exports; }
 
+    bool IsEnable() const { return m_enable; }
+    void SetEnable(bool enable) { m_enable = enable; }
+
 public:
 	struct PortAddr
 	{
@@ -52,6 +55,9 @@ public:
 
 protected:
     std::vector<Port> m_imports, m_exports;
+
+private:
+    bool m_enable = false;
 
     RTTR_ENABLE()
 

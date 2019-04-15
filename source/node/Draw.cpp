@@ -41,8 +41,6 @@ void Draw::Execute(const RenderContext& rc)
             std::static_pointer_cast<VertexArray>(node)->Draw(rc);
         }
     }
-
-    rc.rc.RenderCube();
 }
 
 }

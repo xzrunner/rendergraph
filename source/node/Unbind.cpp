@@ -25,6 +25,10 @@ void Unbind::Execute(const RenderContext& rc)
             if (rt->IsBinded()) {
                 rc.rc.UnbindRenderTarget();
                 rt->SetBinded(false);
+
+                int x, y, w, h;
+                rt->GetLastViewport(x, y, w, h);
+                rc.rc.SetViewport(x, y, w, h);
             }
         }
     }

@@ -45,6 +45,12 @@ void Bind::Execute(const RenderContext& rc)
                         att_type = ur::ATTACHMENT_DEPTH;
                     }
                     rc.rc.BindRenderTargetTex(tex->GetTexID(), att_type);
+
+                    int x, y, w, h;
+                    rc.rc.GetViewport(x, y, w, h);
+                    rt->SetLastViewport(x, y, w, h);
+
+                    rc.rc.SetViewport(0, 0, tex->GetWidth(), tex->GetHeight());
                 }
             }
             if (rc.rc.CheckRenderTargetStatus() == 0) {

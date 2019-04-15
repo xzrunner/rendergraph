@@ -25,5 +25,21 @@ void RenderTarget::Execute(const RenderContext& rc)
     m_id = rc.rc.CreateRenderTarget(m_id);
 }
 
+void RenderTarget::SetLastViewport(int x, int y, int w, int h)
+{
+    m_vp_x = x;
+    m_vp_y = y;
+    m_vp_w = w;
+    m_vp_h = h;
+}
+
+void RenderTarget::GetLastViewport(int& x, int& y, int& w, int& h) const
+{
+    x = m_vp_x;
+    y = m_vp_y;
+    w = m_vp_w;
+    h = m_vp_h;
+}
+
 }
 }

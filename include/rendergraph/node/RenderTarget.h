@@ -29,10 +29,16 @@ public:
     bool IsBinded() const { return m_binded; }
     void SetBinded(bool binded) { m_binded = binded; }
 
+    void SetLastViewport(int x, int y, int w, int h);
+    void GetLastViewport(int& x, int& y, int& w, int& h) const;
+
 private:
     unsigned int m_id = 0;
 
     bool m_binded = false;
+
+    // last viewport
+    int m_vp_x = 0, m_vp_y = 0, m_vp_w = 0, m_vp_h = 0;
 
     RTTR_ENABLE(Node)
 

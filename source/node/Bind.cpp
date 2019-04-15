@@ -14,7 +14,7 @@ namespace node
 
 void Bind::Execute(const RenderContext& rc)
 {
-    if (m_imports.empty() || m_imports[0].conns.empty()) {
+    if (m_imports.empty() || m_imports[1].conns.empty()) {
         return;
     }
 

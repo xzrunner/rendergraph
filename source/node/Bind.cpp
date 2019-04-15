@@ -40,7 +40,11 @@ void Bind::Execute(const RenderContext& rc)
                     if (tex->GetTexID() == 0) {
                         tex->Execute(rc);
                     }
-                    rc.rc.BindRenderTargetTex(tex->GetTexID());
+                    ur::ATTACHMENT_TYPE att_type = ur::ATTACHMENT_COLOR0;
+                    if (tex->GetFormat() == node::Texture::Format::Depth) {
+                        att_type = ur::ATTACHMENT_DEPTH;
+                    }
+                    rc.rc.BindRenderTargetTex(tex->GetTexID(), att_type);
                 }
             }
             if (rc.rc.CheckRenderTargetStatus() == 0) {

@@ -35,6 +35,8 @@ private:
 
     std::shared_ptr<ur::Shader> m_shader = nullptr;
 
+    std::vector<std::string> m_textures;
+
     RTTR_ENABLE(Node)
 
 }; // Shader

@@ -16,14 +16,13 @@ void Shader::Execute(const RenderContext& rc)
 {
     if (!m_shader && !m_vert.empty() && !m_frag.empty())
     {
-        std::vector<std::string> textures;
         CU_VEC<ur::VertexAttrib> va_list;
 
         auto vert = m_vert, frag = m_frag;
         cpputil::StringHelper::ReplaceAll(vert, "\\n", "\n");
         cpputil::StringHelper::ReplaceAll(frag, "\\n", "\n");
         m_shader = std::make_shared<ur::Shader>(
-            &rc.rc, vert.c_str(), frag.c_str(), textures, va_list, true
+            &rc.rc, vert.c_str(), frag.c_str(), m_textures, va_list, true
         );
     }
 }
@@ -38,13 +37,18 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
     m_frag = frag;
 
     m_shader.reset();
+    m_textures.clear();
 
     m_imports.erase(m_imports.begin() + 1, m_imports.end());
     std::vector<Variable> uniforms;
     GetCodeUniforms(m_vert, uniforms);
     GetCodeUniforms(m_frag, uniforms);
-    for (auto& u : uniforms) {
+    for (auto& u : uniforms)
+    {
         m_imports.push_back(u);
+        if (u.type == VariableType::Sampler2D) {
+            m_textures.push_back(u.name);
+        }
     }
 }
 
@@ -56,6 +60,7 @@ void Shader::Bind(const RenderContext& rc)
 
     m_shader->Use();
 
+    std::vector<uint32_t> texture_ids;
     for (int i = 1, n = m_imports.size(); i < n; ++i)
     {
         auto& var = m_imports[i].var;
@@ -82,7 +87,15 @@ void Shader::Bind(const RenderContext& rc)
         case VariableType::Matrix4:
             m_shader->SetMat4(var.name, v.mat4.x);
             break;
+        case VariableType::Sampler2D:
+            texture_ids.push_back(v.id);
+            break;
         }
+    }
+
+    if (!texture_ids.empty()) {
+        m_shader->SetUsedTextures(texture_ids);
+        m_shader->Use();
     }
 }
 

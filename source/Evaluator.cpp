@@ -1,5 +1,6 @@
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/node/Texture.h"
 #include "rendergraph/node/value_nodes.h"
 #include "rendergraph/node/math_nodes.h"
 #include "rendergraph/node/input_nodes.h"
@@ -30,8 +31,16 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc,
 
     ShaderVariant ret = expect;
     auto node_type = node->get_type();
+    // resource
+    if (node_type == rttr::type::get<node::Texture>())
+    {
+        auto tex = std::static_pointer_cast<node::Texture>(node);
+        // todo: other texture type
+        ret.type = VariableType::Sampler2D;
+        ret.id = tex->GetTexID();
+    }
     // value
-    if (node_type == rttr::type::get<node::Vector1>())
+    else if (node_type == rttr::type::get<node::Vector1>())
     {
         if (expect.type == VariableType::Vector1) {
             ret.vec1 = std::static_pointer_cast<node::Vector1>(node)->GetValue();

@@ -27,8 +27,6 @@ public:
     void SetFilepath(const std::string& filepath) { m_filepath = filepath; }
     void SetSize(int width, int height) { m_width = width; m_height = height; }
 
-    unsigned int GetTexID() const { return m_texid; }
-
     // todo
     void SetTexID(unsigned int texid) { m_texid = texid; }
 
@@ -66,6 +64,11 @@ public:
     void SetFormat(Format fmt) { m_format = fmt; }
     void SetWrapping(Wrapping wrap) { m_wrap = wrap; }
     void SetFiltering(Filtering filter) { m_filter = filter; }
+
+    unsigned int GetTexID() const { return m_texid; }
+    int GetWidth() const { return m_width; }
+    int GetHeight() const { return m_height; }
+    Format GetFormat() const { return m_format; }
 
 private:
     std::string m_filepath;

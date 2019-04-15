@@ -145,18 +145,7 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc,
         auto eye    = Calc(rc, inputs[node::LookAtMat::ID_EYE],    ShaderVariant(lm->eye));
         auto center = Calc(rc, inputs[node::LookAtMat::ID_CENTER], ShaderVariant(lm->center));
         auto up     = Calc(rc, inputs[node::LookAtMat::ID_UP],     ShaderVariant(lm->up));
-
-        float distance = (center.vec3 - eye.vec3).Length();
-        auto n = (center.vec3 - eye.vec3).Normalized();
-        auto v = up.vec3.Normalized();
-        auto u = v.Cross(n).Normalized();
-        v = n.Cross(u).Normalized();
-
-        float* m = ret.mat4.x;
-        m[0] = u.x; m[4] = u.y; m[8] = u.z;  m[12] = 0;
-        m[1] = v.x; m[5] = v.y; m[9] = v.z;  m[13] = 0;
-        m[2] = n.x; m[6] = n.y; m[10] = n.z; m[14] = 0;
-        m[3] = 0;   m[7] = 0;   m[11] = 0;   m[15] = 1.0;
+        ret.mat4 = sm::mat4::LookAt(eye.vec3, center.vec3, up.vec3);
     }
     // input
     else if (node_type == rttr::type::get<node::CamProjMat>())

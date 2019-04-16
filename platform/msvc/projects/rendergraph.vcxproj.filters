@@ -57,6 +57,9 @@
     <ClCompile Include="..\..\..\source\node\VertexArray.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Model.cpp">
+      <Filter>nodes\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -137,6 +140,9 @@
       <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Model.h">
       <Filter>nodes\resource</Filter>
     </ClInclude>
   </ItemGroup>

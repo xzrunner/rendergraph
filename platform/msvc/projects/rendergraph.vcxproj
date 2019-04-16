@@ -23,6 +23,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Draw.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\math_nodes.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Model.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h" />
@@ -51,6 +52,7 @@
     <ClCompile Include="..\..\..\source\node\Clear.cpp" />
     <ClCompile Include="..\..\..\source\node\Cull.cpp" />
     <ClCompile Include="..\..\..\source\node\Draw.cpp" />
+    <ClCompile Include="..\..\..\source\node\Model.cpp" />
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp" />
     <ClCompile Include="..\..\..\source\node\Shader.cpp" />
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />

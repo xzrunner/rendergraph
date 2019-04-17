@@ -64,7 +64,10 @@ void Shader::Bind(const RenderContext& rc)
     for (int i = 1, n = m_imports.size(); i < n; ++i)
     {
         auto& var = m_imports[i].var;
-        auto v = Evaluator::Calc(rc, m_imports[i], var.type);
+
+        uint32_t flags = 0;
+        auto v = Evaluator::Calc(rc, m_imports[i], var.type, flags);
+
         switch (var.type)
         {
         case VariableType::Vector1:
@@ -90,6 +93,10 @@ void Shader::Bind(const RenderContext& rc)
         case VariableType::Sampler2D:
             texture_ids.push_back(v.id);
             break;
+        }
+
+        if (flags & Evaluator::FLAG_MODEL_MAT) {
+            m_unif_names.Add(pt0::U_MODEL_MAT, var.name);
         }
     }
 

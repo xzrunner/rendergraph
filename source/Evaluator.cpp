@@ -8,16 +8,14 @@
 namespace rg
 {
 
-ShaderVariant Evaluator::Calc(const RenderContext& rc,
-                              const Node::Port& in_port,
-                              VariableType type)
+ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port,
+                              VariableType type, uint32_t& flags)
 {
-    return Calc(rc, in_port, DefaultValue(type));
+    return Calc(rc, in_port, DefaultValue(type), flags);
 }
 
-ShaderVariant Evaluator::Calc(const RenderContext& rc,
-                              const Node::Port& in_port,
-                              ShaderVariant expect)
+ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port,
+                              ShaderVariant expect, uint32_t& flags)
 {
     auto& conns = in_port.conns;
     if (conns.empty()) {
@@ -86,8 +84,8 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc,
     else if (node_type == rttr::type::get<node::Add>())
     {
         auto& inputs = node->GetImports();
-        auto a = Calc(rc, inputs[0], DefaultValue(expect.type));
-        auto b = Calc(rc, inputs[1], DefaultValue(expect.type));
+        auto a = Calc(rc, inputs[0], DefaultValue(expect.type), flags);
+        auto b = Calc(rc, inputs[1], DefaultValue(expect.type), flags);
         switch (expect.type)
         {
         case VariableType::Vector1:
@@ -104,8 +102,8 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc,
     else if (node_type == rttr::type::get<node::Mul>())
     {
         auto& inputs = node->GetImports();
-        auto a = Calc(rc, inputs[0], DefaultValue(expect.type));
-        auto b = Calc(rc, inputs[1], DefaultValue(expect.type));
+        auto a = Calc(rc, inputs[0], DefaultValue(expect.type), flags);
+        auto b = Calc(rc, inputs[1], DefaultValue(expect.type), flags);
         switch (expect.type)
         {
         case VariableType::Vector1:
@@ -120,31 +118,31 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc,
     {
         auto& inputs = node->GetImports();
         auto pm = std::static_pointer_cast<node::PerspectiveMat>(node);
-        auto fovy   = Calc(rc, inputs[node::PerspectiveMat::ID_FOVY],   ShaderVariant(pm->fovy));
-        auto aspect = Calc(rc, inputs[node::PerspectiveMat::ID_ASPECT], ShaderVariant(pm->aspect));
-        auto znear  = Calc(rc, inputs[node::PerspectiveMat::ID_NEAR],   ShaderVariant(pm->znear));
-        auto zfar   = Calc(rc, inputs[node::PerspectiveMat::ID_FAR],    ShaderVariant(pm->zfar));
+        auto fovy   = Calc(rc, inputs[node::PerspectiveMat::ID_FOVY],   ShaderVariant(pm->fovy),   flags);
+        auto aspect = Calc(rc, inputs[node::PerspectiveMat::ID_ASPECT], ShaderVariant(pm->aspect), flags);
+        auto znear  = Calc(rc, inputs[node::PerspectiveMat::ID_NEAR],   ShaderVariant(pm->znear),  flags);
+        auto zfar   = Calc(rc, inputs[node::PerspectiveMat::ID_FAR],    ShaderVariant(pm->zfar),   flags);
         ret.mat4 = sm::mat4::Perspective(fovy.vec1, aspect.vec1, znear.vec1, zfar.vec1);
     }
     else if (node_type == rttr::type::get<node::OrthoMat>())
     {
         auto& inputs = node->GetImports();
         auto om = std::static_pointer_cast<node::OrthoMat>(node);
-        auto left   = Calc(rc, inputs[node::OrthoMat::ID_LEFT],   ShaderVariant(om->left));
-        auto right  = Calc(rc, inputs[node::OrthoMat::ID_RIGHT],  ShaderVariant(om->right));
-        auto bottom = Calc(rc, inputs[node::OrthoMat::ID_BOTTOM], ShaderVariant(om->bottom));
-        auto top    = Calc(rc, inputs[node::OrthoMat::ID_TOP],    ShaderVariant(om->top));
-        auto znear  = Calc(rc, inputs[node::OrthoMat::ID_ZNEAR],  ShaderVariant(om->znear));
-        auto zfar   = Calc(rc, inputs[node::OrthoMat::ID_ZFAR],   ShaderVariant(om->zfar));
+        auto left   = Calc(rc, inputs[node::OrthoMat::ID_LEFT],   ShaderVariant(om->left),   flags);
+        auto right  = Calc(rc, inputs[node::OrthoMat::ID_RIGHT],  ShaderVariant(om->right),  flags);
+        auto bottom = Calc(rc, inputs[node::OrthoMat::ID_BOTTOM], ShaderVariant(om->bottom), flags);
+        auto top    = Calc(rc, inputs[node::OrthoMat::ID_TOP],    ShaderVariant(om->top),    flags);
+        auto znear  = Calc(rc, inputs[node::OrthoMat::ID_ZNEAR],  ShaderVariant(om->znear),  flags);
+        auto zfar   = Calc(rc, inputs[node::OrthoMat::ID_ZFAR],   ShaderVariant(om->zfar),   flags);
         ret.mat4 = sm::mat4::Orthographic(left.vec1, right.vec1, bottom.vec1, top.vec1, znear.vec1, zfar.vec1);
     }
     else if (node_type == rttr::type::get<node::LookAtMat>())
     {
         auto& inputs = node->GetImports();
         auto lm = std::static_pointer_cast<node::LookAtMat>(node);
-        auto eye    = Calc(rc, inputs[node::LookAtMat::ID_EYE],    ShaderVariant(lm->eye));
-        auto center = Calc(rc, inputs[node::LookAtMat::ID_CENTER], ShaderVariant(lm->center));
-        auto up     = Calc(rc, inputs[node::LookAtMat::ID_UP],     ShaderVariant(lm->up));
+        auto eye    = Calc(rc, inputs[node::LookAtMat::ID_EYE],    ShaderVariant(lm->eye),    flags);
+        auto center = Calc(rc, inputs[node::LookAtMat::ID_CENTER], ShaderVariant(lm->center), flags);
+        auto up     = Calc(rc, inputs[node::LookAtMat::ID_UP],     ShaderVariant(lm->up),     flags);
         ret.mat4 = sm::mat4::LookAt(eye.vec3, center.vec3, up.vec3);
     }
     // input
@@ -155,6 +153,11 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc,
     else if (node_type == rttr::type::get<node::CamViewMat>())
     {
         ret.mat4 = rc.cam_view_mat;
+    }
+    else if (node_type == rttr::type::get<node::ModelMat>())
+    {
+        flags |= FLAG_MODEL_MAT;
+        ret.mat4 = rc.model_mat;
     }
     else if (node_type == rttr::type::get<node::CameraPosition>())
     {
@@ -195,6 +198,7 @@ ShaderVariant Evaluator::DefaultValue(VariableType type)
         ret = ShaderVariant(sm::mat4());
         break;
     case VariableType::Sampler2D:
+        ret = ShaderVariant(VariableType::Sampler2D, 0);
         break;
     default:
         assert(0);

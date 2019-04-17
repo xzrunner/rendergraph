@@ -26,7 +26,7 @@ void Cull::Execute(const RenderContext& rc)
         cull = ur::CULL_FRONT_AND_BACK;
         break;
     }
-    rc.rc.SetCull(cull);
+    rc.rc.SetCullMode(cull);
 }
 
 }

@@ -41,7 +41,7 @@ void ZTest::Execute(const RenderContext& rc)
         fmt = ur::DEPTH_ALWAYS;
         break;
     }
-    rc.rc.SetDepthTest(fmt);
+    rc.rc.SetZTest(fmt);
 }
 
 }

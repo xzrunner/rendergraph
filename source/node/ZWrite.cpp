@@ -10,7 +10,7 @@ namespace node
 
 void ZWrite::Execute(const RenderContext& rc)
 {
-    rc.rc.EnableDepthMask(m_enable);
+    rc.rc.SetZWrite(m_enable);
 }
 
 }

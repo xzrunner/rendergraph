@@ -37,6 +37,9 @@ private:
 
     std::vector<std::string> m_textures;
 
+
+    std::string m_model_mat_name;
+
     RTTR_ENABLE(Node)
 
 }; // Shader

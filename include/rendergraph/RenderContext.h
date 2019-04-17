@@ -18,6 +18,7 @@ public:
 
     sm::mat4 cam_proj_mat;
     sm::mat4 cam_view_mat;
+    sm::mat4 model_mat;
 
     sm::vec3 cam_position;
     sm::vec3 light_position;

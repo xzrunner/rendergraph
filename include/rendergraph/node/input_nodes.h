@@ -23,6 +23,14 @@ public:
     RTTR_ENABLE(Node)
 }; // CamViewMat
 
+class ModelMat : public Node
+{
+public:
+    ModelMat() { m_exports = { {{ VariableType::Matrix4, "out" }} }; }
+    virtual void Execute(const RenderContext& rc) override {}
+    RTTR_ENABLE(Node)
+}; // ModelMat
+
 class CameraPosition : public Node
 {
 public:

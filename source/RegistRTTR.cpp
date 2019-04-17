@@ -72,6 +72,7 @@ REGIST_NODE_TYPE(LookAtMat)
 // input
 REGIST_NODE_TYPE(CamProjMat)
 REGIST_NODE_TYPE(CamViewMat)
+REGIST_NODE_TYPE(ModelMat)
 REGIST_NODE_TYPE(CameraPosition)
 REGIST_NODE_TYPE(LightPosition)
 

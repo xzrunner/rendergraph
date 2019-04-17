@@ -96,7 +96,7 @@ void Shader::Bind(const RenderContext& rc)
         }
 
         if (flags & Evaluator::FLAG_MODEL_MAT) {
-            m_unif_names.Add(pt0::U_MODEL_MAT, var.name);
+            m_unif_names.Add(pt0::UniformTypes::ModelMat, var.name);
         }
     }
 

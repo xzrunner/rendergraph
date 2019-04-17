@@ -20,6 +20,7 @@
 #include "rendergraph/node/Cull.h"
 #include "rendergraph/node/ZTest.h"
 #include "rendergraph/node/ZWrite.h"
+#include "rendergraph/node/FrontFace.h"
 // others
 #include "rendergraph/node/value_nodes.h"
 #include "rendergraph/node/math_nodes.h"
@@ -53,6 +54,7 @@ REGIST_NODE_TYPE(BlendFunc)
 REGIST_NODE_TYPE(Cull)
 REGIST_NODE_TYPE(ZTest)
 REGIST_NODE_TYPE(ZWrite)
+REGIST_NODE_TYPE(FrontFace)
 // value
 REGIST_NODE_TYPE(Vector1)
 REGIST_NODE_TYPE(Vector2)

@@ -60,6 +60,9 @@
     <ClCompile Include="..\..\..\source\node\Model.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\FrontFace.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -144,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Model.h">
       <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.h">
+      <Filter>nodes\state</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

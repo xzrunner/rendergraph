@@ -2,6 +2,8 @@
 
 #include "rendergraph/Node.h"
 
+#include <painting0/UniformNames.h>
+
 namespace ur { class Shader; }
 
 namespace rg
@@ -28,6 +30,10 @@ public:
 
     void Bind(const RenderContext& rc);
 
+    std::shared_ptr<ur::Shader> GetShader(const RenderContext& rc);
+
+    auto& GetUniformNames() const { return m_unif_names; }
+
     static void GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms);
 
 private:
@@ -37,6 +43,7 @@ private:
 
     std::vector<std::string> m_textures;
 
+    pt0::UniformNames m_unif_names;
 
     std::string m_model_mat_name;
 

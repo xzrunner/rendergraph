@@ -106,6 +106,14 @@ void Shader::Bind(const RenderContext& rc)
     }
 }
 
+std::shared_ptr<ur::Shader> Shader::GetShader(const RenderContext& rc)
+{
+    if (!m_shader) {
+        Execute(rc);
+    }
+    return m_shader;
+}
+
 void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms)
 {
     std::vector<std::string> tokens;

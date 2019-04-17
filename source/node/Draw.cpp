@@ -2,6 +2,7 @@
 #include "rendergraph/node/PrimitiveShape.h"
 #include "rendergraph/node/VertexArray.h"
 #include "rendergraph/node/Model.h"
+#include "rendergraph/node/Shader.h"
 #include "rendergraph/RenderContext.h"
 
 #include <unirender/RenderContext.h>
@@ -17,10 +18,21 @@ namespace node
 
 void Draw::Execute(const RenderContext& rc)
 {
-    const int OBJ_ID = 1;
-    auto& conns = m_imports[OBJ_ID].conns;
+    auto& conns = m_imports[ID_OBJ].conns;
     if (conns.empty()) {
         return;
+    }
+
+    std::shared_ptr<ur::Shader> shader = nullptr;
+    pt0::UniformNames uniforms;
+    if (!m_imports[ID_SHADER].conns.empty())
+    {
+        auto node = m_imports[ID_SHADER].conns[0].node.lock();
+        if (node->get_type() == rttr::type::get<Shader>()) {
+            auto snode = std::static_pointer_cast<Shader>(node);
+            shader = snode->GetShader(rc);
+            uniforms = snode->GetUniformNames();
+        }
     }
 
     for (auto& c : conns)
@@ -57,6 +69,10 @@ void Draw::Execute(const RenderContext& rc)
                 pt3::MaterialMgr::PositionUniforms::light_pos.name,
                 pt0::RenderVariant(sm::vec3(0, 2, -4))
             );
+            ctx.AddVar(
+                pt3::MaterialMgr::PositionUniforms::cam_pos.name,
+                pt0::RenderVariant(rc.cam_position)
+            );
             auto& wc = pt3::Blackboard::Instance()->GetWindowContext();
             assert(wc);
             ctx.AddVar(
@@ -69,7 +85,7 @@ void Draw::Execute(const RenderContext& rc)
             );
 
             pt3::RenderSystem::Instance()->DrawModel(
-                *model->GetModel(), model->GetMaterials(), params, ctx
+                *model->GetModel(), model->GetMaterials(), params, ctx, shader, uniforms
             );
         }
     }

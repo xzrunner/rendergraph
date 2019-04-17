@@ -7,21 +7,21 @@ namespace rg
 namespace node
 {
 
-class CamProjMat : public Node
+class ProjectMat : public Node
 {
 public:
-    CamProjMat() { m_exports = {{{ VariableType::Matrix4, "out" }}}; }
+    ProjectMat() { m_exports = {{{ VariableType::Matrix4, "out" }}}; }
     virtual void Execute(const RenderContext& rc) override {}
     RTTR_ENABLE(Node)
-}; // CamProjMat
+}; // ProjectMat
 
-class CamViewMat : public Node
+class ViewMat : public Node
 {
 public:
-    CamViewMat() { m_exports = {{{ VariableType::Matrix4, "out" }}}; }
+    ViewMat() { m_exports = {{{ VariableType::Matrix4, "out" }}}; }
     virtual void Execute(const RenderContext& rc) override {}
     RTTR_ENABLE(Node)
-}; // CamViewMat
+}; // ViewMat
 
 class ModelMat : public Node
 {

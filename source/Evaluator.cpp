@@ -146,11 +146,11 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port
         ret.mat4 = sm::mat4::LookAt(eye.vec3, center.vec3, up.vec3);
     }
     // input
-    else if (node_type == rttr::type::get<node::CamProjMat>())
+    else if (node_type == rttr::type::get<node::ProjectMat>())
     {
         ret.mat4 = rc.cam_proj_mat;
     }
-    else if (node_type == rttr::type::get<node::CamViewMat>())
+    else if (node_type == rttr::type::get<node::ViewMat>())
     {
         ret.mat4 = rc.cam_view_mat;
     }

@@ -17,8 +17,6 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
-
     enum class Type
     {
         Cube = 0,

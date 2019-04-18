@@ -18,8 +18,6 @@ public:
     }
     virtual ~VertexArray();
 
-    virtual void Execute(const RenderContext& rc) override {}
-
     void Draw(const RenderContext& rc) const;
 
     struct VertexAttrib

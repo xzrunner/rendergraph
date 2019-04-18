@@ -16,7 +16,6 @@ public:
     static ShaderVariant Calc(const RenderContext& rc,
         const Node::Port& in_port, ShaderVariant expect, uint32_t& flags);
 
-private:
     static ShaderVariant DefaultValue(VariableType type);
 
 }; // Evaluator

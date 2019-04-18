@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rendergraph/Node.h"
+#include "rendergraph/Evaluator.h"
 
 #include <SM_Vector.h>
 #include <sm_const.h>
@@ -24,7 +25,24 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto a = Evaluator::Calc(rc, m_imports[0], Evaluator::DefaultValue(var.type), flags);
+        auto b = Evaluator::Calc(rc, m_imports[1], Evaluator::DefaultValue(var.type), flags);
+        switch (var.type)
+        {
+        case VariableType::Vector1:
+            var.vec1 = a.vec1 + b.vec1;
+            break;
+        case VariableType::Vector2:
+            var.vec2 = a.vec2 + b.vec2;
+            break;
+        case VariableType::Vector3:
+            var.vec3 = a.vec3 + b.vec3;
+            break;
+        }
+    }
 
     RTTR_ENABLE(Node)
 
@@ -44,7 +62,21 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto a = Evaluator::Calc(rc, m_imports[0], Evaluator::DefaultValue(var.type), flags);
+        auto b = Evaluator::Calc(rc, m_imports[1], Evaluator::DefaultValue(var.type), flags);
+        switch (var.type)
+        {
+        case VariableType::Vector1:
+            var.vec1 = a.vec1 * b.vec1;
+            break;
+        case VariableType::Matrix4:
+            var.mat4 = a.mat4 * b.mat4;
+            break;
+        }
+    }
 
     RTTR_ENABLE(Node)
 
@@ -66,7 +98,22 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto fovy   = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_FOVY],   ShaderVariant(m_fovy),   flags);
+        auto aspect = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_ASPECT], ShaderVariant(m_aspect), flags);
+        auto znear  = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_NEAR],   ShaderVariant(m_znear),  flags);
+        auto zfar   = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_FAR],    ShaderVariant(m_zfar),   flags);
+        var.mat4 = sm::mat4::Perspective(fovy.vec1, aspect.vec1, znear.vec1, zfar.vec1);
+    }
+
+    void SetProps(float fovy, float aspect, float znear, float zfar) {
+        m_fovy   = fovy;
+        m_aspect = aspect;
+        m_znear  = znear;
+        m_zfar   = zfar;
+    }
 
     enum InputID
     {
@@ -76,10 +123,11 @@ public:
         ID_FAR
     };
 
-    float fovy   = 45.0f * SM_DEG_TO_RAD;
-    float aspect = 1.0f;
-    float znear  = 0.1f;
-    float zfar   = 100.0f;
+private:
+    float m_fovy   = 45.0f * SM_DEG_TO_RAD;
+    float m_aspect = 1.0f;
+    float m_znear  = 0.1f;
+    float m_zfar   = 100.0f;
 
     RTTR_ENABLE(Node)
 
@@ -103,7 +151,26 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto left   = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_LEFT],   ShaderVariant(m_left),   flags);
+        auto right  = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_RIGHT],  ShaderVariant(m_right),  flags);
+        auto bottom = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_BOTTOM], ShaderVariant(m_bottom), flags);
+        auto top    = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_TOP],    ShaderVariant(m_top),    flags);
+        auto znear  = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_ZNEAR],  ShaderVariant(m_znear),  flags);
+        auto zfar   = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_ZFAR],   ShaderVariant(m_zfar),   flags);
+        var.mat4 = sm::mat4::Orthographic(left.vec1, right.vec1, bottom.vec1, top.vec1, znear.vec1, zfar.vec1);
+    }
+
+    void SetProps(float left, float right, float bottom, float top, float znear, float zfar) {
+        m_left   = left;
+        m_right  = right;
+        m_bottom = bottom;
+        m_top    = top;
+        m_znear  = znear;
+        m_zfar   = zfar;
+    }
 
     enum InputID
     {
@@ -115,12 +182,13 @@ public:
         ID_ZFAR
     };
 
-    float left   = -10.0f;
-    float right  = 10.0f;
-    float bottom = -10.0f;
-    float top    = 10.0f;
-    float znear  = 1.0f;
-    float zfar   = 7.5f;
+private:
+    float m_left   = -10.0f;
+    float m_right  = 10.0f;
+    float m_bottom = -10.0f;
+    float m_top    = 10.0f;
+    float m_znear  = 1.0f;
+    float m_zfar   = 7.5f;
 
     RTTR_ENABLE(Node)
 
@@ -141,7 +209,20 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto eye    = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_EYE],    ShaderVariant(m_eye),    flags);
+        auto center = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_CENTER], ShaderVariant(m_center), flags);
+        auto up     = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_UP],     ShaderVariant(m_up),     flags);
+        var.mat4 = sm::mat4::LookAt(eye.vec3, center.vec3, up.vec3);
+    }
+
+    void SetProps(const sm::vec3& eye, const sm::vec3& center, const sm::vec3& up) {
+        m_eye    = eye;
+        m_center = center;
+        m_up     = up;
+    }
 
     enum InputID
     {
@@ -150,9 +231,10 @@ public:
         ID_UP,
     };
 
-    sm::vec3 eye;
-    sm::vec3 center;
-    sm::vec3 up = sm::vec3(0, 1, 0);
+private:
+    sm::vec3 m_eye;
+    sm::vec3 m_center;
+    sm::vec3 m_up = sm::vec3(0, 1, 0);
 
     RTTR_ENABLE(Node)
 

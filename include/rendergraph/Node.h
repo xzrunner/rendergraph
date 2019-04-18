@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rendergraph/Variable.h"
+#include "rendergraph/ShaderVariant.h"
 
 #include <rttr/registration>
 
@@ -18,7 +19,9 @@ public:
     Node();
     virtual ~Node() {}
 
-    virtual void Execute(const RenderContext& rc) = 0;
+    virtual void Execute(const RenderContext& rc) {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+        ShaderVariant& var, uint32_t& flags) const {}
 
     auto& GetImports() const { return m_imports; }
     auto& GetExports() const { return m_exports; }

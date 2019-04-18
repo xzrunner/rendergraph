@@ -100,5 +100,13 @@ void Texture::Execute(const RenderContext& rc)
     }
 }
 
+void Texture::Eval(const RenderContext& rc, size_t port_idx,
+                   ShaderVariant& var, uint32_t& flags) const
+{
+    // todo: other texture type
+    var.type = VariableType::Sampler2D;
+    var.id   = m_texid;
+}
+
 }
 }

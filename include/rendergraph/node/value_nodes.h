@@ -20,10 +20,15 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Vector1) {
+            var.vec1 = m_val;
+        }
+    }
 
-    auto& GetValue() const { return m_val; }
-    void  SetValue(float val) { m_val = val; }
+    void SetValue(float val) { m_val = val; }
 
 private:
     float m_val = 0;
@@ -42,10 +47,15 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Vector2) {
+            var.vec2 = m_val;
+        }
+    }
 
-    auto& GetValue() const { return m_val; }
-    void  SetValue(const sm::vec2& val) { m_val = val; }
+    void SetValue(const sm::vec2& val) { m_val = val; }
 
 private:
     sm::vec2 m_val;
@@ -64,10 +74,15 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Vector3) {
+            var.vec3 = m_val;
+        }
+    }
 
-    auto& GetValue() const { return m_val; }
-    void  SetValue(const sm::vec3& val) { m_val = val; }
+    void SetValue(const sm::vec3& val) { m_val = val; }
 
 private:
     sm::vec3 m_val;
@@ -86,10 +101,15 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Vector4) {
+            var.vec4 = m_val;
+        }
+    }
 
-    auto& GetValue() const { return m_val; }
-    void  SetValue(const sm::vec4& val) { m_val = val; }
+    void SetValue(const sm::vec4& val) { m_val = val; }
 
 private:
     sm::vec4 m_val;
@@ -108,10 +128,15 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Matrix2) {
+            var.mat2 = m_val;
+        }
+    }
 
-    auto& GetValue() const { return m_val; }
-    void  SetValue(const sm::mat2& val) { m_val = val; }
+    void SetValue(const sm::mat2& val) { m_val = val; }
 
 private:
     sm::mat2 m_val;
@@ -130,10 +155,15 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Matrix3) {
+            var.mat3 = m_val;
+        }
+    }
 
-    auto& GetValue() const { return m_val; }
-    void  SetValue(const sm::mat3& val) { m_val = val; }
+    void SetValue(const sm::mat3& val) { m_val = val; }
 
 private:
     sm::mat3 m_val;
@@ -152,10 +182,15 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Matrix4) {
+            var.mat4 = m_val;
+        }
+    }
 
-    auto& GetValue() const { return m_val; }
-    void  SetValue(const sm::mat4& val) { m_val = val; }
+    void SetValue(const sm::mat4& val) { m_val = val; }
 
 private:
     sm::mat4 m_val;

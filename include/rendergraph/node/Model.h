@@ -21,8 +21,6 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override {}
-
     auto GetModel() const { return m_model; }
     void SetModel(const std::shared_ptr<model::ModelInstance>& model);
 

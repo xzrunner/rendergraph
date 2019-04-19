@@ -1,5 +1,3 @@
-#pragma once
-
 // resource
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/RenderTarget.h"

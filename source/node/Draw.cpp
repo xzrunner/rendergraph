@@ -48,6 +48,9 @@ void Draw::Execute(const RenderContext& rc)
             auto prim = std::static_pointer_cast<PrimitiveShape>(node);
             switch (prim->GetType())
             {
+            case PrimitiveShape::Type::Quad:
+                rc.rc.RenderQuad();
+                break;
             case PrimitiveShape::Type::Cube:
                 rc.rc.RenderCube();
                 break;

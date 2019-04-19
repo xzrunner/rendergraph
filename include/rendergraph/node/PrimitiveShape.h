@@ -19,14 +19,15 @@ public:
 
     enum class Type
     {
-        Cube = 0,
+        Quad = 0,
+        Cube,
     };
 
     Type GetType() const { return m_type; }
     void SetType(Type type) { m_type = type; }
 
 private:
-    Type m_type = Type::Cube;
+    Type m_type = Type::Quad;
 
     RTTR_ENABLE(Node)
 

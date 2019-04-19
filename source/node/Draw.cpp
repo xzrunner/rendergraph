@@ -1,11 +1,13 @@
 #include "rendergraph/node/Draw.h"
 #include "rendergraph/node/PrimitiveShape.h"
+#include "rendergraph/node/Texture.h"
 #include "rendergraph/node/VertexArray.h"
 #include "rendergraph/node/Model.h"
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/RenderContext.h"
 
 #include <unirender/RenderContext.h>
+#include <painting2/RenderSystem.h>
 #include <painting3/RenderSystem.h>
 #include <painting3/MaterialMgr.h>
 #include <painting3/Blackboard.h>
@@ -55,6 +57,13 @@ void Draw::Execute(const RenderContext& rc)
                 rc.rc.RenderCube();
                 break;
             }
+        }
+        else if (type == rttr::type::get<Texture>())
+        {
+            auto tex = std::static_pointer_cast<Texture>(node);
+            pt2::RenderSystem::DrawTexture(
+                tex->GetWidth(), tex->GetHeight(), tex->GetTexID(), sm::rect(100, 100), sm::Matrix2D()
+            );
         }
         else if (type == rttr::type::get<VertexArray>())
         {

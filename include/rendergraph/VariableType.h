@@ -19,6 +19,7 @@ enum class VariableType
     Vector2,
     Vector3,
     Vector4,
+    Vec4Array,
     Matrix2,
     Matrix3,
     Matrix4,

@@ -5,6 +5,8 @@
 #include <SM_Vector.h>
 #include <SM_Matrix.h>
 
+#include <vector>
+
 namespace rg
 {
 
@@ -19,6 +21,7 @@ public:
         memcpy(this, &var, sizeof(var));
         return *this;
     }
+    ~ShaderVariant() {}
 
     explicit ShaderVariant(VariableType type, int id) : type(type), id(id) {}
     explicit ShaderVariant(float v) : type(VariableType::Vector1), vec1(v) {}
@@ -41,6 +44,7 @@ public:
         sm::mat2 mat2;
         sm::mat3 mat3;
         sm::mat4 mat4;
+        std::vector<sm::vec4> vec4_array;
     };
 
 }; // ShaderVariant

@@ -28,27 +28,17 @@ void RenderTarget::Execute(const RenderContext& rc)
 {
     auto& ur_rc = rc.rc;
 
-    auto& conns = GetImports()[1].conns;
-    if (!conns.empty())
-    {
-        auto tex_node = conns[0].node.lock();
-        if (tex_node && tex_node->get_type() == rttr::type::get<node::Texture>())
-        {
-            auto tex = std::static_pointer_cast<node::Texture>(tex_node);
-            if (tex->GetTexID() == 0) {
-                tex->Execute(rc);
-            }
-
-            m_width  = tex->GetWidth();
-            m_height = tex->GetHeight();
-        }
-    }
-
+    // create fbo
     if (m_fbo != 0) {
         ur_rc.ReleaseRenderTarget(m_fbo);
     }
     m_fbo = ur_rc.CreateRenderTarget(m_fbo);
 
+    // create texture
+    ExecuteTexture(ID_COLOR_TEX, ur_rc);
+    ExecuteTexture(ID_DEPTH_TEX, ur_rc);
+
+    // create rbo
     if (m_enable_rbo_depth && m_width != 0 && m_height != 0)
     {
         if (m_rbo_depth != 0) {
@@ -69,7 +59,14 @@ void RenderTarget::Bind(const RenderContext& rc)
 {
     auto& ur_rc = rc.rc;
 
+    // bind fbo
     ur_rc.BindRenderTarget(m_fbo);
+    // bind texture
+    ur_rc.GetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
+    BindTexture(ID_COLOR_TEX, ur_rc);
+    BindTexture(ID_DEPTH_TEX, ur_rc);
+    ur_rc.SetViewport(0, 0, m_width, m_height);
+    // bind rbo
     if (m_rbo_depth != 0) {
         ur_rc.BindRenderbufferObject(m_rbo_depth, ur::ATTACHMENT_DEPTH);
     }
@@ -77,25 +74,6 @@ void RenderTarget::Bind(const RenderContext& rc)
         ur_rc.BindRenderbufferObject(m_rbo_color, ur::ATTACHMENT_COLOR0);
     }
 
-    auto& conns = GetImports()[1].conns;
-    if (!conns.empty())
-    {
-        auto tex_node = conns[0].node.lock();
-        if (tex_node && tex_node->get_type() == rttr::type::get<node::Texture>())
-        {
-            auto tex = std::static_pointer_cast<node::Texture>(tex_node);
-            assert(tex->GetTexID() != 0);
-    
-            ur::ATTACHMENT_TYPE att_type = ur::ATTACHMENT_COLOR0;
-            if (tex->GetFormat() == node::Texture::Format::Depth) {
-                att_type = ur::ATTACHMENT_DEPTH;
-            }
-            ur_rc.BindRenderTargetTex(tex->GetTexID(), att_type);
-
-            ur_rc.GetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
-            ur_rc.SetViewport(0, 0, m_width, m_height);
-        }
-    }
     if (ur_rc.CheckRenderTargetStatus() == 0) {
         ur_rc.UnbindRenderTarget();
         m_binded = false;
@@ -116,6 +94,57 @@ void RenderTarget::Unbind(const RenderContext& rc)
     ur_rc.UnbindRenderTarget();
 
     ur_rc.SetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
+}
+
+void RenderTarget::ExecuteTexture(int input_idx, ur::RenderContext& rc)
+{
+    auto& conns = GetImports()[input_idx].conns;
+    if (conns.empty()) {
+        return;
+    }
+    auto tex_node = conns[0].node.lock();
+    if (!tex_node || tex_node->get_type() != rttr::type::get<node::Texture>()) {
+        return;
+    }
+
+    auto tex = std::static_pointer_cast<node::Texture>(tex_node);
+    if (tex->GetTexID() == 0) {
+        tex->Execute(rc);
+    }
+
+    uint32_t width  = tex->GetWidth();
+    uint32_t height = tex->GetHeight();
+    if (width != 0 && height != 0)
+    {
+        if (m_width != 0) {
+            assert(width == m_width && height == m_height);
+        } else {
+            m_width  = width;
+            m_height = height;
+        }
+    }
+}
+
+void RenderTarget::BindTexture(int input_idx, ur::RenderContext& rc)
+{
+    auto& conns = GetImports()[input_idx].conns;
+    if (conns.empty()) {
+        return;
+    }
+
+    auto tex_node = conns[0].node.lock();
+    if (!tex_node || tex_node->get_type() != rttr::type::get<node::Texture>()) {
+        return;
+    }
+
+    auto tex = std::static_pointer_cast<node::Texture>(tex_node);
+    assert(tex->GetTexID() != 0);
+
+    ur::ATTACHMENT_TYPE att_type = ur::ATTACHMENT_COLOR0;
+    if (tex->GetFormat() == node::Texture::Format::Depth) {
+        att_type = ur::ATTACHMENT_DEPTH;
+    }
+    rc.BindRenderTargetTex(tex->GetTexID(), att_type);
 }
 
 }

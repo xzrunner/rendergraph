@@ -19,17 +19,8 @@ void Unbind::Execute(const RenderContext& rc)
     if (node)
     {
         auto type = node->get_type();
-        if (type == rttr::type::get<node::RenderTarget>())
-        {
-            auto rt = std::static_pointer_cast<node::RenderTarget>(node);
-            if (rt->IsBinded()) {
-                rc.rc.UnbindRenderTarget();
-                rt->SetBinded(false);
-
-                int x, y, w, h;
-                rt->GetLastViewport(x, y, w, h);
-                rc.rc.SetViewport(x, y, w, h);
-            }
+        if (type == rttr::type::get<node::RenderTarget>()) {
+            std::static_pointer_cast<node::RenderTarget>(node)->Unbind(rc);
         }
     }
 }

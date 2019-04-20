@@ -102,7 +102,7 @@ void Shader::Bind(const RenderContext& rc)
 
     if (!texture_ids.empty()) {
         m_shader->SetUsedTextures(texture_ids);
-        m_shader->Use();
+        m_shader->Use();    // fixme: to call BindTexture()
     }
 }
 

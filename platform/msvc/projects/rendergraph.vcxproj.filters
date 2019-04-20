@@ -68,6 +68,9 @@
     <ClCompile Include="..\..\..\source\RenderSystem.cpp">
       <Filter>system</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\PrimitiveShape.cpp">
+      <Filter>nodes\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">

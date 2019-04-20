@@ -17,6 +17,8 @@ public:
         };
     }
 
+    void Draw(const RenderContext& rc) const;
+
     enum class Type
     {
         Quad = 0,

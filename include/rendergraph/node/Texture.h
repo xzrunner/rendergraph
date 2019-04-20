@@ -7,6 +7,8 @@ namespace rg
 namespace node
 {
 
+class Shader;
+
 class Texture : public Node
 {
 public:
@@ -25,6 +27,10 @@ public:
     virtual void Execute(const RenderContext& rc) override;
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
+
+    void Bind(const RenderContext& rc, int channel);
+
+    void Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const;
 
     void SetFilepath(const std::string& filepath) { m_filepath = filepath; }
     void SetSize(int width, int height) { m_width = width; m_height = height; }

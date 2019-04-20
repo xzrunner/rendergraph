@@ -1,5 +1,7 @@
 #include "rendergraph/node/Texture.h"
+#include "rendergraph/node/Shader.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/RenderSystem.h"
 
 #include <unirender/typedef.h>
 #include <unirender/Blackboard.h>
@@ -106,6 +108,21 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
     // todo: other texture type
     var.type = VariableType::Sampler2D;
     var.id   = m_texid;
+}
+
+void Texture::Bind(const RenderContext& rc, int channel)
+{
+    rc.rc.BindTexture(m_texid, channel);
+}
+
+void Texture::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
+{
+    if (shader) {
+        shader->Bind(rc);
+        rc.rc.RenderCube();
+    } else {
+        RenderSystem::Instance()->DrawTextureToScreen(m_texid);
+    }
 }
 
 }

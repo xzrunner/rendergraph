@@ -11,6 +11,8 @@ namespace rg
 namespace node
 {
 
+class Shader;
+
 class Model : public Node
 {
 public:
@@ -21,10 +23,9 @@ public:
         };
     }
 
-    auto GetModel() const { return m_model; }
-    void SetModel(const std::shared_ptr<model::ModelInstance>& model);
+    void Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const;
 
-    auto& GetMaterials() const { return m_materials; }
+    void SetModel(const std::shared_ptr<model::ModelInstance>& model);
 
 private:
     // todo: copy from CompModel::InitMaterials()

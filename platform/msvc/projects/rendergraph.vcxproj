@@ -56,6 +56,7 @@
     <ClCompile Include="..\..\..\source\node\Draw.cpp" />
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
     <ClCompile Include="..\..\..\source\node\Model.cpp" />
+    <ClCompile Include="..\..\..\source\node\PrimitiveShape.cpp" />
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp" />
     <ClCompile Include="..\..\..\source\node\Shader.cpp" />
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />

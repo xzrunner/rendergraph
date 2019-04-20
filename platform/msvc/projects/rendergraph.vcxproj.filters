@@ -4,7 +4,6 @@
     <ClCompile Include="..\..\..\source\Node.cpp">
       <Filter>dataset</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
     <ClCompile Include="..\..\..\source\RenderGraph.cpp" />
     <ClCompile Include="..\..\..\source\DrawList.cpp">
       <Filter>dataset</Filter>
@@ -19,7 +18,7 @@
       <Filter>nodes\resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\Evaluator.cpp">
-      <Filter>eval</Filter>
+      <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\Cull.cpp">
       <Filter>nodes\state</Filter>
@@ -63,6 +62,12 @@
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp">
       <Filter>nodes\state</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\RegistRTTR.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\RenderSystem.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -83,7 +88,7 @@
       <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\Evaluator.h">
-      <Filter>eval</Filter>
+      <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\Variable.h">
       <Filter>dataset\var</Filter>
@@ -151,6 +156,9 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.h">
       <Filter>nodes\state</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\RenderSystem.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -158,9 +166,6 @@
     </Filter>
     <Filter Include="nodes">
       <UniqueIdentifier>{d8aec64a-33c0-4426-a7d1-60c4284e7d95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="eval">
-      <UniqueIdentifier>{8805e41c-b583-4b9e-a3e6-62b8e2e99c78}</UniqueIdentifier>
     </Filter>
     <Filter Include="dataset\var">
       <UniqueIdentifier>{ccf862a4-de04-4960-b7dc-f056ec2e9f64}</UniqueIdentifier>
@@ -176,6 +181,9 @@
     </Filter>
     <Filter Include="nodes\resource">
       <UniqueIdentifier>{1f31dfc8-c455-4a3a-8e3a-1d7b51118864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{8805e41c-b583-4b9e-a3e6-62b8e2e99c78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

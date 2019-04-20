@@ -5,8 +5,10 @@
 #include "rendergraph/node/Model.h"
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/RenderSystem.h"
 
 #include <unirender/RenderContext.h>
+#include <unirender/Shader.h>
 #include <painting2/RenderSystem.h>
 #include <painting3/RenderSystem.h>
 #include <painting3/MaterialMgr.h>
@@ -61,9 +63,14 @@ void Draw::Execute(const RenderContext& rc)
         else if (type == rttr::type::get<Texture>())
         {
             auto tex = std::static_pointer_cast<Texture>(node);
-            pt2::RenderSystem::DrawTexture(
-                tex->GetWidth(), tex->GetHeight(), tex->GetTexID(), sm::rect(100, 100), sm::Matrix2D()
-            );
+            if (shader) {
+                auto node = m_imports[ID_SHADER].conns[0].node.lock();
+                assert(node && node->get_type() == rttr::type::get<Shader>());
+                std::static_pointer_cast<Shader>(node)->Bind(rc);
+                rc.rc.RenderCube();
+            } else {
+                RenderSystem::Instance()->DrawTextureToScreen(tex->GetTexID());
+            }
         }
         else if (type == rttr::type::get<VertexArray>())
         {

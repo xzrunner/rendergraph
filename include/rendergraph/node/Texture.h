@@ -73,10 +73,13 @@ public:
     void SetWrapping(Wrapping wrap) { m_wrap = wrap; }
     void SetFiltering(Filtering filter) { m_filter = filter; }
 
-    unsigned int GetTexID() const { return m_texid; }
+    Type GetType() const { return m_type; }
+
     int GetWidth() const { return m_width; }
     int GetHeight() const { return m_height; }
     Format GetFormat() const { return m_format; }
+
+    unsigned int GetTexID() const { return m_texid; }
 
 private:
     std::string m_filepath;

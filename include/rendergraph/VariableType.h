@@ -24,6 +24,7 @@ enum class VariableType
     Matrix3,
     Matrix4,
     Sampler2D,
+    SamplerCube,
 };
 
 }

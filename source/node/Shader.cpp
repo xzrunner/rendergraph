@@ -152,6 +152,8 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
             type = VariableType::Matrix4;
         } else if (type_str == "sampler2D") {
             type = VariableType::Sampler2D;
+        } else if (type_str == "samplerCube") {
+            type = VariableType::SamplerCube;
         }
 
         ++ptr;

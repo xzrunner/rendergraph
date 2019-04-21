@@ -51,6 +51,9 @@ ShaderVariant Evaluator::DefaultValue(VariableType type)
     case VariableType::Sampler2D:
         ret = ShaderVariant(VariableType::Sampler2D, 0);
         break;
+    case VariableType::SamplerCube:
+        ret = ShaderVariant(VariableType::SamplerCube, 0);
+        break;
     default:
         assert(0);
     }

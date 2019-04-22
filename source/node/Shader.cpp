@@ -46,7 +46,8 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
     for (auto& u : uniforms)
     {
         m_imports.push_back(u);
-        if (u.type == VariableType::Sampler2D) {
+        if (u.type == VariableType::Sampler2D ||
+            u.type == VariableType::SamplerCube) {
             m_textures.push_back(u.name);
         }
     }
@@ -91,6 +92,7 @@ void Shader::Bind(const RenderContext& rc)
             m_shader->SetMat4(var.name, v.mat4.x);
             break;
         case VariableType::Sampler2D:
+        case VariableType::SamplerCube:
             texture_ids.push_back(v.id);
             break;
         }

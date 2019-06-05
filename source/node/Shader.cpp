@@ -55,7 +55,7 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
 void Shader::Bind(const RenderContext& rc)
 {
-    if (!m_shader) {
+    if (!m_shader || !m_shader->IsValid()) {
         return;
     }
 

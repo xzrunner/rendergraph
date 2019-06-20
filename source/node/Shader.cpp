@@ -71,6 +71,9 @@ void Shader::Bind(const RenderContext& rc)
 
         switch (var.type)
         {
+        case VariableType::Bool:
+            m_shader->SetInt(var.name, v.b ? 1 : 0);
+            break;
         case VariableType::Vector1:
             m_shader->SetFloat(var.name, v.vec1);
             break;
@@ -138,7 +141,9 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
         ++ptr;
         auto& type_str = tokens[ptr];
         VariableType type;
-        if (type_str == "float") {
+        if (type_str == "bool") {
+            type = VariableType::Bool;
+        } else if (type_str == "float") {
             type = VariableType::Vector1;
         } else if (type_str == "vec2") {
             type = VariableType::Vector2;

@@ -27,6 +27,9 @@ ShaderVariant Evaluator::DefaultValue(VariableType type)
     ShaderVariant ret;
     switch (type)
     {
+    case VariableType::Bool:
+        ret = ShaderVariant(false);
+        break;
     case VariableType::Vector1:
         ret = ShaderVariant(0.0f);
         break;

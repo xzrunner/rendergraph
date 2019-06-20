@@ -10,6 +10,33 @@ namespace rg
 namespace node
 {
 
+class Bool : public Node
+{
+public:
+    Bool()
+    {
+        m_exports = {
+            {{ VariableType::Bool, "out" }}
+        };
+    }
+
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Bool) {
+            var.b = m_val;
+        }
+    }
+
+    void SetValue(bool val) { m_val = val; }
+
+private:
+    bool m_val = false;
+
+    RTTR_ENABLE(Node)
+
+}; // Bool
+
 class Vector1 : public Node
 {
 public:

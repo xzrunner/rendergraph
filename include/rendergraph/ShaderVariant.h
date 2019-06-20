@@ -24,6 +24,7 @@ public:
     ~ShaderVariant() {}
 
     explicit ShaderVariant(VariableType type, int id) : type(type), id(id) {}
+    explicit ShaderVariant(bool v) : type(VariableType::Bool), b(v) {}
     explicit ShaderVariant(float v) : type(VariableType::Vector1), vec1(v) {}
     explicit ShaderVariant(const sm::vec2& v) : type(VariableType::Vector2), vec2(v) {}
     explicit ShaderVariant(const sm::vec3& v) : type(VariableType::Vector3), vec3(v) {}
@@ -37,6 +38,7 @@ public:
     union
     {
         int      id;
+        bool     b;
         float    vec1;
         sm::vec2 vec2;
         sm::vec3 vec3;

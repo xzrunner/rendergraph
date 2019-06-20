@@ -71,6 +71,9 @@
     <ClCompile Include="..\..\..\source\node\PrimitiveShape.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ShaderParser.cpp">
+      <Filter>nodes\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -161,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\RenderSystem.h">
       <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h">
+      <Filter>nodes\resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

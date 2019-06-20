@@ -1,4 +1,5 @@
 #include "rendergraph/node/Shader.h"
+#include "rendergraph/node/ShaderParser.h"
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/Variable.h"
 #include "rendergraph/RenderContext.h"
@@ -121,10 +122,13 @@ std::shared_ptr<ur::Shader> Shader::GetShader(const RenderContext& rc)
 
 void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms)
 {
-    std::vector<std::string> tokens;
-
     auto fixed = code;
     cpputil::StringHelper::ReplaceAll(fixed, "\\n", "\n");
+
+    ShaderParser parser(fixed);
+    parser.Parse();
+
+    std::vector<std::string> tokens;
     cpputil::StringHelper::Split(fixed, "\n; ", tokens);
 
     if (tokens.empty()) {
@@ -161,6 +165,8 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
             type = VariableType::Sampler2D;
         } else if (type_str == "samplerCube") {
             type = VariableType::SamplerCube;
+        } else {
+            continue;
         }
 
         ++ptr;

@@ -13,14 +13,9 @@ namespace rg
 class ShaderVariant
 {
 public:
-    ShaderVariant() : type(VariableType::Any) {}
-    ShaderVariant(const ShaderVariant& var) {
-        memcpy(this, &var, sizeof(var));
-    }
-    ShaderVariant& operator = (const ShaderVariant& var) {
-        memcpy(this, &var, sizeof(var));
-        return *this;
-    }
+    ShaderVariant();
+    ShaderVariant(const ShaderVariant& var);
+    ShaderVariant& operator = (const ShaderVariant& var);
     ~ShaderVariant() {}
 
     explicit ShaderVariant(VariableType type, int id) : type(type), id(id) {}
@@ -46,8 +41,10 @@ public:
         sm::mat2 mat2;
         sm::mat3 mat3;
         sm::mat4 mat4;
-        std::vector<sm::vec4> vec4_array;
     };
+
+    // fixme
+    std::vector<sm::vec3> vec3_array;
 
 }; // ShaderVariant
 

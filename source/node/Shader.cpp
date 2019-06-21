@@ -68,9 +68,8 @@ void Shader::Bind(const RenderContext& rc)
         auto& var = m_imports[i].var;
 
         uint32_t flags = 0;
-        auto v = Evaluator::Calc(rc, m_imports[i], var.type, flags);
-
-        switch (var.type)
+        auto v = Evaluator::Calc(rc, m_imports[i], var.type, var.count, flags);
+        switch (v.type)
         {
         case VariableType::Bool:
             m_shader->SetInt(var.name, v.b ? 1 : 0);
@@ -99,10 +98,16 @@ void Shader::Bind(const RenderContext& rc)
         case VariableType::SamplerCube:
             texture_ids.push_back(v.id);
             break;
+        case VariableType::Vec3Array:
+            for (int i = 0, n = v.vec3_array.size(); i < n; ++i) {
+                auto name = var.user_type + "[" + std::to_string(i) + "]." + var.name;
+                m_shader->SetVec3(name, v.vec3_array[i].xyz);
+            }
+            break;
         }
 
         if (flags & Evaluator::FLAG_MODEL_MAT) {
-            m_unif_names.Add(pt0::UniformTypes::ModelMat, var.name);
+            m_unif_names.Add(pt0::UniformTypes::ModelMat, var.GetDisplayName());
         }
     }
 

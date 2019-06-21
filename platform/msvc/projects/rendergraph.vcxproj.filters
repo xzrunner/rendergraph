@@ -74,6 +74,15 @@
     <ClCompile Include="..\..\..\source\node\ShaderParser.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\ScriptEnv.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\input_nodes.cpp">
+      <Filter>nodes\other</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\ShaderVariant.cpp">
+      <Filter>dataset\var</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -168,6 +177,9 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h">
       <Filter>nodes\resource</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\ScriptEnv.h">
+      <Filter>tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -193,6 +205,9 @@
     </Filter>
     <Filter Include="system">
       <UniqueIdentifier>{8805e41c-b583-4b9e-a3e6-62b8e2e99c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{b9d5758f-385d-468c-bf29-b8129dc4ba3d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

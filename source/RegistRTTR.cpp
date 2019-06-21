@@ -74,6 +74,7 @@ REGIST_NODE_TYPE(ViewMat)
 REGIST_NODE_TYPE(ModelMat)
 REGIST_NODE_TYPE(CameraPosition)
 REGIST_NODE_TYPE(LightPosition)
+REGIST_NODE_TYPE(UserScript)
 
 }
 

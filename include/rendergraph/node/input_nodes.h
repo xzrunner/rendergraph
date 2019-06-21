@@ -2,6 +2,7 @@
 
 #include "rendergraph/Node.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/Evaluator.h"
 
 namespace rg
 {
@@ -63,6 +64,22 @@ public:
     }
     RTTR_ENABLE(Node)
 }; // LightPosition
+
+class UserScript : public Node
+{
+public:
+    UserScript() { m_exports = {{{ VariableType::UserType, "out" }}}; }
+
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+        ShaderVariant& var, uint32_t& flags) const override;
+    
+    void SetValue(const std::string& code) { m_code = code; }
+
+private:
+    std::string m_code;
+
+    RTTR_ENABLE(Node)
+}; // UserScript
 
 }
 }

@@ -19,6 +19,13 @@ void UserScript::Eval(const RenderContext& rc, size_t port_idx, ShaderVariant& v
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
         }
         break;
+    case VariableType::Vec4Array:
+        try {
+            var.vec4_array = ScriptEnv::Instance()->GetChai()->eval<std::vector<sm::vec4>>(m_code);
+        } catch (const chaiscript::exception::eval_error &e) {
+            std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
+        }
+        break;
     }
 }
 

@@ -49,6 +49,9 @@ ShaderVariant& ShaderVariant::operator = (const ShaderVariant& var)
     case VariableType::Vec3Array:
         vec3_array = var.vec3_array;
         break;
+    case VariableType::Vec4Array:
+        vec4_array = var.vec4_array;
+        break;
     default:
         assert(0);
     }

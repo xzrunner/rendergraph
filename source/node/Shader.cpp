@@ -104,6 +104,12 @@ void Shader::Bind(const RenderContext& rc)
                 m_shader->SetVec3(name, v.vec3_array[i].xyz);
             }
             break;
+        case VariableType::Vec4Array:
+            for (int i = 0, n = v.vec4_array.size(); i < n; ++i) {
+                auto name = var.user_type + "[" + std::to_string(i) + "]." + var.name;
+                m_shader->SetVec4(name, v.vec4_array[i].xyzw);
+            }
+            break;
         }
 
         if (flags & Evaluator::FLAG_MODEL_MAT) {

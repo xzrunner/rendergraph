@@ -27,6 +27,7 @@ enum class VariableType
     SamplerCube,
 
     Vec3Array,
+    Vec4Array,
 
     UserType,
 };

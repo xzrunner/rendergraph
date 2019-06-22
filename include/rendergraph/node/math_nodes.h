@@ -240,5 +240,123 @@ private:
 
 }; // LookAtMat
 
+class Translate : public Node
+{
+public:
+    Translate()
+    {
+        m_imports = {
+            {{ VariableType::Any, "in" }},
+        };
+        m_exports = {
+            {{ VariableType::Any, "out" }}
+        };
+    }
+
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto input = Evaluator::Calc(rc, m_imports[0], Evaluator::DefaultValue(var.type), flags);
+        switch (var.type)
+        {
+        case VariableType::Vector3:
+            var.vec3 = input.vec3 + m_offset;
+            break;
+        case VariableType::Matrix4:
+            var.mat4 = input.mat4 * sm::mat4::Translated(m_offset.x, m_offset.y, m_offset.z);
+            break;
+        default:
+            assert(0);
+        }
+    }
+
+    void SetOffset(const sm::vec3& offset) { m_offset = offset; }
+
+private:
+    sm::vec3 m_offset;
+
+    RTTR_ENABLE(Node)
+
+}; // Translate
+
+class Rotate : public Node
+{
+public:
+    Rotate()
+    {
+        m_imports = {
+            {{ VariableType::Any, "in" }},
+        };
+        m_exports = {
+            {{ VariableType::Any, "out" }}
+        };
+    }
+
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto input = Evaluator::Calc(rc, m_imports[0], Evaluator::DefaultValue(var.type), flags);
+        switch (input.type)
+        {
+        case VariableType::Matrix4:
+            var.mat4 = input.mat4 * sm::mat4::RotatedAxis(m_axis, m_angle);
+            break;
+        default:
+            assert(0);
+        }
+    }
+
+    void SetAngle(float angle) { m_angle = angle; }
+    void SetAxis(const sm::vec3& axis) { m_axis = axis; }
+
+private:
+    float    m_angle = 0;
+    sm::vec3 m_axis = sm::vec3(1, 0, 0);
+
+    RTTR_ENABLE(Node)
+
+}; // Rotate
+
+class Scale : public Node
+{
+public:
+    Scale()
+    {
+        m_imports = {
+            {{ VariableType::Any, "in" }},
+        };
+        m_exports = {
+            {{ VariableType::Any, "out" }}
+        };
+    }
+
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        auto input = Evaluator::Calc(rc, m_imports[0], Evaluator::DefaultValue(var.type), flags);
+        switch (var.type)
+        {
+        case VariableType::Vector3:
+            for (int i = 0; i < 3; ++i) {
+                var.vec3.xyz[i] = input.vec3.xyz[i] * m_scale.xyz[i];
+            }
+            break;
+        case VariableType::Matrix4:
+            var.mat4 = input.mat4 * sm::mat4::Scaled(m_scale.x, m_scale.y, m_scale.z);
+            break;
+        default:
+            assert(0);
+        }
+    }
+
+    void SetScale(const sm::vec3& scale) { m_scale = scale; }
+
+private:
+    sm::vec3 m_scale;
+
+    RTTR_ENABLE(Node)
+
+}; // Scale
+
 }
 }

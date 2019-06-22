@@ -46,6 +46,7 @@ public:
 
     enum class Format
     {
+        RGBA16,
         RGBA8,
         RGBA4,
         RGB,

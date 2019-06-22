@@ -66,6 +66,9 @@ void Texture::Execute(const RenderContext& rc)
             int format = 0;
             switch (m_format)
             {
+            case Format::RGBA16:
+                format = ur::TEXTURE_RGBA16F;
+                break;
             case Format::RGBA8:
                 format = ur::TEXTURE_RGBA8;
                 break;

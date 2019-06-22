@@ -16,7 +16,10 @@ public:
     {
         m_imports = {
             {{ VariableType::Port,    "prev" }},
-            {{ VariableType::Texture, "color tex" }},
+            {{ VariableType::Texture, "color0 tex" }},
+            {{ VariableType::Texture, "color1 tex" }},
+            {{ VariableType::Texture, "color2 tex" }},
+            {{ VariableType::Texture, "color3 tex" }},
             {{ VariableType::Texture, "depth tex" }}
         };
         m_exports = {
@@ -37,13 +40,16 @@ public:
 
     enum InputID
     {
-        ID_COLOR_TEX = 1,
-        ID_DEPTH_TEX = 2,
+        ID_COLOR0_TEX = 1,
+        ID_COLOR1_TEX = 2,
+        ID_COLOR2_TEX = 3,
+        ID_COLOR3_TEX = 4,
+        ID_DEPTH_TEX  = 5,
     };
 
 private:
     void ExecuteTexture(int input_idx, ur::RenderContext& rc);
-    void BindTexture(int input_idx, ur::RenderContext& rc);
+    bool BindTexture(int input_idx, ur::RenderContext& rc);
 
     void ReleaseRes();
 

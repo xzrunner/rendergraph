@@ -25,7 +25,10 @@ void RenderTarget::Execute(const RenderContext& rc)
     }
 
     // create texture
-    ExecuteTexture(ID_COLOR_TEX, ur_rc);
+    ExecuteTexture(ID_COLOR0_TEX, ur_rc);
+    ExecuteTexture(ID_COLOR1_TEX, ur_rc);
+    ExecuteTexture(ID_COLOR2_TEX, ur_rc);
+    ExecuteTexture(ID_COLOR3_TEX, ur_rc);
     ExecuteTexture(ID_DEPTH_TEX, ur_rc);
 
     // create rbo
@@ -45,7 +48,25 @@ void RenderTarget::Bind(const RenderContext& rc)
     ur_rc.BindRenderTarget(m_fbo);
     // bind texture
     ur_rc.GetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
-    BindTexture(ID_COLOR_TEX, ur_rc);
+    int rt_count = 0;
+    bool tex0 = BindTexture(ID_COLOR0_TEX, ur_rc);
+    if (tex0) { ++rt_count; }
+    bool tex1 = BindTexture(ID_COLOR1_TEX, ur_rc);
+    if (tex1) { ++rt_count; }
+    bool tex2 = BindTexture(ID_COLOR2_TEX, ur_rc);
+    if (tex2) { ++rt_count; }
+    bool tex3 = BindTexture(ID_COLOR3_TEX, ur_rc);
+    if (tex3) { ++rt_count; }
+    if (rt_count > 1)
+    {
+        std::vector<ur::ATTACHMENT_TYPE> list;
+        list.reserve(rt_count);
+        if (tex0) { list.push_back(ur::ATTACHMENT_COLOR0); }
+        if (tex1) { list.push_back(ur::ATTACHMENT_COLOR1); }
+        if (tex2) { list.push_back(ur::ATTACHMENT_COLOR2); }
+        if (tex3) { list.push_back(ur::ATTACHMENT_COLOR3); }
+        ur_rc.SetColorBufferList(list);
+    }
     BindTexture(ID_DEPTH_TEX, ur_rc);
     ur_rc.SetViewport(0, 0, m_width, m_height);
     // bind rbo
@@ -137,26 +158,44 @@ void RenderTarget::ExecuteTexture(int input_idx, ur::RenderContext& rc)
     }
 }
 
-void RenderTarget::BindTexture(int input_idx, ur::RenderContext& rc)
+bool RenderTarget::BindTexture(int input_idx, ur::RenderContext& rc)
 {
     auto& conns = GetImports()[input_idx].conns;
     if (conns.empty()) {
-        return;
+        return false;
     }
 
     auto tex_node = conns[0].node.lock();
     if (!tex_node || tex_node->get_type() != rttr::type::get<node::Texture>()) {
-        return;
+        return false;
     }
 
     auto tex = std::static_pointer_cast<node::Texture>(tex_node);
     assert(tex->GetTexID() != 0);
 
-    ur::ATTACHMENT_TYPE att_type = ur::ATTACHMENT_COLOR0;
-    if (tex->GetFormat() == node::Texture::Format::Depth) {
+    ur::ATTACHMENT_TYPE att_type;
+    switch (input_idx)
+    {
+    case ID_COLOR0_TEX:
+        att_type = ur::ATTACHMENT_COLOR0;
+        break;
+    case ID_COLOR1_TEX:
+        att_type = ur::ATTACHMENT_COLOR1;
+        break;
+    case ID_COLOR2_TEX:
+        att_type = ur::ATTACHMENT_COLOR2;
+        break;
+    case ID_COLOR3_TEX:
+        att_type = ur::ATTACHMENT_COLOR3;
+        break;
+    case ID_DEPTH_TEX:
         att_type = ur::ATTACHMENT_DEPTH;
+        break;
     }
+
     rc.BindRenderTargetTex(tex->GetTexID(), att_type);
+
+    return true;
 }
 
 void RenderTarget::ReleaseRes()

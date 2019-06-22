@@ -64,7 +64,7 @@ void RenderSystem::DrawTextureToScreen(unsigned int tex_id) const
     rc.BindTexture(tex_id, 0);
 
     m_shader->Use();
-    rc.RenderCube();
+    rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_TEX);
 }
 
 void RenderSystem::InitShader()
@@ -73,7 +73,7 @@ void RenderSystem::InitShader()
 
     std::vector<std::string> textures;
     textures.push_back("texture1");
-    CU_VEC<ur::VertexAttrib> va_list;    
+    CU_VEC<ur::VertexAttrib> va_list;
     m_shader = std::make_shared<ur::Shader>(&rc, vert.c_str(), frag.c_str(), textures, va_list, true);
 }
 

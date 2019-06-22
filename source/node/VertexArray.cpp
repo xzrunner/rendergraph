@@ -31,8 +31,13 @@ void VertexArray::Draw(const RenderContext& rc) const
         Init(rc);
     }
 
-    if (m_vao != 0) {
-        rc.rc.DrawArraysVAO(ur::DRAW_TRIANGLES, 0, m_vertex_buf.size() / m_stride, m_vao);
+    if (m_vao != 0)
+    {
+        if (m_index_buf.empty()) {
+            rc.rc.DrawArraysVAO(ur::DRAW_TRIANGLES, 0, m_vertex_buf.size() / m_stride, m_vao);
+        } else {
+            rc.rc.DrawElementsVAO(ur::DRAW_TRIANGLES, 0, m_index_buf.size(), m_vao);
+        }
     }
 }
 

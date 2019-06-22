@@ -12,16 +12,7 @@ namespace node
 
 RenderTarget::~RenderTarget()
 {
-    auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-    if (m_fbo != 0) {
-        rc.ReleaseRenderTarget(m_fbo);
-    }
-    if (m_rbo_depth != 0) {
-        rc.ReleaseRenderbufferObject(m_rbo_depth);
-    }
-    if (m_rbo_color != 0) {
-        rc.ReleaseRenderbufferObject(m_rbo_color);
-    }
+    ReleaseRes();
 }
 
 void RenderTarget::Execute(const RenderContext& rc)
@@ -29,28 +20,19 @@ void RenderTarget::Execute(const RenderContext& rc)
     auto& ur_rc = rc.rc;
 
     // create fbo
-    if (m_fbo != 0) {
-        ur_rc.ReleaseRenderTarget(m_fbo);
+    if (m_fbo == 0) {
+        m_fbo = ur_rc.CreateRenderTarget(m_fbo);
     }
-    m_fbo = ur_rc.CreateRenderTarget(m_fbo);
 
     // create texture
     ExecuteTexture(ID_COLOR_TEX, ur_rc);
     ExecuteTexture(ID_DEPTH_TEX, ur_rc);
 
     // create rbo
-    if (m_enable_rbo_depth && m_width != 0 && m_height != 0)
-    {
-        if (m_rbo_depth != 0) {
-            ur_rc.ReleaseRenderbufferObject(m_rbo_depth);
-        }
+    if (m_enable_rbo_depth && m_width != 0 && m_height != 0 && m_rbo_depth == 0) {
         m_rbo_depth = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_DEPTH_COMPONENT, m_width, m_height);
     }
-    if (m_enable_rbo_color && m_rbo_color == 0 && m_width != 0 && m_height != 0)
-    {
-        if (m_rbo_color != 0) {
-            ur_rc.ReleaseRenderbufferObject(m_rbo_color);
-        }
+    if (m_enable_rbo_color && m_rbo_color == 0 && m_width != 0 && m_height != 0 && m_rbo_color == 0) {
         m_rbo_color = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_RGB8, m_width, m_height);
     }
 }
@@ -94,6 +76,36 @@ void RenderTarget::Unbind(const RenderContext& rc)
     ur_rc.UnbindRenderTarget();
 
     ur_rc.SetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
+}
+
+void RenderTarget::SetSize(uint32_t width, uint32_t height)
+{
+    if (m_width == width && m_height == height) {
+        return;
+    }
+
+    ReleaseRes();
+
+    m_width  = width;
+    m_height = height;
+}
+
+void RenderTarget::EnableDepthRBO()
+{
+    if (m_enable_rbo_depth) {
+        return;
+    }
+
+    m_enable_rbo_depth = true;
+}
+
+void RenderTarget::EnableColorRBO()
+{
+    if (m_enable_rbo_color) {
+        return;
+    }
+
+    m_enable_rbo_color = true;
 }
 
 void RenderTarget::ExecuteTexture(int input_idx, ur::RenderContext& rc)
@@ -145,6 +157,23 @@ void RenderTarget::BindTexture(int input_idx, ur::RenderContext& rc)
         att_type = ur::ATTACHMENT_DEPTH;
     }
     rc.BindRenderTargetTex(tex->GetTexID(), att_type);
+}
+
+void RenderTarget::ReleaseRes()
+{
+    auto& rc = ur::Blackboard::Instance()->GetRenderContext();
+    if (m_fbo != 0) {
+        rc.ReleaseRenderTarget(m_fbo);
+        m_fbo = 0;
+    }
+    if (m_rbo_depth != 0) {
+        rc.ReleaseRenderbufferObject(m_rbo_depth);
+        m_rbo_depth = 0;
+    }
+    if (m_rbo_color != 0) {
+        rc.ReleaseRenderbufferObject(m_rbo_color);
+        m_rbo_color = 0;
+    }
 }
 
 }

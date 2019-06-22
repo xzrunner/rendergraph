@@ -30,13 +30,10 @@ public:
     void Bind(const RenderContext& rc);
     void Unbind(const RenderContext& rc);
 
-    void SetSize(uint32_t width, uint32_t height) {
-        m_width = width;
-        m_height = height;
-    }
+    void SetSize(uint32_t width, uint32_t height);
 
-    void EnableDepthRBO() { m_enable_rbo_depth = true; }
-    void EnableColorRBO() { m_enable_rbo_color = true; }
+    void EnableDepthRBO();
+    void EnableColorRBO();
 
     enum InputID
     {
@@ -47,6 +44,8 @@ public:
 private:
     void ExecuteTexture(int input_idx, ur::RenderContext& rc);
     void BindTexture(int input_idx, ur::RenderContext& rc);
+
+    void ReleaseRes();
 
 private:
     uint32_t m_fbo = 0;

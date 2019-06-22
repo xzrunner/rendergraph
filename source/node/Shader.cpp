@@ -42,8 +42,9 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
     m_imports.erase(m_imports.begin() + 1, m_imports.end());
     std::vector<Variable> uniforms;
-    GetCodeUniforms(m_vert, uniforms);
-    GetCodeUniforms(m_frag, uniforms);
+    std::set<std::string> names;
+    GetCodeUniforms(m_vert, uniforms, names);
+    GetCodeUniforms(m_frag, uniforms, names);
     for (auto& u : uniforms)
     {
         m_imports.push_back(u);
@@ -131,7 +132,8 @@ std::shared_ptr<ur::Shader> Shader::GetShader(const RenderContext& rc)
     return m_shader;
 }
 
-void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms)
+void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms,
+                             std::set<std::string>& unique_names)
 {
     auto fixed = code;
     cpputil::StringHelper::ReplaceAll(fixed, "\\n", "\n");
@@ -140,7 +142,12 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
     parser.Parse();
 
     auto& unifs = parser.GetUniforms();
-    std::copy(unifs.begin(), unifs.end(), std::back_inserter(uniforms));
+    for (auto& u : unifs) {
+        if (unique_names.find(u.name) == unique_names.end()) {
+            uniforms.push_back(u);
+            unique_names.insert(u.name);
+        }
+    }
 }
 
 }

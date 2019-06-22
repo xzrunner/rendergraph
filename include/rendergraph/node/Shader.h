@@ -34,7 +34,8 @@ public:
 
     auto& GetUniformNames() const { return m_unif_names; }
 
-    static void GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms);
+    static void GetCodeUniforms(const std::string& code,
+        std::vector<Variable>& uniforms, std::set<std::string>& unique_names);
 
 private:
     std::string m_vert, m_frag;

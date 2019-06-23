@@ -10,6 +10,33 @@ namespace rg
 namespace node
 {
 
+class Int : public Node
+{
+public:
+    Int()
+    {
+        m_exports = {
+            {{ VariableType::Int, "out" }}
+        };
+    }
+
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+                      ShaderVariant& var, uint32_t& flags) const override
+    {
+        if (var.type == VariableType::Int) {
+            var.i = m_val;
+        }
+    }
+
+    void SetValue(int val) { m_val = val; }
+
+private:
+    int m_val = false;
+
+    RTTR_ENABLE(Node)
+
+}; // Int
+
 class Bool : public Node
 {
 public:

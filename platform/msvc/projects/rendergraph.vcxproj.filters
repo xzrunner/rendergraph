@@ -77,11 +77,17 @@
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp">
       <Filter>tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\input_nodes.cpp">
-      <Filter>nodes\other</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\ShaderVariant.cpp">
       <Filter>dataset\var</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\SetUniform.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\UserScript.cpp">
+      <Filter>nodes\others\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp">
+      <Filter>nodes\others\control flow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -115,13 +121,10 @@
       <Filter>dataset\var</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\value_nodes.h">
-      <Filter>nodes\other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h">
-      <Filter>nodes\other</Filter>
+      <Filter>nodes\others</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\math_nodes.h">
-      <Filter>nodes\other</Filter>
+      <Filter>nodes\others</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\RenderContext.h">
       <Filter>dataset</Filter>
@@ -180,6 +183,21 @@
     <ClInclude Include="..\..\..\include\rendergraph\ScriptEnv.h">
       <Filter>tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\tool_nodes.h">
+      <Filter>nodes\others\control flow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h">
+      <Filter>nodes\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.h">
+      <Filter>nodes\others\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h">
+      <Filter>nodes\others\control flow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -190,9 +208,6 @@
     </Filter>
     <Filter Include="dataset\var">
       <UniqueIdentifier>{ccf862a4-de04-4960-b7dc-f056ec2e9f64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="nodes\other">
-      <UniqueIdentifier>{282905c5-e0c1-4398-8e23-e38d7f5aff06}</UniqueIdentifier>
     </Filter>
     <Filter Include="nodes\state">
       <UniqueIdentifier>{dc7cbfb3-24ed-4cf7-a71b-626d3267f50b}</UniqueIdentifier>
@@ -208,6 +223,15 @@
     </Filter>
     <Filter Include="tools">
       <UniqueIdentifier>{b9d5758f-385d-468c-bf29-b8129dc4ba3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\others">
+      <UniqueIdentifier>{282905c5-e0c1-4398-8e23-e38d7f5aff06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\others\input">
+      <UniqueIdentifier>{24f86301-3661-4bb1-8020-f322a75fa7ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\others\control flow">
+      <UniqueIdentifier>{9626ad6b-74c2-4e14-9c05-92c60a26bfd5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

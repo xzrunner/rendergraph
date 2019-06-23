@@ -10,6 +10,7 @@
 #include "rendergraph/node/Bind.h"
 #include "rendergraph/node/Unbind.h"
 #include "rendergraph/node/Draw.h"
+#include "rendergraph/node/SetUniform.h"
 // state
 #include "rendergraph/node/Viewport.h"
 #include "rendergraph/node/AlphaTest.h"
@@ -23,6 +24,8 @@
 #include "rendergraph/node/value_nodes.h"
 #include "rendergraph/node/math_nodes.h"
 #include "rendergraph/node/input_nodes.h"
+#include "rendergraph/node/UserScript.h"
+#include "rendergraph/node/ForEachLoop.h"
 
 #define REGIST_NODE_TYPE(name)                                \
 	rttr::registration::class_<rg::node::name>("rg::"#name)   \
@@ -44,6 +47,7 @@ REGIST_NODE_TYPE(Clear)
 REGIST_NODE_TYPE(Bind)
 REGIST_NODE_TYPE(Unbind)
 REGIST_NODE_TYPE(Draw)
+REGIST_NODE_TYPE(SetUniform)
 // state
 REGIST_NODE_TYPE(Viewport)
 REGIST_NODE_TYPE(AlphaTest)
@@ -54,6 +58,7 @@ REGIST_NODE_TYPE(ZTest)
 REGIST_NODE_TYPE(ZWrite)
 REGIST_NODE_TYPE(FrontFace)
 // value
+REGIST_NODE_TYPE(Int)
 REGIST_NODE_TYPE(Bool)
 REGIST_NODE_TYPE(Vector1)
 REGIST_NODE_TYPE(Vector2)
@@ -78,6 +83,8 @@ REGIST_NODE_TYPE(ModelMat)
 REGIST_NODE_TYPE(CameraPosition)
 REGIST_NODE_TYPE(LightPosition)
 REGIST_NODE_TYPE(UserScript)
+// tool
+REGIST_NODE_TYPE(ForEachLoop)
 
 }
 

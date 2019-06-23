@@ -243,27 +243,48 @@ private:
 class Translate : public Node
 {
 public:
+    enum InputID
+    {
+        I_IN = 0,
+        I_OFFSET,
+
+        I_MAX_NUM
+    };
+
+    enum OutputID
+    {
+        O_OUT = 0,
+
+        O_MAX_NUM
+    };
+
+public:
     Translate()
     {
-        m_imports = {
-            {{ VariableType::Any, "in" }},
-        };
-        m_exports = {
-            {{ VariableType::Any, "out" }}
-        };
+        m_imports.resize(I_MAX_NUM);
+        m_imports[I_IN]     = {{ VariableType::Any,     "in" }};
+        m_imports[I_OFFSET] = {{ VariableType::Vector3, "offset" }};
+
+        m_exports.resize(O_MAX_NUM);
+        m_exports[O_OUT]    = {{ VariableType::Any,     "out" }};
     }
 
     virtual void Eval(const RenderContext& rc, size_t port_idx,
                       ShaderVariant& var, uint32_t& flags) const override
     {
-        auto input = Evaluator::Calc(rc, m_imports[0], Evaluator::DefaultValue(var.type), flags);
+        auto input = Evaluator::Calc(rc, m_imports[I_IN], Evaluator::DefaultValue(var.type), flags);
+        sm::vec3 offset = m_offset;
+        if (!m_imports[I_OFFSET].conns.empty()) {
+            auto offset_var = Evaluator::Calc(rc, m_imports[I_OFFSET], Evaluator::DefaultValue(VariableType::Vector3), flags);
+            offset = offset_var.vec3;
+        }
         switch (var.type)
         {
         case VariableType::Vector3:
-            var.vec3 = input.vec3 + m_offset;
+            var.vec3 = input.vec3 + offset;
             break;
         case VariableType::Matrix4:
-            var.mat4 = input.mat4 * sm::mat4::Translated(m_offset.x, m_offset.y, m_offset.z);
+            var.mat4 = input.mat4 * sm::mat4::Translated(offset.x, offset.y, offset.z);
             break;
         default:
             assert(0);

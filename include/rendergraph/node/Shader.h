@@ -14,13 +14,18 @@ namespace node
 class Shader : public Node
 {
 public:
+    enum OutputID
+    {
+        O_OUT = 0,
+
+        O_MAX_NUM
+    };
+
+public:
     Shader()
     {
-        m_imports = {
-            {{ VariableType::Port, "prev" }}
-        };
         m_exports = {
-            {{ VariableType::Port, "next" }}
+            {{ VariableType::Shader, "out" }}
         };
     }
 
@@ -34,8 +39,14 @@ public:
 
     auto& GetUniformNames() const { return m_unif_names; }
 
+    void SetUniformValue(const std::string& key, const ShaderVariant& val);
+
     static void GetCodeUniforms(const std::string& code,
         std::vector<Variable>& uniforms, std::set<std::string>& unique_names);
+
+private:
+    void SetUniformValue(const Variable& key, const ShaderVariant& val,
+        std::vector<uint32_t>& texture_ids);
 
 private:
     std::string m_vert, m_frag;

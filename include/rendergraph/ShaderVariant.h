@@ -18,7 +18,8 @@ public:
     ShaderVariant& operator = (const ShaderVariant& var);
     ~ShaderVariant() {}
 
-    explicit ShaderVariant(VariableType type, int id) : type(type), id(id) {}
+    explicit ShaderVariant(VariableType type, int id) : type(type), i(id) {}
+    explicit ShaderVariant(int v) : type(VariableType::Int), i(v) {}
     explicit ShaderVariant(bool v) : type(VariableType::Bool), b(v) {}
     explicit ShaderVariant(float v) : type(VariableType::Vector1), vec1(v) {}
     explicit ShaderVariant(const sm::vec2& v) : type(VariableType::Vector2), vec2(v) {}
@@ -32,7 +33,7 @@ public:
 
     union
     {
-        int      id;
+        int      i;
         bool     b;
         float    vec1;
         sm::vec2 vec2;
@@ -41,6 +42,7 @@ public:
         sm::mat2 mat2;
         sm::mat3 mat3;
         sm::mat4 mat4;
+        unsigned int res_id;
     };
 
     // fixme

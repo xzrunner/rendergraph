@@ -110,7 +110,7 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
 {
     // todo: other texture type
     var.type = VariableType::Sampler2D;
-    var.id   = m_texid;
+    var.res_id = m_texid;
 }
 
 void Texture::Bind(const RenderContext& rc, int channel)

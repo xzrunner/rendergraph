@@ -257,7 +257,9 @@ void ShaderParser::ParseVariable(Variable& var)
     Token token;
     Expect(ShaderToken::String, token = m_tokenizer.NextToken());
     auto type = token.Data();
-    if (type == "bool") {
+    if (type == "int") {
+        var.type = VariableType::Int;
+    } else if (type == "bool") {
         var.type = VariableType::Bool;
     } else if (type == "float") {
         var.type = VariableType::Vector1;

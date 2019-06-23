@@ -20,7 +20,10 @@ ShaderVariant& ShaderVariant::operator = (const ShaderVariant& var)
     {
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
-        id = var.id;
+        res_id = var.res_id;
+        break;
+    case VariableType::Int:
+        i = var.i;
         break;
     case VariableType::Bool:
         b = var.b;

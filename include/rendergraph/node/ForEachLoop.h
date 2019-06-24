@@ -4,6 +4,9 @@
 
 namespace rg
 {
+
+class DrawList;
+
 namespace node
 {
 
@@ -29,37 +32,19 @@ public:
     };
 
 public:
-    ForEachLoop()
-    {
-        m_imports.resize(I_MAX_NUM);
-        m_imports[I_PREV]      = {{ VariableType::Port, "prev" }};
-        m_imports[I_ARRAY]     = {{ VariableType::Any,  "array" }};
-
-        m_exports.resize(O_MAX_NUM);
-        m_exports[O_NEXT]          = {{ VariableType::Port, "next" }};
-        m_exports[O_ARRAY_ELEMENT] = {{ VariableType::Any,  "array_element" }};
-        m_exports[O_ARRAY_INDEX]   = {{ VariableType::Any,  "array_index" }};
-        m_exports[O_LOOP_BODY]     = {{ VariableType::Port, "loop_body" }};
-    }
+    ForEachLoop();
+    virtual ~ForEachLoop();
 
     virtual void Execute(const RenderContext& rc) override;
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
 
-    //void SetProps(int i_begin, int i_end) {
-    //    m_index_begin = i_begin;
-    //    m_index_end   = i_end;
-    //    m_index_curr  = 0;
-    //}
-
 private:
-    //int m_index_begin = 0;
-    //int m_index_end   = 0;
+    mutable int m_index_curr = 0;
 
-    //int m_index_max = 0;
+    ShaderVariant m_array_var;
 
     std::unique_ptr<DrawList> m_body_dlist;
-    mutable int m_index_curr = 0;
 
     RTTR_ENABLE(Node)
 

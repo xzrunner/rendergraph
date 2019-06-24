@@ -32,7 +32,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\tool_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\value_nodes.h" />

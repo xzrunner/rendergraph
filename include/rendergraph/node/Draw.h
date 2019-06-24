@@ -13,9 +13,9 @@ public:
     Draw()
     {
         m_imports = {
-            {{ VariableType::Port, "prev" }},
-            {{ VariableType::Any,  "obj" }},
-            {{ VariableType::Any,  "shader" }}
+            {{ VariableType::Port,   "prev" }},
+            {{ VariableType::Any,    "obj" }},
+            {{ VariableType::Shader, "shader" }}
         };
         m_exports = {
             {{ VariableType::Port, "next" }}

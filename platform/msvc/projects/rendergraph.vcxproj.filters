@@ -186,9 +186,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.h">
       <Filter>nodes\op</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\tool_nodes.h">
-      <Filter>nodes\others\control flow</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h">
       <Filter>nodes\others</Filter>
     </ClInclude>

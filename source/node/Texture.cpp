@@ -19,7 +19,18 @@ Texture::~Texture()
     }
 }
 
-void Texture::Execute(const RenderContext& rc)
+void Texture::Eval(const RenderContext& rc, size_t port_idx,
+                   ShaderVariant& var, uint32_t& flags) const
+{
+    if (port_idx == O_OUT)
+    {
+        // todo: other texture type
+        var.type = VariableType::Sampler2D;
+        var.res_id = m_texid;
+    }
+}
+
+void Texture::Init(const RenderContext& rc)
 {
     if (m_texid != 0) {
         return;
@@ -103,14 +114,6 @@ void Texture::Execute(const RenderContext& rc)
             break;
         }
     }
-}
-
-void Texture::Eval(const RenderContext& rc, size_t port_idx,
-                   ShaderVariant& var, uint32_t& flags) const
-{
-    // todo: other texture type
-    var.type = VariableType::Sampler2D;
-    var.res_id = m_texid;
 }
 
 void Texture::Bind(const RenderContext& rc, int channel)

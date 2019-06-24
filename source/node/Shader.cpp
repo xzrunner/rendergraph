@@ -13,21 +13,6 @@ namespace rg
 namespace node
 {
 
-void Shader::Execute(const RenderContext& rc)
-{
-    if (!m_shader && !m_vert.empty() && !m_frag.empty())
-    {
-        CU_VEC<ur::VertexAttrib> va_list;
-
-        auto vert = m_vert, frag = m_frag;
-        cpputil::StringHelper::ReplaceAll(vert, "\\n", "\n");
-        cpputil::StringHelper::ReplaceAll(frag, "\\n", "\n");
-        m_shader = std::make_shared<ur::Shader>(
-            &rc.rc, vert.c_str(), frag.c_str(), m_textures, va_list, true
-        );
-    }
-}
-
 void Shader::SetCodes(const std::string& vert, const std::string& frag)
 {
     if (m_vert == vert && m_frag == frag) {
@@ -57,6 +42,9 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
 void Shader::Bind(const RenderContext& rc)
 {
+    if (!m_shader) {
+        Init(rc);
+    }
     if (!m_shader || !m_shader->IsValid()) {
         return;
     }
@@ -64,7 +52,7 @@ void Shader::Bind(const RenderContext& rc)
     m_shader->Use();
 
     std::vector<uint32_t> texture_ids;
-    for (int i = 1, n = m_imports.size(); i < n; ++i)
+    for (int i = 0, n = m_imports.size(); i < n; ++i)
     {
         auto& key = m_imports[i].var;
 
@@ -86,13 +74,21 @@ void Shader::Bind(const RenderContext& rc)
 std::shared_ptr<ur::Shader> Shader::GetShader(const RenderContext& rc)
 {
     if (!m_shader) {
-        Execute(rc);
+        Init(rc);
     }
     return m_shader;
 }
 
-void Shader::SetUniformValue(const std::string& key, const ShaderVariant& val)
+void Shader::SetUniformValue(const RenderContext& rc, const std::string& key, 
+                             const ShaderVariant& val)
 {
+    if (!m_shader) {
+        Init(rc);
+    }
+    if (!m_shader || !m_shader->IsValid()) {
+        return;
+    }
+
     int key_idx = -1;
     for (int i = 0, n = m_imports.size(); i < n; ++i) {
         if (m_imports[i].var.name == key) {
@@ -124,6 +120,21 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
             uniforms.push_back(u);
             unique_names.insert(u.name);
         }
+    }
+}
+
+void Shader::Init(const RenderContext& rc)
+{
+    if (!m_shader && !m_vert.empty() && !m_frag.empty())
+    {
+        CU_VEC<ur::VertexAttrib> va_list;
+
+        auto vert = m_vert, frag = m_frag;
+        cpputil::StringHelper::ReplaceAll(vert, "\\n", "\n");
+        cpputil::StringHelper::ReplaceAll(frag, "\\n", "\n");
+        m_shader = std::make_shared<ur::Shader>(
+            &rc.rc, vert.c_str(), frag.c_str(), m_textures, va_list, true
+            );
     }
 }
 

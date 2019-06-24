@@ -12,23 +12,38 @@ namespace node
 class RenderTarget : public Node
 {
 public:
+    enum InputID
+    {
+        I_COLOR_TEX0 = 0,
+        I_COLOR_TEX1,
+        I_COLOR_TEX2,
+        I_COLOR_TEX3,
+        I_DEPTH_TEX,
+
+        I_MAX_NUM
+    };
+
+    enum OutputID
+    {
+        O_OUT = 0,
+
+        O_MAX_NUM
+    };
+
+public:
     RenderTarget()
     {
-        m_imports = {
-            {{ VariableType::Port,    "prev" }},
-            {{ VariableType::Texture, "color0 tex" }},
-            {{ VariableType::Texture, "color1 tex" }},
-            {{ VariableType::Texture, "color2 tex" }},
-            {{ VariableType::Texture, "color3 tex" }},
-            {{ VariableType::Texture, "depth tex" }}
-        };
-        m_exports = {
-            {{ VariableType::Port, "next" }}
-        };
+        m_imports.resize(I_MAX_NUM);
+        m_imports[I_COLOR_TEX0] = {{ VariableType::Texture, "col0" }};
+        m_imports[I_COLOR_TEX1] = {{ VariableType::Texture, "col1" }};
+        m_imports[I_COLOR_TEX2] = {{ VariableType::Texture, "col2" }};
+        m_imports[I_COLOR_TEX3] = {{ VariableType::Texture, "col3" }};
+        m_imports[I_DEPTH_TEX]  = {{ VariableType::Texture, "depth"  }};
+
+        m_exports.resize(O_MAX_NUM);
+        m_exports[O_OUT] = {{ VariableType::RenderTarget, "out" }};
     }
     virtual ~RenderTarget();
-
-    virtual void Execute(const RenderContext& rc) override;
 
     void Bind(const RenderContext& rc);
     void Unbind(const RenderContext& rc);
@@ -38,17 +53,10 @@ public:
     void EnableDepthRBO();
     void EnableColorRBO();
 
-    enum InputID
-    {
-        ID_COLOR0_TEX = 1,
-        ID_COLOR1_TEX = 2,
-        ID_COLOR2_TEX = 3,
-        ID_COLOR3_TEX = 4,
-        ID_DEPTH_TEX  = 5,
-    };
-
 private:
-    void ExecuteTexture(int input_idx, ur::RenderContext& rc);
+    void Init(const RenderContext& rc);
+
+    void InitTexture(int input_idx, ur::RenderContext& rc);
     bool BindTexture(int input_idx, ur::RenderContext& rc);
 
     void ReleaseRes();

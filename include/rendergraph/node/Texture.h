@@ -12,21 +12,25 @@ class Shader;
 class Texture : public Node
 {
 public:
+    enum OutputID
+    {
+        O_OUT = 0,
+
+        O_MAX_NUM
+    };
+
+public:
     Texture()
     {
-        m_imports = {
-            {{ VariableType::Port, "prev" }}
-        };
-        m_exports = {
-            {{ VariableType::Port,    "next" }},
-            {{ VariableType::Texture, "tex" }}
-        };
+        m_exports.resize(O_MAX_NUM);
+        m_exports[O_OUT] = {{ VariableType::Texture, "out" }};
     }
     virtual ~Texture();
 
-    virtual void Execute(const RenderContext& rc) override;
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
+
+    void Init(const RenderContext& rc);
 
     void Bind(const RenderContext& rc, int channel);
 

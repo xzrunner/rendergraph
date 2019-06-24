@@ -15,33 +15,12 @@ RenderTarget::~RenderTarget()
     ReleaseRes();
 }
 
-void RenderTarget::Execute(const RenderContext& rc)
-{
-    auto& ur_rc = rc.rc;
-
-    // create fbo
-    if (m_fbo == 0) {
-        m_fbo = ur_rc.CreateRenderTarget(m_fbo);
-    }
-
-    // create texture
-    ExecuteTexture(ID_COLOR0_TEX, ur_rc);
-    ExecuteTexture(ID_COLOR1_TEX, ur_rc);
-    ExecuteTexture(ID_COLOR2_TEX, ur_rc);
-    ExecuteTexture(ID_COLOR3_TEX, ur_rc);
-    ExecuteTexture(ID_DEPTH_TEX, ur_rc);
-
-    // create rbo
-    if (m_enable_rbo_depth && m_width != 0 && m_height != 0 && m_rbo_depth == 0) {
-        m_rbo_depth = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_DEPTH_COMPONENT, m_width, m_height);
-    }
-    if (m_enable_rbo_color && m_rbo_color == 0 && m_width != 0 && m_height != 0 && m_rbo_color == 0) {
-        m_rbo_color = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_RGB8, m_width, m_height);
-    }
-}
-
 void RenderTarget::Bind(const RenderContext& rc)
 {
+    if (m_fbo == 0) {
+        Init(rc);
+    }
+
     auto& ur_rc = rc.rc;
 
     // bind fbo
@@ -49,13 +28,13 @@ void RenderTarget::Bind(const RenderContext& rc)
     // bind texture
     ur_rc.GetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
     int rt_count = 0;
-    bool tex0 = BindTexture(ID_COLOR0_TEX, ur_rc);
+    bool tex0 = BindTexture(I_COLOR_TEX0, ur_rc);
     if (tex0) { ++rt_count; }
-    bool tex1 = BindTexture(ID_COLOR1_TEX, ur_rc);
+    bool tex1 = BindTexture(I_COLOR_TEX1, ur_rc);
     if (tex1) { ++rt_count; }
-    bool tex2 = BindTexture(ID_COLOR2_TEX, ur_rc);
+    bool tex2 = BindTexture(I_COLOR_TEX2, ur_rc);
     if (tex2) { ++rt_count; }
-    bool tex3 = BindTexture(ID_COLOR3_TEX, ur_rc);
+    bool tex3 = BindTexture(I_COLOR_TEX3, ur_rc);
     if (tex3) { ++rt_count; }
     if (rt_count > 1)
     {
@@ -67,7 +46,7 @@ void RenderTarget::Bind(const RenderContext& rc)
         if (tex3) { list.push_back(ur::ATTACHMENT_COLOR3); }
         ur_rc.SetColorBufferList(list);
     }
-    BindTexture(ID_DEPTH_TEX, ur_rc);
+    BindTexture(I_DEPTH_TEX, ur_rc);
     ur_rc.SetViewport(0, 0, m_width, m_height);
     // bind rbo
     if (m_rbo_depth != 0) {
@@ -129,7 +108,32 @@ void RenderTarget::EnableColorRBO()
     m_enable_rbo_color = true;
 }
 
-void RenderTarget::ExecuteTexture(int input_idx, ur::RenderContext& rc)
+void RenderTarget::Init(const RenderContext& rc)
+{
+    auto& ur_rc = rc.rc;
+
+    // create fbo
+    if (m_fbo == 0) {
+        m_fbo = ur_rc.CreateRenderTarget(m_fbo);
+    }
+
+    // create texture
+    InitTexture(I_COLOR_TEX0, ur_rc);
+    InitTexture(I_COLOR_TEX1, ur_rc);
+    InitTexture(I_COLOR_TEX2, ur_rc);
+    InitTexture(I_COLOR_TEX3, ur_rc);
+    InitTexture(I_DEPTH_TEX, ur_rc);
+
+    // create rbo
+    if (m_enable_rbo_depth && m_width != 0 && m_height != 0 && m_rbo_depth == 0) {
+        m_rbo_depth = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_DEPTH_COMPONENT, m_width, m_height);
+    }
+    if (m_enable_rbo_color && m_rbo_color == 0 && m_width != 0 && m_height != 0 && m_rbo_color == 0) {
+        m_rbo_color = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_RGB8, m_width, m_height);
+    }
+}
+
+void RenderTarget::InitTexture(int input_idx, ur::RenderContext& rc)
 {
     auto& conns = GetImports()[input_idx].conns;
     if (conns.empty()) {
@@ -141,9 +145,7 @@ void RenderTarget::ExecuteTexture(int input_idx, ur::RenderContext& rc)
     }
 
     auto tex = std::static_pointer_cast<node::Texture>(tex_node);
-    if (tex->GetTexID() == 0) {
-        tex->Execute(rc);
-    }
+    tex->Init(rc);
 
     uint32_t width  = tex->GetWidth();
     uint32_t height = tex->GetHeight();
@@ -176,19 +178,19 @@ bool RenderTarget::BindTexture(int input_idx, ur::RenderContext& rc)
     ur::ATTACHMENT_TYPE att_type;
     switch (input_idx)
     {
-    case ID_COLOR0_TEX:
+    case I_COLOR_TEX0:
         att_type = ur::ATTACHMENT_COLOR0;
         break;
-    case ID_COLOR1_TEX:
+    case I_COLOR_TEX1:
         att_type = ur::ATTACHMENT_COLOR1;
         break;
-    case ID_COLOR2_TEX:
+    case I_COLOR_TEX2:
         att_type = ur::ATTACHMENT_COLOR2;
         break;
-    case ID_COLOR3_TEX:
+    case I_COLOR_TEX3:
         att_type = ur::ATTACHMENT_COLOR3;
         break;
-    case ID_DEPTH_TEX:
+    case I_DEPTH_TEX:
         att_type = ur::ATTACHMENT_DEPTH;
         break;
     }

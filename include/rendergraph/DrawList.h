@@ -1,5 +1,6 @@
 #pragma once
 
+#include "rendergraph/Node.h"
 #include "rendergraph/typedef.h"
 
 #include <vector>
@@ -12,13 +13,15 @@ class RenderContext;
 class DrawList
 {
 public:
-    DrawList(const NodePtr& node);
     DrawList(const std::vector<NodePtr>& all_nodes);
 
     bool Draw(const RenderContext& rc, NodePtr end = nullptr) const;
 
+    static void GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& nodes);
+    static void GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& nodes);
+
 private:
-    void PrepareNodes(const NodePtr& node);
+    //void PrepareNodes(const NodePtr& end_node);
     void TopologicalSorting();
 
 private:

@@ -42,6 +42,12 @@ public:
 		PortAddr(const PortAddr& addr)
 			: node(addr.node), idx(addr.idx) {}
 
+        bool operator == (const PortAddr& p) const
+        {
+            return node.lock() == p.node.lock()
+                && idx == p.idx;
+        }
+
 		std::weak_ptr<Node> node;
 		int idx = -1;
 	};

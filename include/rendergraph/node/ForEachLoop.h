@@ -58,6 +58,7 @@ private:
 
     //int m_index_max = 0;
 
+    std::unique_ptr<DrawList> m_body_dlist;
     mutable int m_index_curr = 0;
 
     RTTR_ENABLE(Node)

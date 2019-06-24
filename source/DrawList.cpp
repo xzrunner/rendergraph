@@ -4,20 +4,55 @@
 #include <assert.h>
 
 #include <stack>
+#include <queue>
 
 namespace rg
 {
-
-DrawList::DrawList(const NodePtr& node)
-{
-    PrepareNodes(node);
-    TopologicalSorting();
-}
 
 DrawList::DrawList(const std::vector<NodePtr>& all_nodes)
     : m_nodes(all_nodes)
 {
     TopologicalSorting();
+}
+
+void DrawList::GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& nodes)
+{
+    std::queue<NodePtr> buf;
+    buf.push(src);
+
+    while (!buf.empty())
+    {
+        auto n = buf.front(); buf.pop();
+        nodes.push_back(n);
+        for (auto& port : n->GetImports()) {
+            if (port.var.type == VariableType::Port) {
+                for (auto& conn : port.conns) {
+                    buf.push(conn.node.lock());
+                }
+            }
+        }
+    }
+}
+
+void DrawList::GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& nodes)
+{
+    std::queue<NodePtr> buf;
+    for (auto& conn : src.conns) {
+        buf.push(conn.node.lock());
+    }
+
+    while (!buf.empty())
+    {
+        auto n = buf.front(); buf.pop();
+        nodes.push_back(n);
+        for (auto& port : n->GetExports()) {
+            if (port.var.type == VariableType::Port) {
+                for (auto& conn : port.conns) {
+                    buf.push(conn.node.lock());
+                }
+            }
+        }
+    }
 }
 
 bool DrawList::Draw(const RenderContext& rc, NodePtr end) const
@@ -36,18 +71,55 @@ bool DrawList::Draw(const RenderContext& rc, NodePtr end) const
     return finished;
 }
 
-void DrawList::PrepareNodes(const NodePtr& node)
-{
-    m_nodes.push_back(node);
-
-    auto& conns = node->GetImports()[0].conns;
-    for (auto& c : conns) {
-        auto prev = c.node.lock();
-        if (prev) {
-            PrepareNodes(prev);
-        }
-    }
-}
+//void DrawList::PrepareNodes(const NodePtr& end_node)
+//{
+//    // main path
+//    std::vector<NodePtr> main_path;
+//
+//    std::queue<NodePtr> buf;
+//    buf.push(end_node);
+//    while (!buf.empty())
+//    {
+//        auto n = buf.front(); buf.pop();
+//        main_path.push_back(n);
+//        for (auto& port : n->GetImports()) {
+//            if (port.var.type == VariableType::Port) {
+//                for (auto& conn : port.conns) {
+//                    buf.push(conn.node.lock());
+//                }
+//            }
+//        }
+//    }
+//
+//    // sub paths
+//    std::set<NodePtr> nodes_set;
+//    for (auto& n : main_path) {
+//        nodes_set.insert(n);
+//    }
+//    for (auto& n : main_path) 
+//    {
+//        std::queue<NodePtr> buf;
+//        buf.push(n);
+//        while (!buf.empty())
+//        {
+//            auto n = buf.front(); buf.pop();
+//            nodes_set.insert(n);
+//            for (auto& port : n->GetExports()) {
+//                if (port.var.type == VariableType::Port) {
+//                    for (auto& conn : port.conns) {
+//                        auto cnode = conn.node.lock();
+//                        if (nodes_set.find(cnode) == nodes_set.end()) {
+//                            buf.push(cnode);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
+//    m_nodes.clear();
+//    std::copy(nodes_set.begin(), nodes_set.end(), std::back_inserter(m_nodes));
+//}
 
 void DrawList::TopologicalSorting()
 {

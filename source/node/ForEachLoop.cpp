@@ -13,6 +13,11 @@ void ForEachLoop::Execute(const RenderContext& rc)
         return;
     }
 
+    // Build Body DList
+    std::vector<NodePtr> nodes;
+    DrawList::GetSubsequentNodes(m_exports[O_LOOP_BODY], nodes);
+    m_body_dlist = std::make_unique<DrawList>(nodes);
+
     auto array_node = m_imports[I_ARRAY].conns[0].node.lock();
     auto array_node_type = array_node->get_type();
     if (array_node_type == rttr::type::get<UserScript>())
@@ -38,6 +43,8 @@ void ForEachLoop::Execute(const RenderContext& rc)
         case VariableType::Vec3Array:
         {
             m_index_curr = 0;
+            for (int n = m_array_var.vec3_array.size(); m_index_curr < n; ++m_index_curr) {
+                m_body_dlist->Draw(rc);
             for (int n = var.vec3_array.size(); m_index_curr < n; ++m_index_curr) {
                 for (auto& conn : m_exports[O_LOOP_BODY].conns) {
                     conn.node.lock()->Execute(rc);

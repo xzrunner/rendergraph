@@ -40,12 +40,13 @@ public:
 
     virtual void Execute(const RenderContext& rc) override;
 
-    void SetVarName(const std::string& var_name) {
-        m_var_name = var_name;
-    }
+    void SetVarName(const std::string& name) { m_var_name = name; }
+    void SetVarType(VariableType type) { m_var_type = type; }
 
 private:
     std::string m_var_name;
+
+    VariableType m_var_type = VariableType::Any;
 
     RTTR_ENABLE(Node)
 

@@ -9,7 +9,7 @@ namespace node
 
 void SetUniform::Execute(const RenderContext& rc)
 {
-    if (m_var_name.empty()) {
+    if (m_var_name.empty() || m_var_type == VariableType::Any) {
         return;
     }
 
@@ -26,10 +26,9 @@ void SetUniform::Execute(const RenderContext& rc)
     auto shader = std::static_pointer_cast<Shader>(shader_node);
 
     uint32_t flags = 0;
-    auto& in_port = m_imports[I_VALUE];
-    auto expected = Evaluator::DefaultValue(in_port.var.type);
-    auto val = Evaluator::Calc(rc, in_port, expected, flags);
-    shader->SetUniformValue(m_var_name, val);
+    auto expected = Evaluator::DefaultValue(m_var_type);
+    auto val = Evaluator::Calc(rc, m_imports[I_VALUE], expected, flags);
+    shader->SetUniformValue(rc, m_var_name, val);
 }
 
 }

@@ -331,8 +331,8 @@ public:
     void SetAxis(const sm::vec3& axis) { m_axis = axis; }
 
 private:
-    float    m_angle = 0;
-    sm::vec3 m_axis = sm::vec3(1, 0, 0);
+    float    m_angle = 0;                 // rad
+    sm::vec3 m_axis = sm::vec3(1, 0, 0);  // normalized
 
     RTTR_ENABLE(Node)
 

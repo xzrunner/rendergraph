@@ -18,6 +18,20 @@ void UserScript::Eval(const RenderContext& rc, size_t port_idx, ShaderVariant& v
 
     switch (var.type)
     {
+    case VariableType::Vec1Array:
+        try {
+            var.vec1_array = ScriptEnv::Instance()->GetChai()->eval<std::vector<float>>(code);
+        } catch (const chaiscript::exception::eval_error &e) {
+            std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
+        }
+        break;
+    case VariableType::Vec2Array:
+        try {
+            var.vec2_array = ScriptEnv::Instance()->GetChai()->eval<std::vector<sm::vec2>>(code);
+        } catch (const chaiscript::exception::eval_error &e) {
+            std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
+        }
+        break;
     case VariableType::Vec3Array:
         try {
             var.vec3_array = ScriptEnv::Instance()->GetChai()->eval<std::vector<sm::vec3>>(code);

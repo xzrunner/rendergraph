@@ -19,13 +19,18 @@ ScriptEnv::ScriptEnv()
 {
     m_chai = std::make_unique<chaiscript::ChaiScript>();
 
-    // types
+    // math
+    m_chai->add(chaiscript::user_type<sm::vec2>(), "vec2");
+    m_chai->add(chaiscript::constructor<sm::vec2(float x, float y)>(), "vec2");
+    m_chai->add(chaiscript::fun(&sm::vec2::operator=), "=");
 
     m_chai->add(chaiscript::user_type<sm::vec3>(), "vec3");
     m_chai->add(chaiscript::constructor<sm::vec3(float x, float y, float z)>(), "vec3");
+    m_chai->add(chaiscript::fun(&sm::vec3::operator=), "=");
 
     m_chai->add(chaiscript::user_type<sm::vec4>(), "vec4");
     m_chai->add(chaiscript::constructor<sm::vec4(float x, float y, float z, float w)>(), "vec4");
+    m_chai->add(chaiscript::fun(&sm::vec4::operator=), "=");
 
     m_chai->add(chaiscript::user_type<sm::mat4>(), "mat4");
     m_chai->add(chaiscript::constructor<sm::mat4()>(), "mat4");
@@ -48,6 +53,8 @@ ScriptEnv::ScriptEnv()
 
     // for return vector
     m_chai->add(chaiscript::vector_conversion<std::vector<int>>());
+    m_chai->add(chaiscript::vector_conversion<std::vector<float>>());
+    m_chai->add(chaiscript::vector_conversion<std::vector<sm::vec2>>());
     m_chai->add(chaiscript::vector_conversion<std::vector<sm::vec3>>());
     m_chai->add(chaiscript::vector_conversion<std::vector<sm::vec4>>());
 

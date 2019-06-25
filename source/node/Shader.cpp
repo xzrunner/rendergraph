@@ -79,7 +79,7 @@ std::shared_ptr<ur::Shader> Shader::GetShader(const ur::RenderContext& ur_rc)
     return m_shader;
 }
 
-void Shader::SetUniformValue(const ur::RenderContext& ur_rc, const std::string& key, 
+void Shader::SetUniformValue(const ur::RenderContext& ur_rc, const std::string& key,
                              const ShaderVariant& val)
 {
     if (!m_shader) {
@@ -172,6 +172,18 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v,
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
         texture_ids.push_back(v.res_id);
+        break;
+    case VariableType::Vec1Array:
+        for (int i = 0, n = v.vec1_array.size(); i < n; ++i) {
+            auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
+            m_shader->SetFloat(name, v.vec1_array[i]);
+        }
+        break;
+    case VariableType::Vec2Array:
+        for (int i = 0, n = v.vec2_array.size(); i < n; ++i) {
+            auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
+            m_shader->SetVec2(name, v.vec2_array[i].xy);
+        }
         break;
     case VariableType::Vec3Array:
         for (int i = 0, n = v.vec3_array.size(); i < n; ++i) {

@@ -20,6 +20,8 @@ public:
     enum class ReturnType
     {
         Void = 0,
+        Vec1Array,
+        Vec2Array,
         Vec3Array,
         Vec4Array,
     };

@@ -47,6 +47,12 @@ void ForEachLoop::Execute(const RenderContext& rc)
         auto ret_type = std::static_pointer_cast<UserScript>(array_node)->GetRetType();
         switch (ret_type)
         {
+        case UserScript::ReturnType::Vec1Array:
+            m_array_var.type = VariableType::Vec1Array;
+            break;
+        case UserScript::ReturnType::Vec2Array:
+            m_array_var.type = VariableType::Vec2Array;
+            break;
         case UserScript::ReturnType::Vec3Array:
             m_array_var.type = VariableType::Vec3Array;
             break;
@@ -61,10 +67,34 @@ void ForEachLoop::Execute(const RenderContext& rc)
         array_node->Eval(rc, UserScript::O_OUT, m_array_var, flags);
         switch (m_array_var.type)
         {
+        case VariableType::Vec1Array:
+        {
+            m_index_curr = 0;
+            for (int n = m_array_var.vec1_array.size(); m_index_curr < n; ++m_index_curr) {
+                m_body_dlist->Draw(rc);
+            }
+        }
+            break;
+        case VariableType::Vec2Array:
+        {
+            m_index_curr = 0;
+            for (int n = m_array_var.vec2_array.size(); m_index_curr < n; ++m_index_curr) {
+                m_body_dlist->Draw(rc);
+            }
+        }
+            break;
         case VariableType::Vec3Array:
         {
             m_index_curr = 0;
             for (int n = m_array_var.vec3_array.size(); m_index_curr < n; ++m_index_curr) {
+                m_body_dlist->Draw(rc);
+            }
+        }
+            break;
+        case VariableType::Vec4Array:
+        {
+            m_index_curr = 0;
+            for (int n = m_array_var.vec4_array.size(); m_index_curr < n; ++m_index_curr) {
                 m_body_dlist->Draw(rc);
             }
         }
@@ -85,6 +115,16 @@ void ForEachLoop::Eval(const RenderContext& rc, size_t port_idx,
     case O_ARRAY_ELEMENT:
         switch (m_array_var.type)
         {
+        case VariableType::Vec1Array:
+            assert(m_index_curr >= 0 && m_index_curr < static_cast<int>(m_array_var.vec1_array.size()));
+            var.type = VariableType::Vector1;
+            var.vec1 = m_array_var.vec1_array[m_index_curr];
+            break;
+        case VariableType::Vec2Array:
+            assert(m_index_curr >= 0 && m_index_curr < static_cast<int>(m_array_var.vec2_array.size()));
+            var.type = VariableType::Vector2;
+            var.vec2 = m_array_var.vec2_array[m_index_curr];
+            break;
         case VariableType::Vec3Array:
             assert(m_index_curr >= 0 && m_index_curr < static_cast<int>(m_array_var.vec3_array.size()));
             var.type = VariableType::Vector3;

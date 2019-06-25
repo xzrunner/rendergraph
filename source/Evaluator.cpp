@@ -74,8 +74,17 @@ ShaderVariant Evaluator::DefaultValue(VariableType type, int count)
         assert(count > 1);
         switch (type)
         {
+        case VariableType::Vector1:
+            ret.type = VariableType::Vec1Array;
+            break;
+        case VariableType::Vector2:
+            ret.type = VariableType::Vec2Array;
+            break;
         case VariableType::Vector3:
             ret.type = VariableType::Vec3Array;
+            break;
+        case VariableType::Vector4:
+            ret.type = VariableType::Vec4Array;
             break;
         default:
             assert(0);

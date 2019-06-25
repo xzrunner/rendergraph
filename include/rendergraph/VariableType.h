@@ -28,6 +28,8 @@ enum class VariableType
     Sampler2D,
     SamplerCube,
 
+    Vec1Array,
+    Vec2Array,
     Vec3Array,
     Vec4Array,
 

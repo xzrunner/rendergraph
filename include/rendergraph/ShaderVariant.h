@@ -46,6 +46,8 @@ public:
     };
 
     // fixme
+    std::vector<float>    vec1_array;
+    std::vector<sm::vec2> vec2_array;
     std::vector<sm::vec3> vec3_array;
     std::vector<sm::vec4> vec4_array;
 

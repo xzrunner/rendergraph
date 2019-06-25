@@ -182,6 +182,10 @@ void ExpressionParser::ParseVariable(Variable& var)
         var.type = VariableType::Matrix3;
     } else if (type == "mat4") {
         var.type = VariableType::Matrix4;
+    } else if (type == "vec1[]") {
+        var.type = VariableType::Vec1Array;
+    } else if (type == "vec2[]") {
+        var.type = VariableType::Vec2Array;
     } else if (type == "vec3[]") {
         var.type = VariableType::Vec3Array;
     } else if (type == "vec4[]") {

@@ -4,7 +4,7 @@
 
 #include <painting0/UniformNames.h>
 
-namespace ur { class Shader; }
+namespace ur { class Shader; class RenderContext; }
 
 namespace rg
 {
@@ -32,18 +32,18 @@ public:
 
     void Bind(const RenderContext& rc);
 
-    std::shared_ptr<ur::Shader> GetShader(const RenderContext& rc);
+    std::shared_ptr<ur::Shader> GetShader(const ur::RenderContext& ur_rc);
 
     auto& GetUniformNames() const { return m_unif_names; }
 
-    void SetUniformValue(const RenderContext& rc, const std::string& key, 
+    void SetUniformValue(const ur::RenderContext& ur_rc, const std::string& key,
         const ShaderVariant& val);
 
     static void GetCodeUniforms(const std::string& code,
         std::vector<Variable>& uniforms, std::set<std::string>& unique_names);
 
 private:
-    void Init(const RenderContext& rc);
+    void Init(const ur::RenderContext& ur_rc);
 
     void SetUniformValue(const Variable& key, const ShaderVariant& val,
         std::vector<uint32_t>& texture_ids);

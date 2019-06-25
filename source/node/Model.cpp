@@ -43,7 +43,7 @@ void Model::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
     std::shared_ptr<ur::Shader> ur_shader = nullptr;
     pt0::UniformNames uniforms;
     if (shader) {
-        ur_shader = shader->GetShader(rc);
+        ur_shader = shader->GetShader(rc.rc);
         uniforms  = shader->GetUniformNames();
     }
     pt3::RenderSystem::Instance()->DrawModel(

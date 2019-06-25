@@ -1,6 +1,7 @@
 #include "rendergraph/node/SetUniform.h"
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/Evaluator.h"
+#include "rendergraph/RenderContext.h"
 
 namespace rg
 {
@@ -28,7 +29,7 @@ void SetUniform::Execute(const RenderContext& rc)
     uint32_t flags = 0;
     auto expected = Evaluator::DefaultValue(m_var_type);
     auto val = Evaluator::Calc(rc, m_imports[I_VALUE], expected, flags);
-    shader->SetUniformValue(rc, m_var_name, val);
+    shader->SetUniformValue(rc.rc, m_var_name, val);
 }
 
 }

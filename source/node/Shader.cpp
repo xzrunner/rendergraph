@@ -43,7 +43,7 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 void Shader::Bind(const RenderContext& rc)
 {
     if (!m_shader) {
-        Init(rc);
+        Init(rc.rc);
     }
     if (!m_shader || !m_shader->IsValid()) {
         return;
@@ -71,19 +71,19 @@ void Shader::Bind(const RenderContext& rc)
     }
 }
 
-std::shared_ptr<ur::Shader> Shader::GetShader(const RenderContext& rc)
+std::shared_ptr<ur::Shader> Shader::GetShader(const ur::RenderContext& ur_rc)
 {
     if (!m_shader) {
-        Init(rc);
+        Init(ur_rc);
     }
     return m_shader;
 }
 
-void Shader::SetUniformValue(const RenderContext& rc, const std::string& key, 
+void Shader::SetUniformValue(const ur::RenderContext& ur_rc, const std::string& key, 
                              const ShaderVariant& val)
 {
     if (!m_shader) {
-        Init(rc);
+        Init(ur_rc);
     }
     if (!m_shader || !m_shader->IsValid()) {
         return;
@@ -108,10 +108,10 @@ void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
 void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms,
                              std::set<std::string>& unique_names)
 {
-    auto fixed = code;
-    cpputil::StringHelper::ReplaceAll(fixed, "\\n", "\n");
+    auto formated = code;
+    cpputil::StringHelper::ReplaceAll(formated, "\\n", "\n");
 
-    ShaderParser parser(fixed);
+    ShaderParser parser(formated);
     parser.Parse();
 
     auto& unifs = parser.GetUniforms();
@@ -123,7 +123,7 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
     }
 }
 
-void Shader::Init(const RenderContext& rc)
+void Shader::Init(const ur::RenderContext& ur_rc)
 {
     if (!m_shader && !m_vert.empty() && !m_frag.empty())
     {
@@ -133,8 +133,8 @@ void Shader::Init(const RenderContext& rc)
         cpputil::StringHelper::ReplaceAll(vert, "\\n", "\n");
         cpputil::StringHelper::ReplaceAll(frag, "\\n", "\n");
         m_shader = std::make_shared<ur::Shader>(
-            &rc.rc, vert.c_str(), frag.c_str(), m_textures, va_list, true
-            );
+            const_cast<ur::RenderContext*>(&ur_rc), vert.c_str(), frag.c_str(), m_textures, va_list, true
+        );
     }
 }
 

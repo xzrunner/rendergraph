@@ -26,6 +26,7 @@
 #include "rendergraph/node/input_nodes.h"
 #include "rendergraph/node/UserScript.h"
 #include "rendergraph/node/ForEachLoop.h"
+#include "rendergraph/node/CustomExpression.h"
 
 #define REGIST_NODE_TYPE(name)                                \
 	rttr::registration::class_<rg::node::name>("rg::"#name)   \
@@ -83,8 +84,10 @@ REGIST_NODE_TYPE(ModelMat)
 REGIST_NODE_TYPE(CameraPosition)
 REGIST_NODE_TYPE(LightPosition)
 REGIST_NODE_TYPE(UserScript)
-// tool
+// control flow
 REGIST_NODE_TYPE(ForEachLoop)
+// script
+REGIST_NODE_TYPE(CustomExpression)
 
 }
 

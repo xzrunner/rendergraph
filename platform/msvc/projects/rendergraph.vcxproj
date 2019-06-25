@@ -20,6 +20,8 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\BlendFunc.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Cull.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\ExpressionParser.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Draw.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.h" />
@@ -58,6 +60,8 @@
     <ClCompile Include="..\..\..\source\node\BlendFunc.cpp" />
     <ClCompile Include="..\..\..\source\node\Clear.cpp" />
     <ClCompile Include="..\..\..\source\node\Cull.cpp" />
+    <ClCompile Include="..\..\..\source\node\CustomExpression.cpp" />
+    <ClCompile Include="..\..\..\source\node\ExpressionParser.cpp" />
     <ClCompile Include="..\..\..\source\node\Draw.cpp" />
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp" />
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />

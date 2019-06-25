@@ -89,6 +89,12 @@
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp">
       <Filter>nodes\others\control flow</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\CustomExpression.cpp">
+      <Filter>nodes\others\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ExpressionParser.cpp">
+      <Filter>nodes\others\script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -195,6 +201,12 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h">
       <Filter>nodes\others\control flow</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ExpressionParser.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -229,6 +241,9 @@
     </Filter>
     <Filter Include="nodes\others\control flow">
       <UniqueIdentifier>{9626ad6b-74c2-4e14-9c05-92c60a26bfd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\others\script">
+      <UniqueIdentifier>{a806f4e3-83ec-49fc-b682-520ffa580682}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

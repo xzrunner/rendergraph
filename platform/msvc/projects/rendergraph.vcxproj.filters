@@ -83,9 +83,6 @@
     <ClCompile Include="..\..\..\source\node\SetUniform.cpp">
       <Filter>nodes\op</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\UserScript.cpp">
-      <Filter>nodes\others\input</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp">
       <Filter>nodes\others\control flow</Filter>
     </ClCompile>
@@ -93,6 +90,9 @@
       <Filter>nodes\others\script</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\ExpressionParser.cpp">
+      <Filter>nodes\others\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\UserScript.cpp">
       <Filter>nodes\others\script</Filter>
     </ClCompile>
   </ItemGroup>
@@ -195,9 +195,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h">
       <Filter>nodes\others</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.h">
-      <Filter>nodes\others\input</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h">
       <Filter>nodes\others\control flow</Filter>
     </ClInclude>
@@ -205,6 +202,9 @@
       <Filter>nodes\others\script</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ExpressionParser.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.h">
       <Filter>nodes\others\script</Filter>
     </ClInclude>
   </ItemGroup>
@@ -235,9 +235,6 @@
     </Filter>
     <Filter Include="nodes\others">
       <UniqueIdentifier>{282905c5-e0c1-4398-8e23-e38d7f5aff06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="nodes\others\input">
-      <UniqueIdentifier>{24f86301-3661-4bb1-8020-f322a75fa7ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="nodes\others\control flow">
       <UniqueIdentifier>{9626ad6b-74c2-4e14-9c05-92c60a26bfd5}</UniqueIdentifier>

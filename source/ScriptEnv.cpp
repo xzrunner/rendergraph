@@ -39,16 +39,16 @@ ScriptEnv::ScriptEnv()
     // Shader
     m_chai->add(chaiscript::user_type<node::Shader>(), "Shader");
     m_chai->add(
-      chaiscript::fun<std::function<void(node::Shader& shader, const std::string& key, const sm::mat4& val)>>(
-        [&](node::Shader& shader, const std::string& key, const sm::mat4& val) {
+      chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val)>>(
+        [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val) {
         auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            shader.SetUniformValue(rc, key, ShaderVariant(val));
+            shader->SetUniformValue(rc, key, ShaderVariant(val));
         }), "set_uniform");
     m_chai->add(
-      chaiscript::fun<std::function<void(node::Shader& shader, const std::string& key, const sm::vec3& val)>>(
-        [&](node::Shader& shader, const std::string& key, const sm::vec3& val) {
+      chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val)>>(
+        [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val) {
         auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            shader.SetUniformValue(rc, key, ShaderVariant(val));
+            shader->SetUniformValue(rc, key, ShaderVariant(val));
         }), "set_uniform");
 
     // for return vector

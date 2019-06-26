@@ -1,6 +1,7 @@
 #include "rendergraph/node/CustomExpression.h"
 #include "rendergraph/node/ExpressionParser.h"
 #include "rendergraph/node/Shader.h"
+#include "rendergraph/node/UserScript.h"
 #include "rendergraph/ScriptEnv.h"
 
 #include <cpputil/StringHelper.h>
@@ -25,12 +26,47 @@ void CustomExpression::Execute(const RenderContext& rc)
 
         if (port.var.type == VariableType::Shader)
         {
-            auto shader = std::static_pointer_cast<node::Shader>(port.conns[0].node.lock());
-            chai->add(chaiscript::var(std::ref(*shader)), port.var.name);
+            auto node = port.conns[0].node.lock();
+            assert(node->get_type() == rttr::type::get<node::Shader>());
+            auto shader = std::static_pointer_cast<node::Shader>(node);
+            chai->add(chaiscript::var(shader), port.var.name);
+        }
+        else if (port.var.type == VariableType::Vec1Array)
+        {
+            auto node = port.conns[0].node.lock();
+            assert(node->get_type() == rttr::type::get<node::UserScript>());
+            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(port.var.type).vec1_array;
+            chai->add(chaiscript::var(vec), port.var.name);
+        }
+        else if (port.var.type == VariableType::Vec2Array)
+        {
+            auto node = port.conns[0].node.lock();
+            assert(node->get_type() == rttr::type::get<node::UserScript>());
+            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(port.var.type).vec2_array;
+            chai->add(chaiscript::var(vec), port.var.name);
         }
         else if (port.var.type == VariableType::Vec3Array)
         {
-            // todo
+            auto node = port.conns[0].node.lock();
+            assert(node->get_type() == rttr::type::get<node::UserScript>());
+            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(port.var.type).vec3_array;
+
+            // without:     m_chai->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<sm::vec3>>("Vec3Vector"));
+            //std::vector<chaiscript::Boxed_Value> chai_vec;
+            //chai_vec.reserve(vec.size());
+            //for (auto& v : vec) {
+            //    chai_vec.push_back(chaiscript::var(v));
+            //}
+            //chai->add(chaiscript::var(chai_vec), port.var.name);
+
+            chai->add(chaiscript::var(vec), port.var.name);
+        }
+        else if (port.var.type == VariableType::Vec4Array)
+        {
+            auto node = port.conns[0].node.lock();
+            assert(node->get_type() == rttr::type::get<node::UserScript>());
+            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(port.var.type).vec4_array;
+            chai->add(chaiscript::var(vec), port.var.name);
         }
     }
 

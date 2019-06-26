@@ -58,6 +58,12 @@ ScriptEnv::ScriptEnv()
     m_chai->add(chaiscript::vector_conversion<std::vector<sm::vec3>>());
     m_chai->add(chaiscript::vector_conversion<std::vector<sm::vec4>>());
 
+    // for std::vector []
+    m_chai->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<float>>("Vec1Vector"));
+    m_chai->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<sm::vec2>>("Vec2Vector"));
+    m_chai->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<sm::vec3>>("Vec3Vector"));
+    m_chai->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<sm::vec4>>("Vec4Vector"));
+
     // functions
 
     m_chai->add(

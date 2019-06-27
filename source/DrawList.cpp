@@ -96,7 +96,7 @@ bool DrawList::Draw(const RenderContext& rc, NodePtr end) const
 //    for (auto& n : main_path) {
 //        nodes_set.insert(n);
 //    }
-//    for (auto& n : main_path) 
+//    for (auto& n : main_path)
 //    {
 //        std::queue<NodePtr> buf;
 //        buf.push(n);
@@ -116,7 +116,7 @@ bool DrawList::Draw(const RenderContext& rc, NodePtr end) const
 //            }
 //        }
 //    }
-//    
+//
 //    m_nodes.clear();
 //    std::copy(nodes_set.begin(), nodes_set.end(), std::back_inserter(m_nodes));
 //}
@@ -129,19 +129,23 @@ void DrawList::TopologicalSorting()
     for (int i = 0, n = m_nodes.size(); i < n; ++i)
     {
         auto& node = m_nodes[i];
-        auto input_port = node->GetImports()[0];
-        if (input_port.conns.empty()) {
-            continue;
-        }
+        auto& imports = node->GetImports();
+        for (auto& input_port : imports)
+        {
+            if (input_port.var.type != rg::VariableType::Port ||
+                input_port.conns.empty()) {
+                continue;
+            }
 
-        assert(input_port.conns.size() == 1);
-        auto from = input_port.conns[0].node.lock();
-        assert(from);
-        for (int j = 0, m = m_nodes.size(); j < m; ++j) {
-            if (from == m_nodes[j]) {
-                in_deg[i]++;
-                out_nodes[j].push_back(i);
-                break;
+            assert(input_port.conns.size() == 1);
+            auto from = input_port.conns[0].node.lock();
+            assert(from);
+            for (int j = 0, m = m_nodes.size(); j < m; ++j) {
+                if (from == m_nodes[j]) {
+                    in_deg[i]++;
+                    out_nodes[j].push_back(i);
+                    break;
+                }
             }
         }
     }

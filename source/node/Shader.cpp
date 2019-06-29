@@ -6,6 +6,7 @@
 
 #include <unirender/Shader.h>
 #include <unirender/VertexAttrib.h>
+#include <unirender/RenderContext.h>
 #include <cpputil/StringHelper.h>
 
 namespace rg
@@ -66,6 +67,7 @@ void Shader::Bind(const RenderContext& rc)
     }
 
     if (!texture_ids.empty()) {
+        assert(m_textures.size() == texture_ids.size());
         m_shader->SetUsedTextures(texture_ids);
         m_shader->Use();    // fixme: to call BindTexture()
     }
@@ -79,7 +81,7 @@ std::shared_ptr<ur::Shader> Shader::GetShader(const ur::RenderContext& ur_rc)
     return m_shader;
 }
 
-void Shader::SetUniformValue(const ur::RenderContext& ur_rc, const std::string& key,
+void Shader::SetUniformValue(ur::RenderContext& ur_rc, const std::string& key,
                              const ShaderVariant& val)
 {
     if (!m_shader) {
@@ -103,6 +105,20 @@ void Shader::SetUniformValue(const ur::RenderContext& ur_rc, const std::string& 
 
     std::vector<uint32_t> texture_ids;
     SetUniformValue(m_imports[key_idx].var, val, texture_ids);
+
+    if (!texture_ids.empty())
+    {
+        assert(texture_ids.size() == 1);
+        int tex_channel = -1;
+        for (int i = 0, n = m_textures.size(); i < n; ++i) {
+            if (m_textures[i] == m_imports[key_idx].var.name) {
+                tex_channel = i;
+                break;
+            }
+        }
+        assert(tex_channel != -1);
+        ur_rc.BindTexture(texture_ids[0], tex_channel);
+    }
 }
 
 void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms,

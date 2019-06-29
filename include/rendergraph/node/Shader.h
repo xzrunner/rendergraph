@@ -36,7 +36,7 @@ public:
 
     auto& GetUniformNames() const { return m_unif_names; }
 
-    void SetUniformValue(const ur::RenderContext& ur_rc, const std::string& key,
+    void SetUniformValue(ur::RenderContext& ur_rc, const std::string& key,
         const ShaderVariant& val);
 
     static void GetCodeUniforms(const std::string& code,

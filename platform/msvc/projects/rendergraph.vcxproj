@@ -25,6 +25,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Draw.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Group.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\math_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Model.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="..\..\..\source\node\Draw.cpp" />
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp" />
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
+    <ClCompile Include="..\..\..\source\node\Group.cpp" />
     <ClCompile Include="..\..\..\source\node\Model.cpp" />
     <ClCompile Include="..\..\..\source\node\PrimitiveShape.cpp" />
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp" />

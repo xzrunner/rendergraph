@@ -95,6 +95,9 @@
     <ClCompile Include="..\..\..\source\node\UserScript.cpp">
       <Filter>nodes\others\script</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Group.cpp">
+      <Filter>nodes\others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -206,6 +209,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.h">
       <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Group.h">
+      <Filter>nodes\others</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

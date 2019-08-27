@@ -12,7 +12,7 @@ namespace node
 //////////////////////////////////////////////////////////////////////////
 
 ShaderTokenizer::ShaderTokenizer(const std::string& str)
-    : lexer::Tokenizer<ShaderToken::Type>(str, "\"", '\\')
+    : lexer::Tokenizer<ShaderToken::Type>(str.c_str(), str.c_str() + str.length(), "\"", '\\')
     , m_skip_eol(true)
 {
 }

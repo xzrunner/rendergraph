@@ -12,7 +12,7 @@ namespace node
 //////////////////////////////////////////////////////////////////////////
 
 ExpressionTokenizer::ExpressionTokenizer(const std::string& str)
-    : lexer::Tokenizer<ExpressionToken::Type>(str, "\"", '\\')
+    : lexer::Tokenizer<ExpressionToken::Type>(str.c_str(), str.c_str() + str.length(), "\"", '\\')
     , m_skip_eol(true)
 {
 }

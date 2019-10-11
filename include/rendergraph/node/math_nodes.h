@@ -284,7 +284,7 @@ public:
             var.vec3 = input.vec3 + offset;
             break;
         case VariableType::Matrix4:
-            var.mat4 = input.mat4 * sm::mat4::Translated(offset.x, offset.y, offset.z);
+            var.mat4 = sm::mat4::Translated(offset.x, offset.y, offset.z) * input.mat4;
             break;
         default:
             assert(0);
@@ -320,7 +320,7 @@ public:
         switch (input.type)
         {
         case VariableType::Matrix4:
-            var.mat4 = input.mat4 * sm::mat4::RotatedAxis(m_axis, m_angle);
+            var.mat4 = sm::mat4::RotatedAxis(m_axis, m_angle) * input.mat4;
             break;
         default:
             assert(0);
@@ -363,7 +363,7 @@ public:
             }
             break;
         case VariableType::Matrix4:
-            var.mat4 = input.mat4 * sm::mat4::Scaled(m_scale.x, m_scale.y, m_scale.z);
+            var.mat4 = sm::mat4::Scaled(m_scale.x, m_scale.y, m_scale.z) * input.mat4;
             break;
         default:
             assert(0);

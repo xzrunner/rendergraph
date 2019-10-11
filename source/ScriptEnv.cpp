@@ -99,13 +99,13 @@ ScriptEnv::ScriptEnv()
     m_chai->add(
       chaiscript::fun<std::function<sm::mat4(const sm::mat4& mt, const sm::vec3& offset)>>(
         [](const sm::mat4& mt, const sm::vec3& offset) {
-            return mt * sm::mat4::Translated(offset.x, offset.y, offset.z);
+            return sm::mat4::Translated(offset.x, offset.y, offset.z) * mt;
         }), "translate");
 
     m_chai->add(
       chaiscript::fun<std::function<sm::mat4(const sm::mat4& mt, float angle, const sm::vec3& axis)>>(
         [](const sm::mat4& mt, float angle, const sm::vec3& axis) {
-            return mt * sm::mat4::RotatedAxis(axis, angle);
+            return sm::mat4::RotatedAxis(axis, angle) * mt;
         }), "rotate");
 
     m_chai->add(
@@ -121,7 +121,7 @@ ScriptEnv::ScriptEnv()
     m_chai->add(
       chaiscript::fun<std::function<sm::mat4(const sm::mat4& mt, const sm::vec3& scale)>>(
         [](const sm::mat4& mt, const sm::vec3& scale) {
-            return mt * sm::mat4::Scaled(scale.x, scale.y, scale.z);
+            return sm::mat4::Scaled(scale.x, scale.y, scale.z) * mt;
         }), "scale");
 
     m_chai->add(

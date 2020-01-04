@@ -18,7 +18,6 @@ namespace node
 void Model::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
 {
 	pt3::RenderParams params;
-	params.type = pt3::RenderParams::DRAW_MESH;
 
     pt0::RenderContext ctx;
     ctx.AddVar(

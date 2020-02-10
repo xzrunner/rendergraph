@@ -3,11 +3,11 @@
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/Variable.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/Utility.h"
 
 #include <unirender/Shader.h>
 #include <unirender/VertexAttrib.h>
 #include <unirender/RenderContext.h>
-#include <cpputil/StringHelper.h>
 
 namespace rg
 {
@@ -124,9 +124,7 @@ void Shader::SetUniformValue(ur::RenderContext& ur_rc, const std::string& key,
 void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms,
                              std::set<std::string>& unique_names)
 {
-    auto formated = code;
-    cpputil::StringHelper::ReplaceAll(formated, "\\n", "\n");
-
+    auto formated = Utility::FormatCode(code);
     ShaderParser parser(formated);
     parser.Parse();
 
@@ -145,9 +143,8 @@ void Shader::Init(const ur::RenderContext& ur_rc)
     {
         CU_VEC<ur::VertexAttrib> va_list;
 
-        auto vert = m_vert, frag = m_frag;
-        cpputil::StringHelper::ReplaceAll(vert, "\\n", "\n");
-        cpputil::StringHelper::ReplaceAll(frag, "\\n", "\n");
+        auto vert = Utility::FormatCode(m_vert);
+        auto frag = Utility::FormatCode(m_frag);
         m_shader = std::make_shared<ur::Shader>(
             const_cast<ur::RenderContext*>(&ur_rc), vert.c_str(), frag.c_str(), m_textures, va_list, true
         );

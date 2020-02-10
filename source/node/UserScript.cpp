@@ -1,7 +1,6 @@
 #include "rendergraph/node/UserScript.h"
 #include "rendergraph/ScriptEnv.h"
-
-#include <cpputil/StringHelper.h>
+#include "rendergraph/Utility.h"
 
 #include <chaiscript/chaiscript.hpp>
 
@@ -33,10 +32,7 @@ ShaderVariant UserScript::Run(const std::string& code, VariableType type)
     ShaderVariant ret;
     ret.type = type;
 
-    auto formated = code;
-    cpputil::StringHelper::ReplaceAll(formated, "\\n", "\n");
-    cpputil::StringHelper::ReplaceAll(formated, "\\t", "\t");
-
+    auto formated = Utility::FormatCode(code);
     switch (type)
     {
     case VariableType::Vec1Array:

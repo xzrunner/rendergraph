@@ -98,6 +98,9 @@
     <ClCompile Include="..\..\..\source\node\Group.cpp">
       <Filter>nodes\others</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\Utility.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Group.h">
       <Filter>nodes\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\Utility.h">
+      <Filter>tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

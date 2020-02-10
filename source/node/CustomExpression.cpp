@@ -3,8 +3,7 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/UserScript.h"
 #include "rendergraph/ScriptEnv.h"
-
-#include <cpputil/StringHelper.h>
+#include "rendergraph/Utility.h"
 
 #include <chaiscript/chaiscript.hpp>
 
@@ -17,7 +16,7 @@ void CustomExpression::Execute(const RenderContext& rc)
 {
     auto& chai = ScriptEnv::Instance()->GetChai();
 
-    for (int i = I_MAX_NUM, n = m_imports.size(); i < n; ++i) 
+    for (int i = I_MAX_NUM, n = m_imports.size(); i < n; ++i)
     {
         auto& port = m_imports[i];
         if (port.conns.empty()) {
@@ -84,14 +83,11 @@ void CustomExpression::SetCode(const std::string& code)
         return;
     }
 
-    auto formated = code;
-    cpputil::StringHelper::ReplaceAll(formated, "\\n", "\n");
-
-    ExpressionParser parser(formated);
+    ExpressionParser parser(Utility::FormatCode(code));
     parser.Parse();
 
     m_body = parser.GetBody();
-    cpputil::StringHelper::ReplaceAll(m_body, "\\t", "    ");
+    //cpputil::StringHelper::ReplaceAll(m_body, "\\t", "    ");
 
     m_imports.erase(m_imports.begin() + 1, m_imports.end());
     m_exports.erase(m_exports.begin() + 1, m_exports.end());

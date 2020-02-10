@@ -4,6 +4,7 @@
 #include "rendergraph/node/VertexArray.h"
 #include "rendergraph/node/Model.h"
 #include "rendergraph/node/Shader.h"
+#include "rendergraph/node/Heightfield.h"
 
 namespace rg
 {
@@ -42,6 +43,8 @@ void Draw::Execute(const RenderContext& rc)
             std::static_pointer_cast<VertexArray>(node)->Draw(rc);
         } else if (type == rttr::type::get<Model>()) {
             std::static_pointer_cast<Model>(node)->Draw(rc, shader);
+        } else if (type == rttr::type::get<Heightfield>()) {
+            std::static_pointer_cast<Heightfield>(node)->Draw(rc);
         }
     }
 }

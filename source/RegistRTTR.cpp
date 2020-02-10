@@ -5,6 +5,7 @@
 #include "rendergraph/node/VertexArray.h"
 #include "rendergraph/node/PrimitiveShape.h"
 #include "rendergraph/node/Model.h"
+#include "rendergraph/node/Heightfield.h"
 // op
 #include "rendergraph/node/Clear.h"
 #include "rendergraph/node/Bind.h"
@@ -43,6 +44,7 @@ REGIST_NODE_TYPE(Texture)
 REGIST_NODE_TYPE(VertexArray)
 REGIST_NODE_TYPE(PrimitiveShape)
 REGIST_NODE_TYPE(Model)
+REGIST_NODE_TYPE(Heightfield)
 // op
 REGIST_NODE_TYPE(Clear)
 REGIST_NODE_TYPE(Bind)

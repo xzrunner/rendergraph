@@ -101,6 +101,9 @@
     <ClCompile Include="..\..\..\source\Utility.cpp">
       <Filter>tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Heightfield.cpp">
+      <Filter>nodes\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -218,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\Utility.h">
       <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.h">
+      <Filter>nodes\resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

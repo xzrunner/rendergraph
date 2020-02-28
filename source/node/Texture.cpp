@@ -95,6 +95,9 @@ void Texture::Init(const RenderContext& rc)
             case Format::A8:
                 format = ur::TEXTURE_A8;
                 break;
+            case Format::RED:
+                format = ur::TEXTURE_RED;
+                break;
             case Format::Depth:
                 format = ur::TEXTURE_DEPTH;
                 break;

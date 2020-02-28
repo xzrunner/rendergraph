@@ -56,6 +56,7 @@ public:
         RGB,
         RGB565,
         A8,
+        RED,
         Depth,
     };
 

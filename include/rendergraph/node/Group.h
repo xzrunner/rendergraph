@@ -3,7 +3,7 @@
 #include "rendergraph/Node.h"
 #include "rendergraph/typedef.h"
 
-namespace rg
+namespace rendergraph
 {
 
 class DrawList;

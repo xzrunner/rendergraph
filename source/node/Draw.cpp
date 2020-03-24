@@ -6,7 +6,7 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/Heightfield.h"
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

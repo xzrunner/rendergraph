@@ -2,7 +2,7 @@
 
 #include <cpputil/StringHelper.h>
 
-namespace rg
+namespace rendergraph
 {
 
 std::string Utility::FormatCode(const std::string& code)

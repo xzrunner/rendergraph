@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-namespace rg
+namespace rendergraph
 {
 
 class RenderContext;

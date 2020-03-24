@@ -1,6 +1,6 @@
 #include "rendergraph/Evaluator.h"
 
-namespace rg
+namespace rendergraph
 {
 
 ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port,

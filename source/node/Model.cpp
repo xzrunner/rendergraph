@@ -10,7 +10,7 @@
 #include <painting3/Blackboard.h>
 #include <painting3/WindowContext.h>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

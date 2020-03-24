@@ -1,7 +1,7 @@
 #include "rendergraph/node/Unbind.h"
 #include "rendergraph/node/RenderTarget.h"
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

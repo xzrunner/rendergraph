@@ -29,9 +29,9 @@
 #include "rendergraph/node/ForEachLoop.h"
 #include "rendergraph/node/CustomExpression.h"
 
-#define REGIST_NODE_TYPE(name)                                \
-	rttr::registration::class_<rg::node::name>("rg::"#name)   \
-		.constructor<>()                                      \
+#define REGIST_NODE_TYPE(name)                                                \
+	rttr::registration::class_<rendergraph::node::name>("rendergraph::"#name) \
+		.constructor<>()                                                      \
 	;
 
 RTTR_REGISTRATION
@@ -93,7 +93,7 @@ REGIST_NODE_TYPE(CustomExpression)
 
 }
 
-namespace rg
+namespace rendergraph
 {
 
 void regist_rttr()

@@ -5,7 +5,7 @@
 #include <lexer/Tokenizer.h>
 #include <lexer/Parser.h>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

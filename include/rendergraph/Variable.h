@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace rg
+namespace rendergraph
 {
 
 struct Variable

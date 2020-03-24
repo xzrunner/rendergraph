@@ -1,7 +1,7 @@
 #include "rendergraph/node/Group.h"
 #include "rendergraph/DrawList.h"
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {
@@ -43,8 +43,8 @@ void Group::SetChildren(const std::vector<NodePtr>& children,
 
     //    for (auto& o : outputs)
     //    {
-    //        std::vector<rg::NodePtr> nodes;
-    //        rg::DrawList::GetAntecedentNodes(o.first, nodes);
+    //        std::vector<NodePtr> nodes;
+    //        DrawList::GetAntecedentNodes(o.first, nodes);
     //        for (auto& n : nodes) {
     //            path_nodes_set.insert(n);
     //        }

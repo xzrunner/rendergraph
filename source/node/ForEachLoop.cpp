@@ -6,7 +6,7 @@
 
 #include <queue>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

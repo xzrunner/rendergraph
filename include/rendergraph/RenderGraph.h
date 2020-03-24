@@ -2,7 +2,7 @@
 
 #include <cu/cu_macro.h>
 
-namespace rg
+namespace rendergraph
 {
 
 class RenderGraph

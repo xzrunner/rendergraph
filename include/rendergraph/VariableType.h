@@ -1,6 +1,6 @@
 #pragma once
 
-namespace rg
+namespace rendergraph
 {
 
 enum class VariableType

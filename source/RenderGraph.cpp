@@ -1,6 +1,6 @@
 #include "rendergraph/RenderGraph.h"
 
-namespace rg
+namespace rendergraph
 {
 
 CU_SINGLETON_DEFINITION(RenderGraph);

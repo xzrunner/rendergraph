@@ -6,7 +6,7 @@
 
 namespace ur { class Shader; }
 
-namespace rg
+namespace rendergraph
 {
 
 class RenderSystem

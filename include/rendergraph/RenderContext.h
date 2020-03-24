@@ -6,7 +6,7 @@
 
 namespace ur { class RenderContext; }
 
-namespace rg
+namespace rendergraph
 {
 
 class RenderContext : boost::noncopyable

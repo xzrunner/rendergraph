@@ -6,7 +6,7 @@
 #include <stack>
 #include <queue>
 
-namespace rg
+namespace rendergraph
 {
 
 DrawList::DrawList(const std::vector<NodePtr>& all_nodes)
@@ -134,7 +134,7 @@ DrawList::CalcRealPath(const std::vector<NodePtr>& nodes)
         auto& exports = node->GetExports();
         for (auto& output_port : exports)
         {
-            if (output_port.var.type != rg::VariableType::Port ||
+            if (output_port.var.type != VariableType::Port ||
                 output_port.conns.empty()) {
                 continue;
             }
@@ -192,7 +192,7 @@ void DrawList::TopologicalSorting()
         auto& imports = node->GetImports();
         for (auto& input_port : imports)
         {
-            if (input_port.var.type != rg::VariableType::Port ||
+            if (input_port.var.type != VariableType::Port ||
                 input_port.conns.empty()) {
                 continue;
             }

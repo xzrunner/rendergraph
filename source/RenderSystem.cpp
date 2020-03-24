@@ -43,7 +43,7 @@ void main()
 
 }
 
-namespace rg
+namespace rendergraph
 {
 
 CU_SINGLETON_DEFINITION(RenderSystem);

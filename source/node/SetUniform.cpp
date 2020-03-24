@@ -3,7 +3,7 @@
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/RenderContext.h"
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

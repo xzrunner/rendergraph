@@ -2,7 +2,7 @@
 
 #include <lexer/Exception.h>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

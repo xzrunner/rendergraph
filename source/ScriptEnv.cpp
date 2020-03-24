@@ -10,7 +10,7 @@
 
 #include <chaiscript/chaiscript.hpp>
 
-namespace rg
+namespace rendergraph
 {
 
 CU_SINGLETON_DEFINITION(ScriptEnv);

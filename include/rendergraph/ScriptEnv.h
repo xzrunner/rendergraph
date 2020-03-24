@@ -6,7 +6,7 @@
 
 namespace chaiscript { class ChaiScript; }
 
-namespace rg
+namespace rendergraph
 {
 
 class ScriptEnv

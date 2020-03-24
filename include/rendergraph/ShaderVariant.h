@@ -7,7 +7,7 @@
 
 #include <vector>
 
-namespace rg
+namespace rendergraph
 {
 
 class ShaderVariant

@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace rg
+namespace rendergraph
 {
 
 class Node;

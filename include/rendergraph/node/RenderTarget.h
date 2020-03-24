@@ -4,7 +4,7 @@
 
 namespace ur { class RenderContext; }
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

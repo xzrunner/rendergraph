@@ -4,7 +4,7 @@
 #include "rendergraph/RenderContext.h"
 #include "rendergraph/Evaluator.h"
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

@@ -6,7 +6,7 @@
 
 namespace model { struct Model; class ModelInstance; }
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

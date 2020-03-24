@@ -5,7 +5,7 @@
 #include <SM_Vector.h>
 #include <SM_Matrix.h>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

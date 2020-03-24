@@ -5,18 +5,18 @@
 RTTR_REGISTRATION
 {
 
-rttr::registration::class_<rg::Node::Port>("rg::Node::Port")
-	.property("var", &rg::Node::Port::var)
+rttr::registration::class_<rendergraph::Node::Port>("rendergraph::Node::Port")
+	.property("var", &rendergraph::Node::Port::var)
 ;
 
-rttr::registration::class_<rg::Node>("rg::Node")
-	.method("GetImports", &rg::Node::GetImports)
-	.method("GetExports", &rg::Node::GetExports)
+rttr::registration::class_<rendergraph::Node>("rendergraph::Node")
+	.method("GetImports", &rendergraph::Node::GetImports)
+	.method("GetExports", &rendergraph::Node::GetExports)
 ;
 
 }
 
-namespace rg
+namespace rendergraph
 {
 
 Node::Node()

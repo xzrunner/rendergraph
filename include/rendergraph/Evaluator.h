@@ -3,7 +3,7 @@
 #include "rendergraph/ShaderVariant.h"
 #include "rendergraph/Node.h"
 
-namespace rg
+namespace rendergraph
 {
 
 class Evaluator

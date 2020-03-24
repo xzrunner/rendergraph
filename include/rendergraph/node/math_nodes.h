@@ -6,7 +6,7 @@
 #include <SM_Vector.h>
 #include <sm_const.h>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

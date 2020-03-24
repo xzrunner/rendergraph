@@ -9,7 +9,7 @@
 #include <unirender/VertexAttrib.h>
 #include <unirender/RenderContext.h>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

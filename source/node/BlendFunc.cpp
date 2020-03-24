@@ -6,42 +6,42 @@
 namespace
 {
 
-ur::BLEND_FORMAT trans_factor_to_ur(rg::node::BlendFunc::Factor factor)
+ur::BLEND_FORMAT trans_factor_to_ur(rendergraph::node::BlendFunc::Factor factor)
 {
     ur::BLEND_FORMAT ret = ur::BLEND_DISABLE;
     switch (factor)
     {
-    case rg::node::BlendFunc::Factor::Off:
+    case rendergraph::node::BlendFunc::Factor::Off:
         ret = ur::BLEND_DISABLE;
         break;
-    case rg::node::BlendFunc::Factor::Zero:
+    case rendergraph::node::BlendFunc::Factor::Zero:
         ret = ur::BLEND_ZERO;
         break;
-    case rg::node::BlendFunc::Factor::One:
+    case rendergraph::node::BlendFunc::Factor::One:
         ret = ur::BLEND_ONE;
         break;
-    case rg::node::BlendFunc::Factor::SrcColor:
+    case rendergraph::node::BlendFunc::Factor::SrcColor:
         ret = ur::BLEND_SRC_COLOR;
         break;
-    case rg::node::BlendFunc::Factor::OneMinusSrcColor:
+    case rendergraph::node::BlendFunc::Factor::OneMinusSrcColor:
         ret = ur::BLEND_ONE_MINUS_SRC_COLOR;
         break;
-    case rg::node::BlendFunc::Factor::DstColor:
+    case rendergraph::node::BlendFunc::Factor::DstColor:
         ret = ur::BLEND_DST_COLOR;
         break;
-    case rg::node::BlendFunc::Factor::OneMinusDstColor:
+    case rendergraph::node::BlendFunc::Factor::OneMinusDstColor:
         ret = ur::BLEND_ONE_MINUS_DST_COLOR;
         break;
-    case rg::node::BlendFunc::Factor::SrcAlpha:
+    case rendergraph::node::BlendFunc::Factor::SrcAlpha:
         ret = ur::BLEND_SRC_ALPHA;
         break;
-    case rg::node::BlendFunc::Factor::OneMinusSrcAlpha:
+    case rendergraph::node::BlendFunc::Factor::OneMinusSrcAlpha:
         ret = ur::BLEND_ONE_MINUS_SRC_ALPHA;
         break;
-    case rg::node::BlendFunc::Factor::DstAlpha:
+    case rendergraph::node::BlendFunc::Factor::DstAlpha:
         ret = ur::BLEND_DST_ALPHA;
         break;
-    case rg::node::BlendFunc::Factor::OneMinusDstAlpha:
+    case rendergraph::node::BlendFunc::Factor::OneMinusDstAlpha:
         ret = ur::BLEND_ONE_MINUS_DST_ALPHA;
         break;
     }
@@ -50,7 +50,7 @@ ur::BLEND_FORMAT trans_factor_to_ur(rg::node::BlendFunc::Factor factor)
 
 }
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

@@ -3,7 +3,7 @@
 #include "rendergraph/node/RenderTarget.h"
 #include "rendergraph/node/Shader.h"
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

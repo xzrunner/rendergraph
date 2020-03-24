@@ -7,7 +7,7 @@
 
 #include <chaiscript/chaiscript.hpp>
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

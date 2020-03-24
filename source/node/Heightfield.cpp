@@ -26,7 +26,7 @@ public:
 
 }
 
-namespace rg
+namespace rendergraph
 {
 namespace node
 {

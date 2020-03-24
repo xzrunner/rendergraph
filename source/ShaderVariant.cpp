@@ -1,6 +1,6 @@
 #include "rendergraph/ShaderVariant.h"
 
-namespace rg
+namespace rendergraph
 {
 
 ShaderVariant::ShaderVariant()

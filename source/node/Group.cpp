@@ -27,10 +27,33 @@ void Group::Eval(const RenderContext& rc, size_t port_idx,
     m_outputs[port_idx].first->Eval(rc, m_outputs[port_idx].second, var, flags);
 }
 
-void Group::SetChildren(const std::vector<std::shared_ptr<Node>>& children)
+void Group::SetChildren(const std::vector<NodePtr>& children,
+                        const std::vector<std::pair<NodePtr, int>>& outputs)
 {
     m_children = children;
-    m_dlist = std::make_unique<DrawList>(children);
+    m_outputs  = outputs;
+
+    //if (outputs.empty())
+    //{
+        m_dlist = std::make_unique<DrawList>(children);
+    //}
+    //else
+    //{
+    //    std::set<std::shared_ptr<Node>> path_nodes_set;
+
+    //    for (auto& o : outputs)
+    //    {
+    //        std::vector<rg::NodePtr> nodes;
+    //        rg::DrawList::GetAntecedentNodes(o.first, nodes);
+    //        for (auto& n : nodes) {
+    //            path_nodes_set.insert(n);
+    //        }
+    //    }
+
+    //    std::vector<NodePtr> path_nodes;
+    //    std::copy(path_nodes_set.begin(), path_nodes_set.end(), std::back_inserter(path_nodes));
+    //    m_dlist = std::make_unique<DrawList>(path_nodes);
+    //}
 }
 
 }

@@ -21,13 +21,11 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
 
-    void SetChildren(const std::vector<std::shared_ptr<Node>>& children);
-    void SetOutputs(const std::vector<std::pair<NodePtr, int>>& outputs) {
-        m_outputs = outputs;
-    }
+    void SetChildren(const std::vector<NodePtr>& children,
+        const std::vector<std::pair<NodePtr, int>>& outputs);
 
 private:
-    std::vector<std::shared_ptr<Node>> m_children;
+    std::vector<NodePtr>                 m_children;
     std::vector<std::pair<NodePtr, int>> m_outputs;
 
     std::unique_ptr<DrawList> m_dlist;

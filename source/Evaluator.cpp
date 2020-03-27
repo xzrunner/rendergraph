@@ -17,7 +17,7 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port
         auto node = conns[0].node.lock();
         if (node) {
             auto ret = expect;
-            node->Eval(rc, conns[0].idx, ret, flags);
+            std::static_pointer_cast<Node>(node)->Eval(rc, conns[0].idx, ret, flags);
             return ret;
         }
     }

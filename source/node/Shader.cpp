@@ -33,7 +33,10 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
     GetCodeUniforms(m_frag, uniforms, names);
     for (auto& u : uniforms)
     {
-        m_imports.push_back(u);
+        dag::Node<rendergraph::Variable>::Port port;
+        port.var.type = u;
+        m_imports.push_back(port);
+
         if (u.type == VariableType::Sampler2D ||
             u.type == VariableType::SamplerCube) {
             m_textures.push_back(u.name);
@@ -58,11 +61,11 @@ void Shader::Bind(const RenderContext& rc)
         auto& key = m_imports[i].var;
 
         uint32_t flags = 0;
-        auto val = Evaluator::Calc(rc, m_imports[i], key.type, key.count, flags);
-        SetUniformValue(key, val, texture_ids);
+        auto val = Evaluator::Calc(rc, m_imports[i], key.type.type, key.type.count, flags);
+        SetUniformValue(key.type, val, texture_ids);
 
         if (flags & Evaluator::FLAG_MODEL_MAT) {
-            m_unif_names.Add(pt0::UniformTypes::ModelMat, key.GetDisplayName());
+            m_unif_names.Add(pt0::UniformTypes::ModelMat, key.type.GetDisplayName());
         }
     }
 
@@ -93,7 +96,7 @@ void Shader::SetUniformValue(ur::RenderContext& ur_rc, const std::string& key,
 
     int key_idx = -1;
     for (int i = 0, n = m_imports.size(); i < n; ++i) {
-        if (m_imports[i].var.name == key) {
+        if (m_imports[i].var.full_name == key) {
             key_idx = i;
             break;
         }
@@ -104,14 +107,14 @@ void Shader::SetUniformValue(ur::RenderContext& ur_rc, const std::string& key,
     }
 
     std::vector<uint32_t> texture_ids;
-    SetUniformValue(m_imports[key_idx].var, val, texture_ids);
+    SetUniformValue(m_imports[key_idx].var.type, val, texture_ids);
 
     if (!texture_ids.empty())
     {
         assert(texture_ids.size() == 1);
         int tex_channel = -1;
         for (int i = 0, n = m_textures.size(); i < n; ++i) {
-            if (m_textures[i] == m_imports[key_idx].var.name) {
+            if (m_textures[i] == m_imports[key_idx].var.full_name) {
                 tex_channel = i;
                 break;
             }

@@ -8,9 +8,10 @@ namespace rendergraph
 namespace node
 {
 
-void ZWrite::Execute(const RenderContext& rc)
+void ZWrite::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    rc.rc.SetZWrite(m_enable);
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->rc.SetZWrite(m_enable);
 }
 
 }

@@ -17,7 +17,7 @@ public:
     Group();
     virtual ~Group();
 
-    virtual void Execute(const RenderContext& rc) override;
+    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
 

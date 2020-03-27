@@ -38,7 +38,7 @@ public:
         m_exports[O_NEXT]   = {{ VariableType::Port,   "next" }};
     }
 
-    virtual void Execute(const RenderContext& rc) override;
+    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
     void SetVarName(const std::string& name) { m_var_name = name; }
     void SetVarType(VariableType type) { m_var_type = type; }

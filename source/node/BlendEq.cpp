@@ -8,7 +8,7 @@ namespace rendergraph
 namespace node
 {
 
-void BlendEq::Execute(const RenderContext& rc)
+void BlendEq::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     ur::BLEND_FUNC mode;
     switch (m_mode)
@@ -29,7 +29,9 @@ void BlendEq::Execute(const RenderContext& rc)
         mode = ur::BLEND_MAX;
         break;
     }
-    rc.rc.SetBlendEquation(mode);
+
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->rc.SetBlendEquation(mode);
 }
 
 }

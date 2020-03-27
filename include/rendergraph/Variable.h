@@ -15,7 +15,11 @@ struct Variable
     int count = 1; // for array
     std::string user_type;
 
-    std::string GetDisplayName() 
+    //Variable() {}
+    //Variable(VariableType type, const std::string& name)
+    //    : type(type), name(name) {}
+
+    std::string GetDisplayName()
     {
         if (user_type.empty() && count == 1) {
             return name;
@@ -30,7 +34,7 @@ struct Variable
         }
         return ret;
     }
-    
+
 }; // Variable
 
 }

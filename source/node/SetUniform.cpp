@@ -8,7 +8,7 @@ namespace rendergraph
 namespace node
 {
 
-void SetUniform::Execute(const RenderContext& rc)
+void SetUniform::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     if (m_var_name.empty() || m_var_type == VariableType::Any) {
         return;
@@ -28,8 +28,9 @@ void SetUniform::Execute(const RenderContext& rc)
 
     uint32_t flags = 0;
     auto expected = Evaluator::DefaultValue(m_var_type);
-    auto val = Evaluator::Calc(rc, m_imports[I_VALUE], expected, flags);
-    shader->SetUniformValue(rc.rc, m_var_name, val);
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    auto val = Evaluator::Calc(*rc, m_imports[I_VALUE], expected, flags);
+    shader->SetUniformValue(rc->rc, m_var_name, val);
 }
 
 }

@@ -14,10 +14,10 @@ Group::~Group()
 {
 }
 
-void Group::Execute(const RenderContext& rc)
+void Group::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     if (m_dlist) {
-        m_dlist->Draw(rc);
+        m_dlist->Draw(ctx);
     }
 }
 

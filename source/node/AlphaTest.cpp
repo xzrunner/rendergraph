@@ -8,7 +8,7 @@ namespace rendergraph
 namespace node
 {
 
-void AlphaTest::Execute(const RenderContext& rc)
+void AlphaTest::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     ur::ALPHA_FUNC func;
     switch (m_func)
@@ -41,7 +41,9 @@ void AlphaTest::Execute(const RenderContext& rc)
         func = ur::ALPHA_ALWAYS;
         break;
     }
-    rc.rc.SetAlphaTest(func);
+
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->rc.SetAlphaTest(func);
 }
 
 }

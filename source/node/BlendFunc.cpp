@@ -55,11 +55,13 @@ namespace rendergraph
 namespace node
 {
 
-void BlendFunc::Execute(const RenderContext& rc)
+void BlendFunc::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+
     ur::BLEND_FORMAT src = trans_factor_to_ur(m_sfactor);
     ur::BLEND_FORMAT dst = trans_factor_to_ur(m_dfactor);
-    rc.rc.SetBlend(src, dst);
+    rc->rc.SetBlend(src, dst);
 }
 
 }

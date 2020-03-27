@@ -26,9 +26,9 @@ void DrawList::GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& node
         auto n = buf.front(); buf.pop();
         nodes.push_back(n);
         for (auto& port : n->GetImports()) {
-            if (port.var.type == VariableType::Port) {
+            if (port.var.type.type == VariableType::Port) {
                 for (auto& conn : port.conns) {
-                    buf.push(conn.node.lock());
+                    buf.push(std::static_pointer_cast<Node>(conn.node.lock()));
                 }
             }
         }
@@ -39,7 +39,7 @@ void DrawList::GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& n
 {
     std::queue<NodePtr> buf;
     for (auto& conn : src.conns) {
-        buf.push(conn.node.lock());
+        buf.push(std::static_pointer_cast<Node>(conn.node.lock()));
     }
 
     while (!buf.empty())
@@ -47,22 +47,22 @@ void DrawList::GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& n
         auto n = buf.front(); buf.pop();
         nodes.push_back(n);
         for (auto& port : n->GetExports()) {
-            if (port.var.type == VariableType::Port) {
+            if (port.var.type.type == VariableType::Port) {
                 for (auto& conn : port.conns) {
-                    buf.push(conn.node.lock());
+                    buf.push(std::static_pointer_cast<Node>(conn.node.lock()));
                 }
             }
         }
     }
 }
 
-bool DrawList::Draw(const RenderContext& rc, NodePtr end) const
+bool DrawList::Draw(const std::shared_ptr<dag::Context>& ctx, NodePtr end) const
 {
     bool finished = false;
     for (auto& n : m_nodes)
     {
         if (n->IsEnable()) {
-            n->Execute(rc);
+            n->Execute(ctx);
         }
         if (n == end) {
             finished = true;
@@ -134,7 +134,7 @@ DrawList::CalcRealPath(const std::vector<NodePtr>& nodes)
         auto& exports = node->GetExports();
         for (auto& output_port : exports)
         {
-            if (output_port.var.type != VariableType::Port ||
+            if (output_port.var.type.type != VariableType::Port ||
                 output_port.conns.empty()) {
                 continue;
             }
@@ -192,7 +192,7 @@ void DrawList::TopologicalSorting()
         auto& imports = node->GetImports();
         for (auto& input_port : imports)
         {
-            if (input_port.var.type != VariableType::Port ||
+            if (input_port.var.type.type != VariableType::Port ||
                 input_port.conns.empty()) {
                 continue;
             }

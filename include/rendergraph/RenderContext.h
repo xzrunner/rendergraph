@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SM_Matrix.h>
+#include <dag/Context.h>
 
 #include <boost/noncopyable.hpp>
 
@@ -9,7 +10,7 @@ namespace ur { class RenderContext; }
 namespace rendergraph
 {
 
-class RenderContext : boost::noncopyable
+class RenderContext : public dag::Context
 {
 public:
     RenderContext(ur::RenderContext& rc) : rc(rc) {}

@@ -22,7 +22,7 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override;
+    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
     void SetClearType(uint32_t type) { m_clear_type = type; }
 

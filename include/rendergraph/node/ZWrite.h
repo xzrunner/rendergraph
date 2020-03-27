@@ -20,7 +20,7 @@ public:
         };
     }
 
-    virtual void Execute(const RenderContext& rc) override;
+    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
     void SetDepthWrite(bool enable) { m_enable = enable; }
 

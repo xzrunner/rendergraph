@@ -8,7 +8,7 @@ namespace rendergraph
 namespace node
 {
 
-void Cull::Execute(const RenderContext& rc)
+void Cull::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     ur::CULL_MODE cull;
     switch (m_mode)
@@ -26,7 +26,9 @@ void Cull::Execute(const RenderContext& rc)
         cull = ur::CULL_FRONT_AND_BACK;
         break;
     }
-    rc.rc.SetCullMode(cull);
+
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->rc.SetCullMode(cull);
 }
 
 }

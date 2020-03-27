@@ -8,7 +8,7 @@ namespace rendergraph
 namespace node
 {
 
-void ZTest::Execute(const RenderContext& rc)
+void ZTest::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     ur::DEPTH_FORMAT fmt;
     switch (m_func)
@@ -41,7 +41,9 @@ void ZTest::Execute(const RenderContext& rc)
         fmt = ur::DEPTH_ALWAYS;
         break;
     }
-    rc.rc.SetZTest(fmt);
+
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->rc.SetZTest(fmt);
 }
 
 }

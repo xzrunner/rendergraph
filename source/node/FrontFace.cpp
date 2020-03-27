@@ -8,9 +8,9 @@ namespace rendergraph
 namespace node
 {
 
-void FrontFace::Execute(const RenderContext& rc)
+void FrontFace::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    rc.rc.SetFrontFace(m_clockwise);
+    std::static_pointer_cast<RenderContext>(ctx)->rc.SetFrontFace(m_clockwise);
 }
 
 }

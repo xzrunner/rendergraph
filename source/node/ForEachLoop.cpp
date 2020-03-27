@@ -3,6 +3,7 @@
 #include "rendergraph/ScriptEnv.h"
 #include "rendergraph/typedef.h"
 #include "rendergraph/DrawList.h"
+#include "rendergraph/RenderContext.h"
 
 #include <queue>
 
@@ -28,7 +29,7 @@ ForEachLoop::~ForEachLoop()
 {
 }
 
-void ForEachLoop::Execute(const RenderContext& rc)
+void ForEachLoop::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     if (m_imports[I_ARRAY].conns.empty() ||
         m_exports[O_LOOP_BODY].conns.empty()) {
@@ -64,14 +65,15 @@ void ForEachLoop::Execute(const RenderContext& rc)
         }
 
         uint32_t flags;
-        array_node->Eval(rc, UserScript::O_OUT, m_array_var, flags);
+        auto rc = std::static_pointer_cast<RenderContext>(ctx);
+        std::static_pointer_cast<Node>(array_node)->Eval(*rc, UserScript::O_OUT, m_array_var, flags);
         switch (m_array_var.type)
         {
         case VariableType::Vec1Array:
         {
             m_index_curr = 0;
             for (int n = m_array_var.vec1_array.size(); m_index_curr < n; ++m_index_curr) {
-                m_body_dlist->Draw(rc);
+                m_body_dlist->Draw(ctx);
             }
         }
             break;
@@ -79,7 +81,7 @@ void ForEachLoop::Execute(const RenderContext& rc)
         {
             m_index_curr = 0;
             for (int n = m_array_var.vec2_array.size(); m_index_curr < n; ++m_index_curr) {
-                m_body_dlist->Draw(rc);
+                m_body_dlist->Draw(ctx);
             }
         }
             break;
@@ -87,7 +89,7 @@ void ForEachLoop::Execute(const RenderContext& rc)
         {
             m_index_curr = 0;
             for (int n = m_array_var.vec3_array.size(); m_index_curr < n; ++m_index_curr) {
-                m_body_dlist->Draw(rc);
+                m_body_dlist->Draw(ctx);
             }
         }
             break;
@@ -95,7 +97,7 @@ void ForEachLoop::Execute(const RenderContext& rc)
         {
             m_index_curr = 0;
             for (int n = m_array_var.vec4_array.size(); m_index_curr < n; ++m_index_curr) {
-                m_body_dlist->Draw(rc);
+                m_body_dlist->Draw(ctx);
             }
         }
             break;

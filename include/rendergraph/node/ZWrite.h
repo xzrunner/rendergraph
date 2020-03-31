@@ -22,12 +22,11 @@ public:
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
-    void SetDepthWrite(bool enable) { m_enable = enable; }
-
-private:
-    bool m_enable = false;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/ZWrite.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // ZWrite
 

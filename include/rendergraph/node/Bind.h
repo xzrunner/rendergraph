@@ -23,12 +23,11 @@ public:
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
-    void SetChannel(int channel) { m_channel = channel; }
-
-private:
-    int m_channel = 0;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Bind.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Bind
 

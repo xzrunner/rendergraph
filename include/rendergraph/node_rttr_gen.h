@@ -18,7 +18,7 @@
 rttr::registration::class_<rendergraph::node::PARM_NODE_TYPE>(XSTR(RTTR_NAME))
 .constructor<>()
 #define PARM_FILEPATH XSTR(PARM_FILEPATH_PARM)
-#define PARM_NODE_CLASS rendergraph::node::##PARM_NODE_CLASS
+#define PARM_NODE_CLASS rendergraph::node::##PARM_NODE_TYPE
 #include <dag/rttr_prop_gen.h>
 #undef PARM_FILEPATH
 #undef PARM_NODE_CLASS

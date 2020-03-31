@@ -35,14 +35,14 @@ public:
         Always
     };
 
-    void SetFunc(Func func) { m_func = func; }
-
 private:
-    Func m_func = Func::Always;
-
     float m_ref = 0;
 
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/AlphaTest.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // AlphaTest
 

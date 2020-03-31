@@ -50,9 +50,6 @@ public:
 
     void SetSize(uint32_t width, uint32_t height);
 
-    void EnableDepthRBO();
-    void EnableColorRBO();
-
 private:
     void Init(const RenderContext& rc);
 
@@ -69,16 +66,14 @@ private:
     // last viewport
     int m_vp_x = 0, m_vp_y = 0, m_vp_w = 0, m_vp_h = 0;
 
-    uint32_t m_width  = 0;
-    uint32_t m_height = 0;
-
-    bool m_enable_rbo_depth = false;
-    bool m_enable_rbo_color = false;
-
     uint32_t m_rbo_depth = 0;
     uint32_t m_rbo_color = 0;
 
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/RenderTarget.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // RenderTarget
 

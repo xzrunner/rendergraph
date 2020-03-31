@@ -22,12 +22,11 @@ public:
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
-    void SetClockwise(bool clockwise) { m_clockwise = clockwise; }
-
-private:
-    bool m_clockwise = false;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/FrontFace.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // FrontFace
 

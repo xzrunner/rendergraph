@@ -35,12 +35,11 @@ public:
         Always
     };
 
-    void SetFunc(Func func) { m_func = func; }
-
-private:
-    Func m_func = Func::Less;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/ZTest.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // ZTest
 

@@ -30,14 +30,11 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
 
-    void Init(const RenderContext& rc);
+    void Init(const RenderContext& rc) const;
 
     void Bind(const RenderContext& rc, int channel);
 
     void Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const;
-
-    void SetFilepath(const std::string& filepath) { m_filepath = filepath; }
-    void SetSize(int width, int height) { m_width = width; m_height = height; }
 
     // todo
     void SetTexID(unsigned int texid) { m_texid = texid; }
@@ -74,33 +71,16 @@ public:
         Linear,
     };
 
-    void SetType(Type type) { m_type = type; }
-    void SetFormat(Format fmt) { m_format = fmt; }
-    void SetWrapping(Wrapping wrap) { m_wrap = wrap; }
-    void SetFiltering(Filtering filter) { m_filter = filter; }
-
-    Type GetType() const { return m_type; }
-
-    int GetWidth() const { return m_width; }
-    int GetHeight() const { return m_height; }
-    Format GetFormat() const { return m_format; }
-
     unsigned int GetTexID() const { return m_texid; }
 
 private:
-    std::string m_filepath;
-
-    Type m_type = Type::Tex2D;
-
-    int m_width = 0, m_height = 0;
-    Format m_format = Format::RGBA8;
-
-    Wrapping  m_wrap   = Wrapping::Repeat;
-    Filtering m_filter = Filtering::Linear;
-
-    unsigned int m_texid = 0;
+    mutable unsigned int m_texid = 0;
 
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Texture.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Texture
 

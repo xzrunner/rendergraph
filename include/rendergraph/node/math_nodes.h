@@ -108,13 +108,6 @@ public:
         var.mat4 = sm::mat4::Perspective(fovy.vec1, aspect.vec1, znear.vec1, zfar.vec1);
     }
 
-    void SetProps(float fovy, float aspect, float znear, float zfar) {
-        m_fovy   = fovy;
-        m_aspect = aspect;
-        m_znear  = znear;
-        m_zfar   = zfar;
-    }
-
     enum InputID
     {
         ID_FOVY = 0,
@@ -123,13 +116,11 @@ public:
         ID_FAR
     };
 
-private:
-    float m_fovy   = 45.0f * SM_DEG_TO_RAD;
-    float m_aspect = 1.0f;
-    float m_znear  = 0.1f;
-    float m_zfar   = 100.0f;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/PerspectiveMat.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // PerspectiveMat
 
@@ -163,15 +154,6 @@ public:
         var.mat4 = sm::mat4::Orthographic(left.vec1, right.vec1, bottom.vec1, top.vec1, znear.vec1, zfar.vec1);
     }
 
-    void SetProps(float left, float right, float bottom, float top, float znear, float zfar) {
-        m_left   = left;
-        m_right  = right;
-        m_bottom = bottom;
-        m_top    = top;
-        m_znear  = znear;
-        m_zfar   = zfar;
-    }
-
     enum InputID
     {
         ID_LEFT = 0,
@@ -182,15 +164,11 @@ public:
         ID_ZFAR
     };
 
-private:
-    float m_left   = -10.0f;
-    float m_right  = 10.0f;
-    float m_bottom = -10.0f;
-    float m_top    = 10.0f;
-    float m_znear  = 1.0f;
-    float m_zfar   = 7.5f;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/OrthoMat.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // OrthoMat
 
@@ -218,12 +196,6 @@ public:
         var.mat4 = sm::mat4::LookAt(eye.vec3, center.vec3, up.vec3);
     }
 
-    void SetProps(const sm::vec3& eye, const sm::vec3& center, const sm::vec3& up) {
-        m_eye    = eye;
-        m_center = center;
-        m_up     = up;
-    }
-
     enum InputID
     {
         ID_EYE = 0,
@@ -231,12 +203,11 @@ public:
         ID_UP,
     };
 
-private:
-    sm::vec3 m_eye;
-    sm::vec3 m_center;
-    sm::vec3 m_up = sm::vec3(0, 1, 0);
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/LookAtMat.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // LookAtMat
 
@@ -291,12 +262,11 @@ public:
         }
     }
 
-    void SetOffset(const sm::vec3& offset) { m_offset = offset; }
-
-private:
-    sm::vec3 m_offset;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Translate.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Translate
 
@@ -327,14 +297,11 @@ public:
         }
     }
 
-    void SetAngle(float angle) { m_angle = angle; }
-    void SetAxis(const sm::vec3& axis) { m_axis = axis; }
-
-private:
-    float    m_angle = 0;                 // rad
-    sm::vec3 m_axis = sm::vec3(1, 0, 0);  // normalized
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Rotate.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Rotate
 
@@ -370,12 +337,11 @@ public:
         }
     }
 
-    void SetScale(const sm::vec3& scale) { m_scale = scale; }
-
-private:
-    sm::vec3 m_scale;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Scale.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Scale
 

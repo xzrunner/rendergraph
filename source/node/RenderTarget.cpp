@@ -90,24 +90,6 @@ void RenderTarget::SetSize(uint32_t width, uint32_t height)
     m_height = height;
 }
 
-void RenderTarget::EnableDepthRBO()
-{
-    if (m_enable_rbo_depth) {
-        return;
-    }
-
-    m_enable_rbo_depth = true;
-}
-
-void RenderTarget::EnableColorRBO()
-{
-    if (m_enable_rbo_color) {
-        return;
-    }
-
-    m_enable_rbo_color = true;
-}
-
 void RenderTarget::Init(const RenderContext& rc)
 {
     auto& ur_rc = rc.rc;

@@ -28,11 +28,13 @@ private:
     void InitVertexBuf();
 
 private:
-    size_t m_width = 128, m_height = 128;
-
     uint32_t m_vao = 0, m_vbo = 0, m_ebo = 0;
 
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Heightfield.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Heightfield
 

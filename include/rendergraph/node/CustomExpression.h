@@ -26,7 +26,7 @@ public:
     };
 
 public:
-    CustomExpression() 
+    CustomExpression()
     {
         m_imports.resize(I_MAX_NUM);
         m_imports[I_PREV] = {{ VariableType::Port, "prev" }};
@@ -41,7 +41,7 @@ public:
 
 private:
     std::string m_body;
-    
+
     RTTR_ENABLE(Node)
 
 }; // CustomExpression

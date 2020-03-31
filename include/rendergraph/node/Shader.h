@@ -49,8 +49,6 @@ private:
         std::vector<uint32_t>& texture_ids);
 
 private:
-    std::string m_vert, m_frag;
-
     std::shared_ptr<ur::Shader> m_shader = nullptr;
 
     std::vector<std::string> m_textures;
@@ -60,6 +58,10 @@ private:
     std::string m_model_mat_name;
 
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Shader.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Shader
 

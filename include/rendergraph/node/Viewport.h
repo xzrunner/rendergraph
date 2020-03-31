@@ -22,13 +22,11 @@ public:
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
-    void SetParams(int x, int y, int w, int h);
-
-private:
-    int m_x = 0, m_y = 0;
-    int m_w = 0, m_h = 0;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Viewport.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Viewport
 

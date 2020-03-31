@@ -234,6 +234,105 @@
     <ClInclude Include="..\..\..\include\rendergraph\node_rttr_gen.h">
       <Filter>tools\rtti</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Bind.parm.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Clear.parm.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.parm.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.parm.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.parm.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.parm.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\PerspectiveMat.parm.h">
+      <Filter>nodes\others\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\OrthoMat.parm.h">
+      <Filter>nodes\others\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\LookAtMat.parm.h">
+      <Filter>nodes\others\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Translate.parm.h">
+      <Filter>nodes\others\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Rotate.parm.h">
+      <Filter>nodes\others\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Scale.parm.h">
+      <Filter>nodes\others\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Int.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Bool.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector1.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector2.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector3.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector4.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Matrix2.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Matrix3.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Matrix4.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.parm.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.parm.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h">
+      <Filter>nodes\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\AlphaTest.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendEq.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendFunc.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Cull.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZTest.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZWrite.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -271,6 +370,12 @@
     </Filter>
     <Filter Include="tools\rtti">
       <UniqueIdentifier>{9aa628ea-befa-4960-88b7-28d220738b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\others\math">
+      <UniqueIdentifier>{1c86c81c-c641-42c7-a59f-3c4f906d8b6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\others\value">
+      <UniqueIdentifier>{81dcdb18-60f7-46b2-9b78-6cc6cadbbaac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -30,12 +30,11 @@ public:
         FrontAndBack,
     };
 
-    void SetMode(Mode mode) { m_mode = mode; }
-
-private:
-    Mode m_mode = Mode::Back;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Cull.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Cull
 

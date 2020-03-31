@@ -28,12 +28,11 @@ public:
         }
     }
 
-    void SetValue(int val) { m_val = val; }
-
-private:
-    int m_val = false;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Int.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Int
 
@@ -55,12 +54,11 @@ public:
         }
     }
 
-    void SetValue(bool val) { m_val = val; }
-
-private:
-    bool m_val = false;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Bool.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Bool
 
@@ -82,12 +80,11 @@ public:
         }
     }
 
-    void SetValue(float val) { m_val = val; }
-
-private:
-    float m_val = 0;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Vector1.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Vector1
 
@@ -109,12 +106,11 @@ public:
         }
     }
 
-    void SetValue(const sm::vec2& val) { m_val = val; }
-
-private:
-    sm::vec2 m_val;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Vector2.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Vector2
 
@@ -136,12 +132,11 @@ public:
         }
     }
 
-    void SetValue(const sm::vec3& val) { m_val = val; }
-
-private:
-    sm::vec3 m_val;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Vector3.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Vector3
 
@@ -163,12 +158,11 @@ public:
         }
     }
 
-    void SetValue(const sm::vec4& val) { m_val = val; }
-
-private:
-    sm::vec4 m_val;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Vector4.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Vector4
 
@@ -190,12 +184,11 @@ public:
         }
     }
 
-    void SetValue(const sm::mat2& val) { m_val = val; }
-
-private:
-    sm::mat2 m_val;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Matrix2.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Matrix2
 
@@ -217,12 +210,11 @@ public:
         }
     }
 
-    void SetValue(const sm::mat3& val) { m_val = val; }
-
-private:
-    sm::mat3 m_val;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Matrix3.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Matrix3
 
@@ -244,12 +236,11 @@ public:
         }
     }
 
-    void SetValue(const sm::mat4& val) { m_val = val; }
-
-private:
-    sm::mat4 m_val;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/Matrix4.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // Matrix4
 

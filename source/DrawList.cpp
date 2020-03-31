@@ -56,15 +56,15 @@ void DrawList::GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& n
     }
 }
 
-bool DrawList::Draw(const std::shared_ptr<dag::Context>& ctx, NodePtr end) const
+bool DrawList::Draw(const std::shared_ptr<dag::Context>& ctx, const Node* end) const
 {
     bool finished = false;
     for (auto& n : m_nodes)
     {
-        if (n->IsEnable()) {
+        //if (n->IsEnable()) {
             n->Execute(ctx);
-        }
-        if (n == end) {
+        //}
+        if (n.get() == end) {
             finished = true;
             break;
         }

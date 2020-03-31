@@ -11,6 +11,39 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\rendergraph\node\AlphaTest.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Bind.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendEq.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\BlendFunc.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Bool.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Clear.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Cull.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Int.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\LookAtMat.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Matrix2.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Matrix3.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Matrix4.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\OrthoMat.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\PerspectiveMat.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Rotate.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Scale.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Translate.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector1.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector2.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector3.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Vector4.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZTest.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\ZWrite.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node_include_gen.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node_regist_cfg.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node_rttr_gen.h" />
@@ -86,7 +119,10 @@
     <ClCompile Include="..\..\..\source\node\Viewport.cpp" />
     <ClCompile Include="..\..\..\source\node\ZTest.cpp" />
     <ClCompile Include="..\..\..\source\node\ZWrite.cpp" />
-    <ClCompile Include="..\..\..\source\RegistRTTR.cpp" />
+    <ClCompile Include="..\..\..\source\RegistRTTR.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\..\..\source\RenderGraph.cpp" />
     <ClCompile Include="..\..\..\source\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp" />

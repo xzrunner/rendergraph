@@ -16,6 +16,7 @@
 #define PARM_NODE_NAME texture
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE VertexArray
 #define PARM_NODE_NAME vertex_array
 #include EXE_FILEPATH
@@ -24,6 +25,7 @@
 #define PARM_NODE_NAME primitive_shape
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE Model
 #define PARM_NODE_NAME model
 #include EXE_FILEPATH
@@ -42,10 +44,12 @@
 #define PARM_NODE_NAME bind
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE Unbind
 #define PARM_NODE_NAME unbind
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE Draw
 #define PARM_NODE_NAME draw
 #include EXE_FILEPATH
@@ -88,9 +92,9 @@
 #define PARM_NODE_NAME front_face
 #include EXE_FILEPATH
 
-#define NO_FILEPATH_INCLUDE
-
 // value
+
+#define NO_FILEPATH_INCLUDE
 
 #define PARM_NODE_TYPE Int
 #define PARM_NODE_NAME int
@@ -128,12 +132,18 @@
 #define PARM_NODE_NAME matrix4
 #include EXE_FILEPATH
 
+#undef NO_FILEPATH_INCLUDE
+
 // math
 
+#define NO_FILEPATH_INCLUDE
+
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE Add
 #define PARM_NODE_NAME add
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE Mul
 #define PARM_NODE_NAME mul
 #include EXE_FILEPATH
@@ -162,24 +172,33 @@
 #define PARM_NODE_NAME scale
 #include EXE_FILEPATH
 
+#undef NO_FILEPATH_INCLUDE
+
 // input
 
+#define NO_FILEPATH_INCLUDE
+
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE ProjectMat
 #define PARM_NODE_NAME project_mat
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE ViewMat
 #define PARM_NODE_NAME view_mat
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE ModelMat
 #define PARM_NODE_NAME model_mat
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE CameraPosition
 #define PARM_NODE_NAME camera_position
 #include EXE_FILEPATH
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE LightPosition
 #define PARM_NODE_NAME light_position
 #include EXE_FILEPATH
@@ -192,12 +211,14 @@
 
 // control flow
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE ForEachLoop
 #define PARM_NODE_NAME for_each_loop
 #include EXE_FILEPATH
 
 // script
 
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE CustomExpression
 #define PARM_NODE_NAME custom_expression
 #include EXE_FILEPATH

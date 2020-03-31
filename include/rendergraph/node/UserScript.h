@@ -36,24 +36,19 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
 
-    void SetValue(const std::string& code) { m_code = code; }
-
-    void SetRetType(ReturnType type) { m_ret_type = type; }
-    auto GetRetType() const { return m_ret_type; }
-
     const ShaderVariant& GetCachedVar(VariableType type) const;
 
 private:
     static ShaderVariant Run(const std::string& code, VariableType type);
 
 private:
-    std::string m_code;
-
-    ReturnType m_ret_type = ReturnType::Void;
-
     mutable ShaderVariant m_cached;
 
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/UserScript.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // UserScript
 

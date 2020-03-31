@@ -30,7 +30,7 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
     }
 }
 
-void Texture::Init(const RenderContext& rc)
+void Texture::Init(const RenderContext& rc) const
 {
     if (m_texid != 0) {
         return;

@@ -25,26 +25,23 @@ public:
     enum class Factor
     {
         Off = 0,
-        Zero, 
-        One, 
-        SrcColor, 
-        OneMinusSrcColor, 
-        DstColor, 
-        OneMinusDstColor, 
-        SrcAlpha, 
-        OneMinusSrcAlpha, 
-        DstAlpha, 
+        Zero,
+        One,
+        SrcColor,
+        OneMinusSrcColor,
+        DstColor,
+        OneMinusDstColor,
+        SrcAlpha,
+        OneMinusSrcAlpha,
+        DstAlpha,
         OneMinusDstAlpha
     };
 
-    void SetSrcFactor(Factor factor) { m_sfactor = factor; }
-    void SetDstFactor(Factor factor) { m_dfactor = factor; }
-
-private:
-    Factor m_sfactor = Factor::One;
-    Factor m_dfactor = Factor::Zero;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/BlendFunc.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // BlendFunc
 

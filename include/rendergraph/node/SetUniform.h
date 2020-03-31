@@ -40,15 +40,11 @@ public:
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
 
-    void SetVarName(const std::string& name) { m_var_name = name; }
-    void SetVarType(VariableType type) { m_var_type = type; }
-
-private:
-    std::string m_var_name;
-
-    VariableType m_var_type = VariableType::Any;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/SetUniform.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // SetUniform
 

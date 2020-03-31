@@ -24,19 +24,18 @@ public:
 
     enum class Mode
     {
-        FuncAdd, 
-        FuncSubtract, 
-        FuncReverseSubtract, 
-        Min, 
+        FuncAdd,
+        FuncSubtract,
+        FuncReverseSubtract,
+        Min,
         Max
     };
 
-    void SetMode(Mode mode) { m_mode = mode; }
-
-private:
-    Mode m_mode = Mode::FuncAdd;
-
     RTTR_ENABLE(Node)
+
+#define PARM_FILEPATH "rendergraph/node/BlendEq.parm.h"
+#include <dag/node_parms_gen.h>
+#undef PARM_FILEPATH
 
 }; // BlendEq
 

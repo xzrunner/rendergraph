@@ -1,8 +1,9 @@
 #include "rendergraph/RenderSystem.h"
+#include "rendergraph/RenderContext.h"
 
-#include <unirender/Shader.h>
-#include <unirender/Blackboard.h>
-#include <unirender/RenderContext.h>
+#include <unirender2/Context.h>
+#include <unirender2/DrawState.h>
+#include <unirender2/Device.h>
 
 #include <string>
 
@@ -50,31 +51,20 @@ CU_SINGLETON_DEFINITION(RenderSystem);
 
 RenderSystem::RenderSystem()
 {
-    InitShader();
 }
 
-void RenderSystem::DrawTextureToScreen(unsigned int tex_id) const
+void RenderSystem::DrawTextureToScreen(const RenderContext& rc,
+                                       const ur2::Texture& tex) const
 {
-    if (!m_shader) {
-        return;
+    if (!m_prog) {
+        m_prog = rc.ur_dev->CreateShaderProgram(vert, frag);
+        assert(m_prog);
     }
 
-    auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-
-    rc.BindTexture(tex_id, 0);
-
-    m_shader->Use();
-    rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_TEX);
-}
-
-void RenderSystem::InitShader()
-{
-    auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-
-    std::vector<std::string> textures;
-    textures.push_back("texture1");
-    CU_VEC<ur::VertexAttrib> va_list;
-    m_shader = std::make_shared<ur::Shader>(&rc, vert.c_str(), frag.c_str(), textures, va_list, true);
+    ur2::DrawState ds;
+    ds.render_state = rc.ur_rs;
+    ds.program      = m_prog;
+    rc.ur_ctx->DrawCube(ur2::Context::VertexLayout::PosTex, ds);
 }
 
 }

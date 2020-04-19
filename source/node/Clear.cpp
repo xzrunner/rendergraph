@@ -1,7 +1,8 @@
 #include "rendergraph/node/Clear.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/RenderContext.h>
+#include <unirender2/ClearState.h>
+#include <unirender2/Context.h>
 
 namespace rendergraph
 {
@@ -14,32 +15,35 @@ void Clear::Execute(const std::shared_ptr<dag::Context>& ctx)
         return;
     }
 
-    auto rc = std::static_pointer_cast<RenderContext>(ctx);
-
-    int flag = 0;
+    ur2::ClearState clear;
+    int clear_mask = 0;
     for (auto& type : m_clear_type)
     {
         switch (type)
         {
         case Type::Color:
         {
-            flag |= ur::MASKC;
+            clear_mask &= static_cast<int>(ur2::ClearBuffers::ColorBuffer);
 
-            uint32_t argb = m_col.a << 24 | m_col.r << 16 | m_col.g << 8 | m_col.b;
-            rc->rc.SetClearColor(argb);
+            clear.color.r = m_col.r;
+            clear.color.g = m_col.g;
+            clear.color.b = m_col.b;
+            clear.color.a = m_col.a;
         }
             break;
         case Type::Depth:
-            flag |= ur::MASKD;
+            clear_mask &= static_cast<int>(ur2::ClearBuffers::DepthBuffer);
             break;
         case Type::Stencil:
-            flag |= ur::MASKS;
+            clear_mask &= static_cast<int>(ur2::ClearBuffers::StencilBuffer);
             break;
         }
     }
 
-    rc->rc.SetClearFlag(flag);
-    rc->rc.Clear();
+    clear.buffers = static_cast<ur2::ClearBuffers>(clear_mask);
+
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->ur_ctx->Clear(clear);
 }
 
 }

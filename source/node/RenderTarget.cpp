@@ -2,80 +2,21 @@
 #include "rendergraph/node/Texture.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/Blackboard.h>
-#include <unirender/RenderContext.h>
+#include <unirender2/Device.h>
+#include <unirender2/Framebuffer.h>
 
 namespace rendergraph
 {
 namespace node
 {
 
-RenderTarget::~RenderTarget()
-{
-    ReleaseRes();
-}
-
 void RenderTarget::Bind(const RenderContext& rc)
 {
-    if (m_fbo == 0) {
+    if (!m_frame_buffer) {
         Init(rc);
     }
 
-    auto& ur_rc = rc.rc;
-
-    // bind fbo
-    ur_rc.BindRenderTarget(m_fbo);
-    // bind texture
-    ur_rc.GetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
-    int rt_count = 0;
-    bool tex0 = BindTexture(I_COLOR_TEX0, ur_rc);
-    if (tex0) { ++rt_count; }
-    bool tex1 = BindTexture(I_COLOR_TEX1, ur_rc);
-    if (tex1) { ++rt_count; }
-    bool tex2 = BindTexture(I_COLOR_TEX2, ur_rc);
-    if (tex2) { ++rt_count; }
-    bool tex3 = BindTexture(I_COLOR_TEX3, ur_rc);
-    if (tex3) { ++rt_count; }
-    if (rt_count > 1)
-    {
-        std::vector<ur::ATTACHMENT_TYPE> list;
-        list.reserve(rt_count);
-        if (tex0) { list.push_back(ur::ATTACHMENT_COLOR0); }
-        if (tex1) { list.push_back(ur::ATTACHMENT_COLOR1); }
-        if (tex2) { list.push_back(ur::ATTACHMENT_COLOR2); }
-        if (tex3) { list.push_back(ur::ATTACHMENT_COLOR3); }
-        ur_rc.SetColorBufferList(list);
-    }
-    BindTexture(I_DEPTH_TEX, ur_rc);
-    ur_rc.SetViewport(0, 0, m_width, m_height);
-    // bind rbo
-    if (m_rbo_depth != 0) {
-        ur_rc.BindRenderbufferObject(m_rbo_depth, ur::ATTACHMENT_DEPTH);
-    }
-    if (m_rbo_color != 0) {
-        ur_rc.BindRenderbufferObject(m_rbo_color, ur::ATTACHMENT_COLOR0);
-    }
-
-    if (ur_rc.CheckRenderTargetStatus() == 0) {
-        ur_rc.UnbindRenderTarget();
-        m_binded = false;
-    } else {
-        m_binded = true;
-    }
-}
-
-void RenderTarget::Unbind(const RenderContext& rc)
-{
-    if (!m_binded) {
-        return;
-    }
-
-    m_binded = false;
-
-    auto& ur_rc = rc.rc;
-    ur_rc.UnbindRenderTarget();
-
-    ur_rc.SetViewport(m_vp_x, m_vp_y, m_vp_w, m_vp_h);
+    m_frame_buffer->Bind();
 }
 
 void RenderTarget::SetSize(uint32_t width, uint32_t height)
@@ -84,38 +25,38 @@ void RenderTarget::SetSize(uint32_t width, uint32_t height)
         return;
     }
 
-    ReleaseRes();
-
     m_width  = width;
     m_height = height;
 }
 
 void RenderTarget::Init(const RenderContext& rc)
 {
-    auto& ur_rc = rc.rc;
+    assert(!m_frame_buffer);
+    m_frame_buffer = rc.ur_dev->CreateFramebuffer();
 
-    // create fbo
-    if (m_fbo == 0) {
-        m_fbo = ur_rc.CreateRenderTarget(m_fbo);
+    // init texture
+    InitTexture(I_COLOR_TEX0, rc);
+    InitTexture(I_COLOR_TEX1, rc);
+    InitTexture(I_COLOR_TEX2, rc);
+    InitTexture(I_COLOR_TEX3, rc);
+    InitTexture(I_DEPTH_TEX, rc);
+
+    // init rbo
+    if (m_enable_rbo_depth && m_width != 0 && m_height != 0)
+    {
+        auto type = ur2::AttachmentType::Depth;
+        auto rbo = rc.ur_dev->CreateRenderBuffer(m_width, m_height, ur2::InternalFormat::DepthComponent, type);
+        m_frame_buffer->SetAttachment(type, ur2::TextureTarget::Texture2D, nullptr, rbo);
     }
-
-    // create texture
-    InitTexture(I_COLOR_TEX0, ur_rc);
-    InitTexture(I_COLOR_TEX1, ur_rc);
-    InitTexture(I_COLOR_TEX2, ur_rc);
-    InitTexture(I_COLOR_TEX3, ur_rc);
-    InitTexture(I_DEPTH_TEX, ur_rc);
-
-    // create rbo
-    if (m_enable_rbo_depth && m_width != 0 && m_height != 0 && m_rbo_depth == 0) {
-        m_rbo_depth = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_DEPTH_COMPONENT, m_width, m_height);
-    }
-    if (m_enable_rbo_color && m_rbo_color == 0 && m_width != 0 && m_height != 0 && m_rbo_color == 0) {
-        m_rbo_color = ur_rc.CreateRenderbufferObject(m_fbo, ur::FMT_RGB8, m_width, m_height);
+    if (m_enable_rbo_color && m_width != 0 && m_height != 0)
+    {
+        auto type = ur2::AttachmentType::Color0;
+        auto rbo = rc.ur_dev->CreateRenderBuffer(m_width, m_height, ur2::InternalFormat::RGB, type);
+        m_frame_buffer->SetAttachment(type, ur2::TextureTarget::Texture2D, nullptr, rbo);
     }
 }
 
-void RenderTarget::InitTexture(int input_idx, ur::RenderContext& rc)
+void RenderTarget::InitTexture(int input_idx, const RenderContext& rc)
 {
     auto& conns = GetImports()[input_idx].conns;
     if (conns.empty()) {
@@ -140,63 +81,15 @@ void RenderTarget::InitTexture(int input_idx, ur::RenderContext& rc)
             m_height = height;
         }
     }
-}
 
-bool RenderTarget::BindTexture(int input_idx, ur::RenderContext& rc)
-{
-    auto& conns = GetImports()[input_idx].conns;
-    if (conns.empty()) {
-        return false;
+    ur2::AttachmentType atta_type;
+    if (input_idx >= I_COLOR_TEX0 && input_idx <= I_COLOR_TEX3) {
+        atta_type = static_cast<ur2::AttachmentType>(input_idx);
+    } else {
+        assert(input_idx == I_DEPTH_TEX);
+        atta_type = ur2::AttachmentType::Depth;
     }
-
-    auto tex_node = conns[0].node.lock();
-    if (!tex_node || tex_node->get_type() != rttr::type::get<node::Texture>()) {
-        return false;
-    }
-
-    auto tex = std::static_pointer_cast<node::Texture>(tex_node);
-    assert(tex->GetTexID() != 0);
-
-    ur::ATTACHMENT_TYPE att_type;
-    switch (input_idx)
-    {
-    case I_COLOR_TEX0:
-        att_type = ur::ATTACHMENT_COLOR0;
-        break;
-    case I_COLOR_TEX1:
-        att_type = ur::ATTACHMENT_COLOR1;
-        break;
-    case I_COLOR_TEX2:
-        att_type = ur::ATTACHMENT_COLOR2;
-        break;
-    case I_COLOR_TEX3:
-        att_type = ur::ATTACHMENT_COLOR3;
-        break;
-    case I_DEPTH_TEX:
-        att_type = ur::ATTACHMENT_DEPTH;
-        break;
-    }
-
-    rc.BindRenderTargetTex(tex->GetTexID(), att_type);
-
-    return true;
-}
-
-void RenderTarget::ReleaseRes()
-{
-    auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-    if (m_fbo != 0) {
-        rc.ReleaseRenderTarget(m_fbo);
-        m_fbo = 0;
-    }
-    if (m_rbo_depth != 0) {
-        rc.ReleaseRenderbufferObject(m_rbo_depth);
-        m_rbo_depth = 0;
-    }
-    if (m_rbo_color != 0) {
-        rc.ReleaseRenderbufferObject(m_rbo_color);
-        m_rbo_color = 0;
-    }
+    m_frame_buffer->SetAttachment(atta_type, ur2::TextureTarget::Texture2D, tex->GetTexture(), nullptr);
 }
 
 }

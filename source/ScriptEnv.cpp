@@ -5,8 +5,6 @@
 #include <SM_Vector.h>
 #include <SM_Matrix.h>
 #include <sm_const.h>
-#include <unirender/Blackboard.h>
-#include <unirender/RenderContext.h>
 
 #include <chaiscript/chaiscript.hpp>
 
@@ -41,14 +39,14 @@ ScriptEnv::ScriptEnv()
     m_chai->add(
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val) {
-        auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            shader->SetUniformValue(rc, key, ShaderVariant(val));
+            //auto& rc = ur::Blackboard::Instance()->GetRenderContext();
+            //shader->SetUniformValue(rc, key, ShaderVariant(val));
         }), "set_uniform");
     m_chai->add(
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val) {
-        auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            shader->SetUniformValue(rc, key, ShaderVariant(val));
+            //auto& rc = ur::Blackboard::Instance()->GetRenderContext();
+            //shader->SetUniformValue(rc, key, ShaderVariant(val));
         }), "set_uniform");
 
     // for return vector
@@ -127,8 +125,8 @@ ScriptEnv::ScriptEnv()
     m_chai->add(
       chaiscript::fun<std::function<void()>>(
         [&]() {
-            auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_NORM_TEX);
+            //auto& rc = ur::Blackboard::Instance()->GetRenderContext();
+            //rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_NORM_TEX);
         }), "render_cube");
 }
 

@@ -1,8 +1,6 @@
 #include "rendergraph/node/AlphaTest.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/RenderContext.h>
-
 namespace rendergraph
 {
 namespace node
@@ -10,40 +8,44 @@ namespace node
 
 void AlphaTest::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    ur::ALPHA_FUNC func;
+    ur2::AlphaTest alpha;
+    alpha.enabled = true;
+
     switch (m_func)
     {
     case Func::Off:
-        func = ur::ALPHA_DISABLE;
+        alpha.enabled = false;
         break;
     case Func::Never:
-        func = ur::ALPHA_NEVER;
+        alpha.function = ur2::AlphaTestFunc::Never;
         break;
     case Func::Less:
-        func = ur::ALPHA_LESS;
+        alpha.function = ur2::AlphaTestFunc::Less;
         break;
     case Func::Equal:
-        func = ur::ALPHA_EQUAL;
+        alpha.function = ur2::AlphaTestFunc::Equal;
         break;
     case Func::LEqual:
-        func = ur::ALPHA_LEQUAL;
+        alpha.function = ur2::AlphaTestFunc::LessThanOrEqual;
         break;
     case Func::Greater:
-        func = ur::ALPHA_GREATER;
+        alpha.function = ur2::AlphaTestFunc::Greater;
         break;
     case Func::NotEqual:
-        func = ur::ALPHA_NOTEQUAL;
+        alpha.function = ur2::AlphaTestFunc::NotEqual;
         break;
     case Func::GEqual:
-        func = ur::ALPHA_GEQUAL;
+        alpha.function = ur2::AlphaTestFunc::GreaterThanOrEqual;
         break;
     case Func::Always:
-        func = ur::ALPHA_ALWAYS;
+        alpha.function = ur2::AlphaTestFunc::Always;
         break;
     }
 
+    alpha.ref = m_ref;
+
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
-    rc->rc.SetAlphaTest(func);
+    rc->ur_rs.alpha_test = alpha;
 }
 
 }

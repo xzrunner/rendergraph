@@ -2,7 +2,7 @@
 
 #include "rendergraph/Node.h"
 
-namespace ur { class RenderContext; }
+namespace ur2 { class Framebuffer; }
 
 namespace rendergraph
 {
@@ -43,31 +43,18 @@ public:
         m_exports.resize(O_MAX_NUM);
         m_exports[O_OUT] = {{ VariableType::RenderTarget, "out" }};
     }
-    virtual ~RenderTarget();
 
     void Bind(const RenderContext& rc);
-    void Unbind(const RenderContext& rc);
 
     void SetSize(uint32_t width, uint32_t height);
 
 private:
     void Init(const RenderContext& rc);
 
-    void InitTexture(int input_idx, ur::RenderContext& rc);
-    bool BindTexture(int input_idx, ur::RenderContext& rc);
-
-    void ReleaseRes();
+    void InitTexture(int input_idx, const RenderContext& rc);
 
 private:
-    uint32_t m_fbo = 0;
-
-    bool m_binded = false;
-
-    // last viewport
-    int m_vp_x = 0, m_vp_y = 0, m_vp_w = 0, m_vp_h = 0;
-
-    uint32_t m_rbo_depth = 0;
-    uint32_t m_rbo_color = 0;
+    std::shared_ptr<ur2::Framebuffer> m_frame_buffer = nullptr;
 
     RTTR_ENABLE(Node)
 

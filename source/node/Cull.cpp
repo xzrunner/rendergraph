@@ -1,8 +1,6 @@
 #include "rendergraph/node/Cull.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/RenderContext.h>
-
 namespace rendergraph
 {
 namespace node
@@ -10,25 +8,23 @@ namespace node
 
 void Cull::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    ur::CULL_MODE cull;
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->ur_rs.facet_culling.enabled = true;
     switch (m_mode)
     {
     case Mode::Off:
-        cull = ur::CULL_DISABLE;
+        rc->ur_rs.facet_culling.enabled = false;
         break;
     case Mode::Front:
-        cull = ur::CULL_FRONT;
+        rc->ur_rs.facet_culling.face = ur2::CullFace::Front;
         break;
     case Mode::Back:
-        cull = ur::CULL_BACK;
+        rc->ur_rs.facet_culling.face = ur2::CullFace::Back;
         break;
     case Mode::FrontAndBack:
-        cull = ur::CULL_FRONT_AND_BACK;
+        rc->ur_rs.facet_culling.face = ur2::CullFace::FrontAndBack;
         break;
     }
-
-    auto rc = std::static_pointer_cast<RenderContext>(ctx);
-    rc->rc.SetCullMode(cull);
 }
 
 }

@@ -2,6 +2,8 @@
 
 #include "rendergraph/Node.h"
 
+namespace ur2 { class VertexArray; }
+
 namespace rendergraph
 {
 namespace node
@@ -15,20 +17,17 @@ public:
         m_exports = {
             {{ VariableType::Model, "out" }}
         };
-
-        InitVertexBuf();
     }
-    virtual ~Heightfield();
 
     void Draw(const RenderContext& rc) const;
 
     void SetSize(size_t width, size_t height);
 
 private:
-    void InitVertexBuf();
+    void Init(const RenderContext& rc) const;
 
 private:
-    uint32_t m_vao = 0, m_vbo = 0, m_ebo = 0;
+    mutable std::shared_ptr<ur2::VertexArray> m_vertex_array;
 
     RTTR_ENABLE(Node)
 

@@ -1,8 +1,6 @@
 #include "rendergraph/node/ZTest.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/RenderContext.h>
-
 namespace rendergraph
 {
 namespace node
@@ -10,40 +8,42 @@ namespace node
 
 void ZTest::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    ur::DEPTH_FORMAT fmt;
+    ur2::DepthTest depth;
+    depth.enabled = true;
+
     switch (m_func)
     {
     case Func::Off:
-        fmt = ur::DEPTH_DISABLE;
+        depth.enabled = false;
         break;
     case Func::Never:
-        fmt = ur::DEPTH_NEVER;
+        depth.function = ur2::DepthTestFunc::Never;
         break;
     case Func::Less:
-        fmt = ur::DEPTH_LESS;
+        depth.function = ur2::DepthTestFunc::Less;
         break;
     case Func::Equal:
-        fmt = ur::DEPTH_EQUAL;
+        depth.function = ur2::DepthTestFunc::Equal;
         break;
     case Func::LEqual:
-        fmt = ur::DEPTH_LESS_EQUAL;
+        depth.function = ur2::DepthTestFunc::LessThanOrEqual;
         break;
     case Func::Greater:
-        fmt = ur::DEPTH_GREATER;
+        depth.function = ur2::DepthTestFunc::Greater;
         break;
     case Func::NotEqual:
-        fmt = ur::DEPTH_NOT_EQUAL;
+        depth.function = ur2::DepthTestFunc::NotEqual;
         break;
     case Func::GEqual:
-        fmt = ur::DEPTH_GREATER_EQUAL;
+        depth.function = ur2::DepthTestFunc::GreaterThanOrEqual;
         break;
     case Func::Always:
-        fmt = ur::DEPTH_ALWAYS;
+        depth.function = ur2::DepthTestFunc::Always;
         break;
     }
 
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
-    rc->rc.SetZTest(fmt);
+    rc->ur_rs.depth_test = depth;
 }
 
 }

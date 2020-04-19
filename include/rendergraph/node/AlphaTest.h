@@ -35,9 +35,6 @@ public:
         Always
     };
 
-private:
-    float m_ref = 0;
-
     RTTR_ENABLE(Node)
 
 #define PARM_FILEPATH "rendergraph/node/AlphaTest.parm.h"

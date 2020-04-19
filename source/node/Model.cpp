@@ -28,26 +28,26 @@ void Model::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
         pt3::MaterialMgr::PositionUniforms::cam_pos.name,
         pt0::RenderVariant(rc.cam_position)
     );
-    auto& wc = pt3::Blackboard::Instance()->GetWindowContext();
-    assert(wc);
-    ctx.AddVar(
-        pt3::MaterialMgr::PosTransUniforms::view.name,
-        pt0::RenderVariant(wc->GetViewMat())
-    );
-    ctx.AddVar(
-        pt3::MaterialMgr::PosTransUniforms::projection.name,
-        pt0::RenderVariant(wc->GetProjMat())
-    );
+    //auto& wc = pt3::Blackboard::Instance()->GetWindowContext();
+    //assert(wc);
+    //ctx.AddVar(
+    //    pt3::MaterialMgr::PosTransUniforms::view.name,
+    //    pt0::RenderVariant(wc->GetViewMat())
+    //);
+    //ctx.AddVar(
+    //    pt3::MaterialMgr::PosTransUniforms::projection.name,
+    //    pt0::RenderVariant(wc->GetProjMat())
+    //);
 
-    std::shared_ptr<ur::Shader> ur_shader = nullptr;
-    pt0::UniformNames uniforms;
-    if (shader) {
-        ur_shader = shader->GetShader(rc.rc);
-        uniforms  = shader->GetUniformNames();
-    }
-    pt3::RenderSystem::Instance()->DrawModel(
-        *m_model, m_materials, params, ctx, ur_shader, uniforms
-    );
+    std::shared_ptr<ur2::ShaderProgram> ur_shader = nullptr;
+    //pt0::UniformNames uniforms;
+    //if (shader) {
+    //    ur_shader = shader->GetShader(rc.rc);
+    //    uniforms  = shader->GetUniformNames();
+    //}
+    //pt3::RenderSystem::Instance()->DrawModel(
+    //    *m_model, m_materials, params, ctx, ur_shader, uniforms
+    //);
 }
 
 void Model::SetModel(const std::shared_ptr<model::ModelInstance>& model)
@@ -78,13 +78,13 @@ void Model::InitMaterials()
         dst.AddVar(UNIFORMS::specular.name,    pt0::RenderVariant(src->specular));
         dst.AddVar(UNIFORMS::shininess.name,   pt0::RenderVariant(src->shininess));
 
-        ur::Texture* tex = nullptr;
-        if (src->diffuse_tex >= 0) {
-            tex = model->textures[src->diffuse_tex].second.get();
-            if (tex) {
-                dst.AddVar(UNIFORMS::diffuse_tex.name, pt0::RenderVariant(tex));
-            }
-        }
+        //ur::Texture* tex = nullptr;
+        //if (src->diffuse_tex >= 0) {
+        //    tex = model->textures[src->diffuse_tex].second.get();
+        //    if (tex) {
+        //        dst.AddVar(UNIFORMS::diffuse_tex.name, pt0::RenderVariant(tex));
+        //    }
+        //}
     }
 }
 

@@ -3,21 +3,18 @@
 #include "rendergraph/RenderContext.h"
 #include "rendergraph/RenderSystem.h"
 
-#include <unirender/typedef.h>
-#include <unirender/Blackboard.h>
-#include <unirender/RenderContext.h>
+#include <unirender2/TextureTarget.h>
+#include <unirender2/TextureDescription.h>
+#include <unirender2/TextureMinificationFilter.h>
+#include <unirender2/TextureMagnificationFilter.h>
+#include <unirender2/TextureWrap.h>
+#include <unirender2/Texture.h>
+#include <unirender2/Device.h>
 
 namespace rendergraph
 {
 namespace node
 {
-
-Texture::~Texture()
-{
-    if (m_texid != 0) {
-        ur::Blackboard::Instance()->GetRenderContext().ReleaseTexture(m_texid);
-    }
-}
 
 void Texture::Eval(const RenderContext& rc, size_t port_idx,
                    ShaderVariant& var, uint32_t& flags) const
@@ -25,43 +22,102 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
     if (port_idx == O_OUT)
     {
         // todo: other texture type
-        var.type = VariableType::Sampler2D;
-        var.res_id = m_texid;
+        if (m_tex)
+        {
+            var.type   = VariableType::Sampler2D;
+            var.res_id = m_tex->GetTexID();
+        }
     }
 }
 
 void Texture::Init(const RenderContext& rc) const
 {
-    if (m_texid != 0) {
-        return;
-    }
-
-    ur::TEXTURE_WRAP wrap;
-    switch (m_wrap)
+    ur2::TextureTarget target;
+    switch (m_type)
     {
-    case Wrapping::Repeat:
-        wrap = ur::TEXTURE_REPEAT;
+    case Type::Tex2D:
+        target = ur2::TextureTarget::Texture2D;
         break;
-    case Wrapping::MirroredRepeat:
-        wrap = ur::TEXTURE_MIRRORED_REPEAT;
+    case Type::TexCube:
+        target = ur2::TextureTarget::TextureCubeMap;
         break;
-    case Wrapping::ClampToEdge:
-        wrap = ur::TEXTURE_CLAMP_TO_EDGE;
-        break;
-    case Wrapping::ClampToBorder:
-        wrap = ur::TEXTURE_CLAMP_TO_BORDER;
-        break;
+    default:
+        assert(0);
     }
 
-    ur::TEXTURE_FILTER filter;
+    ur2::TextureDescription desc;
+
+    desc.width  = m_width;
+    desc.height = m_height;
+
+    switch (m_format)
+    {
+    case Format::RGBA16:
+        desc.format = ur2::TextureFormat::RGBA16F;
+        break;
+    case Format::RGBA8:
+        desc.format = ur2::TextureFormat::RGBA8;
+        break;
+    case Format::RGBA4:
+        desc.format = ur2::TextureFormat::RGBA4;
+        break;
+    case Format::RGB:
+        desc.format = ur2::TextureFormat::RGB;
+        break;
+    case Format::RGB565:
+        desc.format = ur2::TextureFormat::RGB565;
+        break;
+    case Format::A8:
+        desc.format = ur2::TextureFormat::A8;
+        break;
+    case Format::RED:
+        desc.format = ur2::TextureFormat::RED;
+        break;
+    case Format::Depth:
+        desc.format = ur2::TextureFormat::DEPTH;
+        break;
+    default:
+        assert(0);
+    }
+
+    ur2::TextureMinificationFilter min_filter;  // todo: mipmap
+    ur2::TextureMagnificationFilter mag_filter;
     switch (m_filter)
     {
     case Filtering::Nearest:
-        filter = ur::TEXTURE_NEAREST;
+        min_filter = ur2::TextureMinificationFilter::Nearest;
+        mag_filter = ur2::TextureMagnificationFilter::Nearest;
         break;
     case Filtering::Linear:
-        filter = ur::TEXTURE_LINEAR;
+        min_filter = ur2::TextureMinificationFilter::Linear;
+        mag_filter = ur2::TextureMagnificationFilter::Linear;
         break;
+    default:
+        assert(0);
+    }
+
+    ur2::TextureWrap wrap_s;
+    ur2::TextureWrap wrap_t;
+    switch (m_wrap)
+    {
+    case Wrapping::Repeat:
+        wrap_s = ur2::TextureWrap::Repeat;
+        wrap_t = ur2::TextureWrap::Repeat;
+        break;
+    case Wrapping::MirroredRepeat:
+        wrap_s = ur2::TextureWrap::MirroredRepeat;
+        wrap_t = ur2::TextureWrap::MirroredRepeat;
+        break;
+    case Wrapping::ClampToEdge:
+        wrap_s = ur2::TextureWrap::ClampToEdge;
+        wrap_t = ur2::TextureWrap::ClampToEdge;
+        break;
+    case Wrapping::ClampToBorder:
+        wrap_s = ur2::TextureWrap::ClampToBorder;
+        wrap_t = ur2::TextureWrap::ClampToBorder;
+        break;
+    default:
+        assert(0);
     }
 
     if (!m_filepath.empty())
@@ -73,64 +129,31 @@ void Texture::Init(const RenderContext& rc) const
         switch (m_type)
         {
         case Type::Tex2D:
-        {
-            int format = 0;
-            switch (m_format)
-            {
-            case Format::RGBA16:
-                format = ur::TEXTURE_RGBA16F;
-                break;
-            case Format::RGBA8:
-                format = ur::TEXTURE_RGBA8;
-                break;
-            case Format::RGBA4:
-                format = ur::TEXTURE_RGBA4;
-                break;
-            case Format::RGB:
-                format = ur::TEXTURE_RGB;
-                break;
-            case Format::RGB565:
-                format = ur::TEXTURE_RGB565;
-                break;
-            case Format::A8:
-                format = ur::TEXTURE_A8;
-                break;
-            case Format::RED:
-                format = ur::TEXTURE_RED;
-                break;
-            case Format::Depth:
-                format = ur::TEXTURE_DEPTH;
-                break;
-            }
-
-            if (m_texid != 0) {
-                rc.rc.ReleaseTexture(m_texid);
-            }
-            m_texid = rc.rc.CreateTexture(nullptr, m_width, m_height, format, 0, wrap, filter);
-        }
+            desc.target = ur2::TextureTarget::Texture2D;
             break;
         case Type::TexCube:
-            if (m_texid != 0) {
-                rc.rc.ReleaseTexture(m_texid);
-            }
-            m_texid = rc.rc.CreateTextureCube(m_width, m_height);
+            desc.target = ur2::TextureTarget::TextureCubeMap;
             break;
         }
     }
+
+    m_tex = rc.ur_dev->CreateTexture(desc);
 }
 
 void Texture::Bind(const RenderContext& rc, int channel)
 {
-    rc.rc.BindTexture(m_texid, channel);
+    if (m_tex) {
+        m_tex->Bind();
+    }
 }
 
 void Texture::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
 {
     if (shader) {
-        shader->Bind(rc);
-        rc.rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_TEX);
+        //shader->Bind(rc);
+        //rc.rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_TEX);
     } else {
-        RenderSystem::Instance()->DrawTextureToScreen(m_texid);
+        RenderSystem::Instance()->DrawTextureToScreen(rc, *m_tex);
     }
 }
 

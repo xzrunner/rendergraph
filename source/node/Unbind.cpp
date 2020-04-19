@@ -19,7 +19,7 @@ void Unbind::Execute(const std::shared_ptr<dag::Context>& ctx)
         auto type = node->get_type();
         if (type == rttr::type::get<node::RenderTarget>()) {
             auto rc = std::static_pointer_cast<RenderContext>(ctx);
-            std::static_pointer_cast<node::RenderTarget>(node)->Unbind(*rc);
+//            std::static_pointer_cast<node::RenderTarget>(node)->Unbind(*rc);
         }
     }
 }

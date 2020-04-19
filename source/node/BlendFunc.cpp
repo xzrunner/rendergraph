@@ -1,48 +1,43 @@
 #include "rendergraph/node/BlendFunc.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/RenderContext.h>
-
 namespace
 {
 
-ur::BLEND_FORMAT trans_factor_to_ur(rendergraph::node::BlendFunc::Factor factor)
+ur2::BlendingFactor trans_blend_factor(rendergraph::node::BlendFunc::Factor factor)
 {
-    ur::BLEND_FORMAT ret = ur::BLEND_DISABLE;
+    ur2::BlendingFactor ret;
     switch (factor)
     {
-    case rendergraph::node::BlendFunc::Factor::Off:
-        ret = ur::BLEND_DISABLE;
-        break;
     case rendergraph::node::BlendFunc::Factor::Zero:
-        ret = ur::BLEND_ZERO;
+        ret = ur2::BlendingFactor::Zero;
         break;
     case rendergraph::node::BlendFunc::Factor::One:
-        ret = ur::BLEND_ONE;
+        ret = ur2::BlendingFactor::One;
         break;
     case rendergraph::node::BlendFunc::Factor::SrcColor:
-        ret = ur::BLEND_SRC_COLOR;
+        ret = ur2::BlendingFactor::SrcColor;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusSrcColor:
-        ret = ur::BLEND_ONE_MINUS_SRC_COLOR;
+        ret = ur2::BlendingFactor::OneMinusSrcColor;
         break;
     case rendergraph::node::BlendFunc::Factor::DstColor:
-        ret = ur::BLEND_DST_COLOR;
+        ret = ur2::BlendingFactor::DstColor;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusDstColor:
-        ret = ur::BLEND_ONE_MINUS_DST_COLOR;
+        ret = ur2::BlendingFactor::OneMinusDstColor;
         break;
     case rendergraph::node::BlendFunc::Factor::SrcAlpha:
-        ret = ur::BLEND_SRC_ALPHA;
+        ret = ur2::BlendingFactor::SrcAlpha;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusSrcAlpha:
-        ret = ur::BLEND_ONE_MINUS_SRC_ALPHA;
+        ret = ur2::BlendingFactor::OneMinusSrcAlpha;
         break;
     case rendergraph::node::BlendFunc::Factor::DstAlpha:
-        ret = ur::BLEND_DST_ALPHA;
+        ret = ur2::BlendingFactor::DstAlpha;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusDstAlpha:
-        ret = ur::BLEND_ONE_MINUS_DST_ALPHA;
+        ret = ur2::BlendingFactor::OneMinusDstAlpha;
         break;
     }
     return ret;
@@ -57,11 +52,21 @@ namespace node
 
 void BlendFunc::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    ur2::Blending blend;
+    blend.enabled = true;
+    blend.separately = false;
+    if (m_src == Factor::Off || m_dst == Factor::Off)
+    {
+        blend.enabled = false;
+    }
+    else
+    {
+        blend.src = trans_blend_factor(m_src);
+        blend.dst = trans_blend_factor(m_dst);
+    }
 
-    ur::BLEND_FORMAT src = trans_factor_to_ur(m_src);
-    ur::BLEND_FORMAT dst = trans_factor_to_ur(m_dst);
-    rc->rc.SetBlend(src, dst);
+    auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    rc->ur_rs.blending = blend;
 }
 
 }

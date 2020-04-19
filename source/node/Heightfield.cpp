@@ -1,8 +1,14 @@
 #include "rendergraph/node/Heightfield.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/RenderContext.h>
-#include <unirender/Blackboard.h>
+#include <unirender2/DrawState.h>
+#include <unirender2/Context.h>
+#include <unirender2/Device.h>
+#include <unirender2/VertexArray.h>
+#include <unirender2/ComponentDataType.h>
+#include <unirender2/VertexBufferAttribute.h>
+#include <unirender2/IndexBuffer.h>
+#include <unirender2/VertexBuffer.h>
 #include <renderpipeline/UniformNames.h>
 
 namespace
@@ -31,16 +37,19 @@ namespace rendergraph
 namespace node
 {
 
-Heightfield::~Heightfield()
-{
-    ur::Blackboard::Instance()->GetRenderContext().ReleaseVAO(m_vao, m_vbo, m_ebo);
-}
-
 void Heightfield::Draw(const RenderContext& rc) const
 {
-    assert(m_vao > 0 && m_vbo > 0 && m_ebo > 0);
-    size_t n = (m_width - 1) * (m_height - 1) * 6;
-    ur::Blackboard::Instance()->GetRenderContext().DrawElementsVAO(ur::DRAW_TRIANGLES, 0, n, m_vao, false);
+    if (!m_vertex_array) {
+        Init(rc);
+    }
+
+    ur2::DrawState draw;
+    draw.render_state = rc.ur_rs;
+    draw.program = rc.ur_ctx->GetShaderProgram();
+    draw.vertex_array = m_vertex_array;
+
+    rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, draw, nullptr);
+
 }
 
 void Heightfield::SetSize(size_t width, size_t height)
@@ -52,10 +61,10 @@ void Heightfield::SetSize(size_t width, size_t height)
     m_width  = width;
     m_height = height;
 
-    InitVertexBuf();
+    //InitVertexBuf();
 }
 
-void Heightfield::InitVertexBuf()
+void Heightfield::Init(const RenderContext& rc) const
 {
     std::vector<Vertex> verts(m_width * m_height);
     size_t ptr = 0;
@@ -82,20 +91,30 @@ void Heightfield::InitVertexBuf()
         }
     }
 
-    ur::RenderContext::VertexInfo vi;
+    assert(!m_vertex_array);
+    m_vertex_array = rc.ur_dev->CreateVertexArray();
 
-    const size_t stride = 5;    // float number
-    vi.vn        = verts.size();
-    vi.vertices  = verts.data();
-    vi.stride    = stride * sizeof(float);
-    vi.indices   = indices.data();
-    vi.in        = indices.size();
-    vi.idx_short = false;
+    auto usage = ur2::BufferUsageHint::StaticDraw;
 
-    vi.va_list.push_back(ur::VertexAttrib(rp::VERT_POSITION_NAME, 3, 4, vi.stride, 0));   // vertices
-    vi.va_list.push_back(ur::VertexAttrib(rp::VERT_TEXCOORD_NAME, 2, 4, vi.stride, 12));  // texcoord
+    auto ibuf_sz = sizeof(unsigned int) * indices.size();
+    auto ibuf = rc.ur_dev->CreateIndexBuffer(usage, ibuf_sz);
+    ibuf->ReadFromMemory(indices.data(), ibuf_sz, 0);
+    m_vertex_array->SetIndexBuffer(ibuf);
 
-    ur::Blackboard::Instance()->GetRenderContext().CreateVAO(vi, m_vao, m_vbo, m_ebo);
+    auto vbuf_sz = sizeof(Vertex) * verts.size();
+    auto vbuf = rc.ur_dev->CreateVertexBuffer(usage, vbuf_sz);
+    vbuf->ReadFromMemory(verts.data(), vbuf_sz, 0);
+    m_vertex_array->SetVertexBuffer(vbuf);
+
+    std::vector<std::shared_ptr<ur2::VertexBufferAttribute>> vbuf_attrs;
+    vbuf_attrs.resize(2);
+    vbuf_attrs[0] = std::make_shared<ur2::VertexBufferAttribute>(
+        ur2::ComponentDataType::Float, 2, 0, 4 * 5
+    );
+    vbuf_attrs[1] = std::make_shared<ur2::VertexBufferAttribute>(
+        ur2::ComponentDataType::Float, 2, 4 * 3, 4 * 5
+    );
+    m_vertex_array->SetVertexBufferAttrs(vbuf_attrs);
 }
 
 }

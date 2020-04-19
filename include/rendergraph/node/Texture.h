@@ -2,6 +2,8 @@
 
 #include "rendergraph/Node.h"
 
+#include <unirender2/typedef.h>
+
 namespace rendergraph
 {
 namespace node
@@ -25,7 +27,6 @@ public:
         m_exports.resize(O_MAX_NUM);
         m_exports[O_OUT] = {{ VariableType::Texture, "out" }};
     }
-    virtual ~Texture();
 
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
@@ -36,8 +37,8 @@ public:
 
     void Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const;
 
-    // todo
-    void SetTexID(unsigned int texid) { m_texid = texid; }
+    auto GetTexture() const { return m_tex; }
+    void SetTexture(const ur2::TexturePtr& tex) { m_tex = tex; }
 
     enum class Type
     {
@@ -71,10 +72,8 @@ public:
         Linear,
     };
 
-    unsigned int GetTexID() const { return m_texid; }
-
 private:
-    mutable unsigned int m_texid = 0;
+    mutable ur2::TexturePtr m_tex = nullptr;
 
     RTTR_ENABLE(Node)
 

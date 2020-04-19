@@ -1,8 +1,6 @@
 #include "rendergraph/node/BlendEq.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/RenderContext.h>
-
 namespace rendergraph
 {
 namespace node
@@ -10,28 +8,25 @@ namespace node
 
 void BlendEq::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    ur::BLEND_FUNC mode;
+    auto& blend = std::static_pointer_cast<RenderContext>(ctx)->ur_rs.blending;
     switch (m_mode)
     {
     case Mode::FuncAdd:
-        mode = ur::BLEND_FUNC_ADD;
+        blend.equation = ur2::BlendEquation::Add;
         break;
     case Mode::FuncSubtract:
-        mode = ur::BLEND_FUNC_SUBTRACT;
+        blend.equation = ur2::BlendEquation::Subtract;
         break;
     case Mode::FuncReverseSubtract:
-        mode = ur::BLEND_FUNC_REVERSE_SUBTRACT;
+        blend.equation = ur2::BlendEquation::ReverseSubtract;
         break;
     case Mode::Min:
-        mode = ur::BLEND_MIN;
+        blend.equation = ur2::BlendEquation::Minimum;
         break;
     case Mode::Max:
-        mode = ur::BLEND_MAX;
+        blend.equation = ur2::BlendEquation::Maximum;
         break;
     }
-
-    auto rc = std::static_pointer_cast<RenderContext>(ctx);
-    rc->rc.SetBlendEquation(mode);
 }
 
 }

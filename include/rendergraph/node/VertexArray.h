@@ -2,6 +2,8 @@
 
 #include "rendergraph/Node.h"
 
+namespace ur2 { class VertexArray; }
+
 namespace rendergraph
 {
 namespace node
@@ -16,7 +18,6 @@ public:
            {{ VariableType::Model, "out" }}
         };
     }
-    virtual ~VertexArray();
 
     void Draw(const RenderContext& rc) const;
 
@@ -39,9 +40,7 @@ private:
     void Init(const RenderContext& rc) const;
 
 private:
-    mutable unsigned int m_vao = 0;
-    mutable unsigned int m_vbo = 0;
-    mutable unsigned int m_ebo = 0;
+    mutable std::shared_ptr<ur2::VertexArray> m_vertex_array = nullptr;
 
     std::vector<VertexAttrib> m_va_list;
 

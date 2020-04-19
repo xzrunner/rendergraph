@@ -1,43 +1,31 @@
 #include "rendergraph/node/VertexArray.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender/Blackboard.h>
-#include <unirender/RenderContext.h>
+#include <unirender2/Context.h>
+#include <unirender2/Device.h>
+#include <unirender2/VertexArray.h>
+#include <unirender2/VertexBufferAttribute.h>
+#include <unirender2/DrawState.h>
 
 namespace rendergraph
 {
 namespace node
 {
 
-VertexArray::~VertexArray()
-{
-    // fixme
-    auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-    if (m_vao != 0) {
-		rc.ReleaseVAO(m_vao, m_vbo, m_ebo);
-	} else {
-        if (m_vbo != 0) {
-            rc.ReleaseBuffer(ur::VERTEXBUFFER, m_vbo);
-        }
-		if (m_ebo != 0) {
-			rc.ReleaseBuffer(ur::INDEXBUFFER, m_ebo);
-		}
-	}
-}
-
 void VertexArray::Draw(const RenderContext& rc) const
 {
-    if (m_vao == 0) {
+    if (!m_vertex_array) {
         Init(rc);
     }
 
-    if (m_vao != 0)
+    if (m_vertex_array)
     {
-        if (m_index_buf.empty()) {
-            rc.rc.DrawArraysVAO(ur::DRAW_TRIANGLES, 0, m_vertex_buf.size() / m_stride, m_vao);
-        } else {
-            rc.rc.DrawElementsVAO(ur::DRAW_TRIANGLES, 0, m_index_buf.size(), m_vao);
-        }
+        ur2::DrawState draw;
+        draw.render_state = rc.ur_rs;
+        draw.program = rc.ur_ctx->GetShaderProgram();
+        draw.vertex_array = m_vertex_array;
+
+        rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, draw, nullptr);
     }
 }
 
@@ -54,26 +42,60 @@ void VertexArray::SetVertList(const std::vector<VertexAttrib>& va_list)
 
 void VertexArray::Init(const RenderContext& rc) const
 {
-    ur::RenderContext::VertexInfo vi;
+    assert(!m_vertex_array);
+    m_vertex_array = rc.ur_dev->CreateVertexArray();
 
-    int stride = 0;
-    for (auto& va : m_va_list) {
-        stride += va.size * va.num;
+    auto usage = ur2::BufferUsageHint::StaticDraw;
+
+    auto ibuf_sz = sizeof(unsigned short) * m_index_buf.size();
+    auto ibuf = rc.ur_dev->CreateIndexBuffer(usage, ibuf_sz);
+    m_vertex_array->SetIndexBuffer(ibuf);
+
+    auto vbuf_sz = sizeof(float) * m_vertex_buf.size();
+    auto vbuf = rc.ur_dev->CreateVertexBuffer(usage, vbuf_sz);
+    m_vertex_array->SetVertexBuffer(vbuf);
+
+    std::vector<std::shared_ptr<ur2::VertexBufferAttribute>> vbuf_attrs;
+    vbuf_attrs.resize(m_va_list.size());
+    const int num_of_comps = m_va_list.size();
+
+    int stride_in_bytes = 0;
+    for (auto& attr : m_va_list) {
+        stride_in_bytes += attr.size * attr.num;
     }
-    vi.stride = stride;
+    int offset_in_bytes = 0;
 
-    vi.vn       = m_vertex_buf.size() / m_stride;
-    vi.vertices = m_vertex_buf.data();
-    vi.in       = m_index_buf.size();
-    vi.indices  = m_index_buf.data();
+    for (size_t i = 0, n = m_va_list.size(); i < n; ++i)
+    {
+        auto& attr = m_va_list[i];
 
-    int offset = 0;
-    for (auto& va : m_va_list) {
-        vi.va_list.push_back(ur::VertexAttrib(va.name, va.num, va.size, stride, offset));
-        offset += va.num * va.size;
+        ur2::ComponentDataType type;
+        bool normalized;
+        switch (attr.size)
+        {
+        case 1:
+            type = ur2::ComponentDataType::UnsignedByte;
+            normalized = true;
+            break;
+        case 2:
+            type = ur2::ComponentDataType::UnsignedShort;
+            normalized = true;
+            break;
+        case 4:
+            type = ur2::ComponentDataType::Float;
+            normalized = false;
+            break;
+        default:
+            assert(0);
+        }
+
+        vbuf_attrs[i] = std::make_shared<ur2::VertexBufferAttribute>(
+            type, num_of_comps, offset_in_bytes, stride_in_bytes
+        );
+        offset_in_bytes += attr.num * attr.size;
     }
 
-    rc.rc.CreateVAO(vi, m_vao, m_vbo, m_ebo);
+    m_vertex_array->SetVertexBufferAttrs(vbuf_attrs);
 }
 
 }

@@ -4,6 +4,8 @@
 #include <unirender2/Context.h>
 #include <unirender2/Device.h>
 #include <unirender2/VertexArray.h>
+#include <unirender2/VertexBuffer.h>
+#include <unirender2/IndexBuffer.h>
 #include <unirender2/VertexBufferAttribute.h>
 #include <unirender2/DrawState.h>
 
@@ -47,17 +49,20 @@ void VertexArray::Init(const RenderContext& rc) const
 
     auto usage = ur2::BufferUsageHint::StaticDraw;
 
-    auto ibuf_sz = sizeof(unsigned short) * m_index_buf.size();
-    auto ibuf = rc.ur_dev->CreateIndexBuffer(usage, ibuf_sz);
-    m_vertex_array->SetIndexBuffer(ibuf);
+    if (!m_index_buf.empty()) {
+        auto ibuf_sz = sizeof(unsigned short) * m_index_buf.size();
+        auto ibuf = rc.ur_dev->CreateIndexBuffer(usage, ibuf_sz);
+        ibuf->ReadFromMemory(m_index_buf.data(), ibuf_sz, 0);
+        m_vertex_array->SetIndexBuffer(ibuf);
+    }
 
     auto vbuf_sz = sizeof(float) * m_vertex_buf.size();
     auto vbuf = rc.ur_dev->CreateVertexBuffer(usage, vbuf_sz);
+    vbuf->ReadFromMemory(m_vertex_buf.data(), vbuf_sz, 0);
     m_vertex_array->SetVertexBuffer(vbuf);
 
     std::vector<std::shared_ptr<ur2::VertexBufferAttribute>> vbuf_attrs;
     vbuf_attrs.resize(m_va_list.size());
-    const int num_of_comps = m_va_list.size();
 
     int stride_in_bytes = 0;
     for (auto& attr : m_va_list) {
@@ -90,7 +95,7 @@ void VertexArray::Init(const RenderContext& rc) const
         }
 
         vbuf_attrs[i] = std::make_shared<ur2::VertexBufferAttribute>(
-            type, num_of_comps, offset_in_bytes, stride_in_bytes
+            type, attr.num, offset_in_bytes, stride_in_bytes
         );
         offset_in_bytes += attr.num * attr.size;
     }

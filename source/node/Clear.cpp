@@ -23,7 +23,7 @@ void Clear::Execute(const std::shared_ptr<dag::Context>& ctx)
         {
         case Type::Color:
         {
-            clear_mask &= static_cast<int>(ur2::ClearBuffers::ColorBuffer);
+            clear_mask |= static_cast<int>(ur2::ClearBuffers::ColorBuffer);
 
             clear.color.r = m_col.r;
             clear.color.g = m_col.g;
@@ -32,10 +32,10 @@ void Clear::Execute(const std::shared_ptr<dag::Context>& ctx)
         }
             break;
         case Type::Depth:
-            clear_mask &= static_cast<int>(ur2::ClearBuffers::DepthBuffer);
+            clear_mask |= static_cast<int>(ur2::ClearBuffers::DepthBuffer);
             break;
         case Type::Stencil:
-            clear_mask &= static_cast<int>(ur2::ClearBuffers::StencilBuffer);
+            clear_mask |= static_cast<int>(ur2::ClearBuffers::StencilBuffer);
             break;
         }
     }

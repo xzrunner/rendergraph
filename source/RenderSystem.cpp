@@ -62,7 +62,7 @@ void RenderSystem::DrawTextureToScreen(const RenderContext& rc,
     }
 
     ur2::DrawState ds;
-    ds.render_state = rc.ur_rs;
+    ds.render_state = rc.ur_ds.render_state;
     ds.program      = m_prog;
     rc.ur_ctx->DrawCube(ur2::Context::VertexLayout::PosTex, ds);
 }

@@ -45,7 +45,7 @@ void AlphaTest::Execute(const std::shared_ptr<dag::Context>& ctx)
     alpha.ref = m_ref;
 
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
-    rc->ur_rs.alpha_test = alpha;
+    rc->ur_ds.render_state.alpha_test = alpha;
 }
 
 }

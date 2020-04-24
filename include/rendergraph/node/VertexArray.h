@@ -19,7 +19,7 @@ public:
         };
     }
 
-    void Draw(const RenderContext& rc) const;
+    void Draw(RenderContext& rc) const;
 
     struct VertexAttrib
     {

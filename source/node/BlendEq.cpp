@@ -8,7 +8,7 @@ namespace node
 
 void BlendEq::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    auto& blend = std::static_pointer_cast<RenderContext>(ctx)->ur_rs.blending;
+    auto& blend = std::static_pointer_cast<RenderContext>(ctx)->ur_ds.render_state.blending;
     switch (m_mode)
     {
     case Mode::FuncAdd:

@@ -44,7 +44,7 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
     }
 }
 
-void Shader::Bind(const RenderContext& rc)
+void Shader::Bind(RenderContext& rc)
 {
     if (!m_prog) {
         Init(rc);
@@ -53,7 +53,9 @@ void Shader::Bind(const RenderContext& rc)
         return;
     }
 
-    m_prog->Bind();
+    rc.ur_ds.program = m_prog;
+
+//    m_prog->Bind();
 
     //std::vector<uint32_t> texture_ids;
     //for (int i = 0, n = m_imports.size(); i < n; ++i)

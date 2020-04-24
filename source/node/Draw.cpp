@@ -29,6 +29,15 @@ void Draw::Execute(const std::shared_ptr<dag::Context>& ctx)
     }
 
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
+    std::shared_ptr<ur2::ShaderProgram> prog = nullptr;
+    if (shader) {
+        prog = shader->GetShader(*rc);
+    }
+
+    if (prog) {
+        rc->ur_ds.program = prog;
+    }
+
     for (auto& c : conns)
     {
         auto node = c.node.lock();

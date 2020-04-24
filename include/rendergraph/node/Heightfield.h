@@ -19,7 +19,7 @@ public:
         };
     }
 
-    void Draw(const RenderContext& rc) const;
+    void Draw(RenderContext& rc) const;
 
     void SetSize(size_t width, size_t height);
 

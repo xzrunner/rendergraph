@@ -30,7 +30,7 @@ public:
 
     void SetCodes(const std::string& vert, const std::string& frag);
 
-    void Bind(const RenderContext& rc);
+    void Bind(RenderContext& rc);
 
     std::shared_ptr<ur2::ShaderProgram> GetShader(const RenderContext& rc);
 

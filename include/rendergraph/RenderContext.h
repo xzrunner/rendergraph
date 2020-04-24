@@ -2,7 +2,7 @@
 
 #include <SM_Matrix.h>
 #include <dag/Context.h>
-#include <unirender2/RenderState.h>
+#include <unirender2/DrawState.h>
 
 #include <boost/noncopyable.hpp>
 
@@ -16,8 +16,8 @@ namespace rendergraph
 class RenderContext : public dag::Context
 {
 public:
-    ur2::RenderState ur_rs;
-    std::shared_ptr<ur2::Context> ur_ctx = nullptr;
+    ur2::DrawState     ur_ds;
+    ur2::Context*      ur_ctx = nullptr;
     const ur2::Device* ur_dev = nullptr;
 
     sm::mat4 cam_proj_mat;

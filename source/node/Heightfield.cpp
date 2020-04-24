@@ -37,18 +37,14 @@ namespace rendergraph
 namespace node
 {
 
-void Heightfield::Draw(const RenderContext& rc) const
+void Heightfield::Draw(RenderContext& rc) const
 {
     if (!m_vertex_array) {
         Init(rc);
     }
 
-    ur2::DrawState draw;
-    draw.render_state = rc.ur_rs;
-    draw.program = rc.ur_ctx->GetShaderProgram();
-    draw.vertex_array = m_vertex_array;
-
-    rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, draw, nullptr);
+    rc.ur_ds.vertex_array = m_vertex_array;
+    rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, rc.ur_ds, nullptr);
 
 }
 

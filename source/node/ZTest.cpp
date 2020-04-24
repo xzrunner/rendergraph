@@ -43,8 +43,7 @@ void ZTest::Execute(const std::shared_ptr<dag::Context>& ctx)
     }
 
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
-    rc->ur_rs.depth_test = depth;
+    rc->ur_ds.render_state.depth_test = depth;
 }
-
 }
 }

@@ -16,8 +16,8 @@ namespace node
 
 void VertexArray::Draw(RenderContext& rc) const
 {
-    if (!m_vertex_array) {
-        Init(rc);
+    if (!m_vertex_array || m_dirty) {
+        Rebuild(rc);
     }
 
     if (m_vertex_array)
@@ -36,11 +36,12 @@ void VertexArray::SetVertList(const std::vector<VertexAttrib>& va_list)
         m_stride += va.num * va.size;
     }
     m_stride /= sizeof(float);
+
+    m_dirty = true;
 }
 
-void VertexArray::Init(const RenderContext& rc) const
+void VertexArray::Rebuild(const RenderContext& rc) const
 {
-    assert(!m_vertex_array);
     m_vertex_array = rc.ur_dev->CreateVertexArray();
 
     auto usage = ur2::BufferUsageHint::StaticDraw;
@@ -97,6 +98,8 @@ void VertexArray::Init(const RenderContext& rc) const
     }
 
     m_vertex_array->SetVertexBufferAttrs(vbuf_attrs);
+
+    m_dirty = false;
 }
 
 }

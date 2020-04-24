@@ -31,13 +31,15 @@ public:
     void SetVertList(const std::vector<VertexAttrib>& va_list);
     void SetVertexBuf(const std::vector<float>& vertex_buf) {
         m_vertex_buf = vertex_buf;
+        m_dirty = true;
     }
     void SetIndexBuf(const std::vector<unsigned short>& index_buf) {
         m_index_buf = index_buf;
+        m_dirty = true;
     }
 
 private:
-    void Init(const RenderContext& rc) const;
+    void Rebuild(const RenderContext& rc) const;
 
 private:
     mutable std::shared_ptr<ur2::VertexArray> m_vertex_array = nullptr;
@@ -47,6 +49,8 @@ private:
     size_t m_stride = 0;
     std::vector<float> m_vertex_buf;
     std::vector<unsigned short> m_index_buf;
+
+    mutable bool m_dirty = false;
 
     RTTR_ENABLE(Node)
 

@@ -24,8 +24,8 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
         // todo: other texture type
         if (m_tex)
         {
-            var.type   = VariableType::Sampler2D;
-            var.res_id = m_tex->GetTexID();
+            var.type = VariableType::Sampler2D;
+            var.p    = &m_tex;
         }
     }
 }

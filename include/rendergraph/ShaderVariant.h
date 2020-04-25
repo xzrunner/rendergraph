@@ -42,7 +42,7 @@ public:
         sm::mat2 mat2;
         sm::mat3 mat3;
         sm::mat4 mat4;
-        unsigned int res_id;
+        const void* p;
     };
 
     // fixme

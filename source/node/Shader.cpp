@@ -6,6 +6,7 @@
 #include "rendergraph/Utility.h"
 
 #include <unirender2/Device.h>
+#include <unirender2/Context.h>
 #include <unirender2/ShaderProgram.h>
 #include <unirender2/Uniform.h>
 
@@ -54,6 +55,20 @@ void Shader::Bind(RenderContext& rc)
     }
 
     rc.ur_ds.program = m_prog;
+    for (auto& ip : m_imports)
+    {
+        uint32_t flags = 0;
+        auto val = Evaluator::Calc(rc, ip, ip.var.type.type, ip.var.type.count, flags);
+        std::vector<uint32_t> texture_ids;
+        SetUniformValue(ip.var.type, val, texture_ids);
+
+        if (val.type == VariableType::Sampler2D ||
+            val.type == VariableType::SamplerCube)
+        {
+            ur2::TexturePtr tex = *reinterpret_cast<const ur2::TexturePtr*>(val.p);
+            rc.ur_ctx->SetTexture(m_prog->QueryTexSlot(ip.var.type.name), tex);
+        }
+    }
 
 //    m_prog->Bind();
 
@@ -110,6 +125,8 @@ void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
 
     std::vector<uint32_t> texture_ids;
     SetUniformValue(m_imports[key_idx].var.type, val, texture_ids);
+
+
 
     //if (!texture_ids.empty())
     //{
@@ -195,7 +212,7 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v,
         break;
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
-        texture_ids.push_back(v.res_id);
+        //texture_ids.push_back(v.res_id);
         break;
     case VariableType::Vec1Array:
         uniform->SetValue(v.vec1_array.data(), v.vec1_array.size());

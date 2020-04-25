@@ -61,10 +61,11 @@ void RenderSystem::DrawTextureToScreen(const RenderContext& rc,
         assert(m_prog);
     }
 
-    ur2::DrawState ds;
+    ur2::DrawState ds = rc.ur_ds;
     ds.render_state = rc.ur_ds.render_state;
     ds.program      = m_prog;
-    rc.ur_ctx->DrawCube(ur2::Context::VertexLayout::PosTex, ds);
+    ds.vertex_array = rc.ur_dev->GetVertexArray(ur2::Device::PrimitiveType::Cube, ur2::VertexLayoutType::PosTex);
+    rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, ds, nullptr);
 }
 
 }

@@ -1,13 +1,13 @@
 #include "rendergraph/node/VertexArray.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender2/Context.h>
-#include <unirender2/Device.h>
-#include <unirender2/VertexArray.h>
-#include <unirender2/VertexBuffer.h>
-#include <unirender2/IndexBuffer.h>
-#include <unirender2/VertexBufferAttribute.h>
-#include <unirender2/DrawState.h>
+#include <unirender/Context.h>
+#include <unirender/Device.h>
+#include <unirender/VertexArray.h>
+#include <unirender/VertexBuffer.h>
+#include <unirender/IndexBuffer.h>
+#include <unirender/VertexBufferAttribute.h>
+#include <unirender/DrawState.h>
 
 namespace rendergraph
 {
@@ -23,7 +23,7 @@ void VertexArray::Draw(RenderContext& rc) const
     if (m_vertex_array)
     {
         rc.ur_ds.vertex_array = m_vertex_array;
-        rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, rc.ur_ds, nullptr);
+        rc.ur_ctx->Draw(ur::PrimitiveType::Triangles, rc.ur_ds, nullptr);
     }
 }
 
@@ -44,7 +44,7 @@ void VertexArray::Rebuild(const RenderContext& rc) const
 {
     m_vertex_array = rc.ur_dev->CreateVertexArray();
 
-    auto usage = ur2::BufferUsageHint::StaticDraw;
+    auto usage = ur::BufferUsageHint::StaticDraw;
 
     if (!m_index_buf.empty()) {
         auto ibuf_sz = sizeof(unsigned short) * m_index_buf.size();
@@ -58,7 +58,7 @@ void VertexArray::Rebuild(const RenderContext& rc) const
     vbuf->ReadFromMemory(m_vertex_buf.data(), vbuf_sz, 0);
     m_vertex_array->SetVertexBuffer(vbuf);
 
-    std::vector<std::shared_ptr<ur2::VertexBufferAttribute>> vbuf_attrs;
+    std::vector<std::shared_ptr<ur::VertexBufferAttribute>> vbuf_attrs;
     vbuf_attrs.resize(m_va_list.size());
 
     int stride_in_bytes = 0;
@@ -71,27 +71,27 @@ void VertexArray::Rebuild(const RenderContext& rc) const
     {
         auto& attr = m_va_list[i];
 
-        ur2::ComponentDataType type;
+        ur::ComponentDataType type;
         bool normalized;
         switch (attr.size)
         {
         case 1:
-            type = ur2::ComponentDataType::UnsignedByte;
+            type = ur::ComponentDataType::UnsignedByte;
             normalized = true;
             break;
         case 2:
-            type = ur2::ComponentDataType::UnsignedShort;
+            type = ur::ComponentDataType::UnsignedShort;
             normalized = true;
             break;
         case 4:
-            type = ur2::ComponentDataType::Float;
+            type = ur::ComponentDataType::Float;
             normalized = false;
             break;
         default:
             assert(0);
         }
 
-        vbuf_attrs[i] = std::make_shared<ur2::VertexBufferAttribute>(
+        vbuf_attrs[i] = std::make_shared<ur::VertexBufferAttribute>(
             type, attr.num, offset_in_bytes, stride_in_bytes
         );
         offset_in_bytes += attr.num * attr.size;

@@ -5,10 +5,10 @@
 #include "rendergraph/RenderContext.h"
 #include "rendergraph/Utility.h"
 
-#include <unirender2/Device.h>
-#include <unirender2/Context.h>
-#include <unirender2/ShaderProgram.h>
-#include <unirender2/Uniform.h>
+#include <unirender/Device.h>
+#include <unirender/Context.h>
+#include <unirender/ShaderProgram.h>
+#include <unirender/Uniform.h>
 
 namespace rendergraph
 {
@@ -65,7 +65,7 @@ void Shader::Bind(RenderContext& rc)
         if (val.type == VariableType::Sampler2D ||
             val.type == VariableType::SamplerCube)
         {
-            ur2::TexturePtr tex = *reinterpret_cast<const ur2::TexturePtr*>(val.p);
+            ur::TexturePtr tex = *reinterpret_cast<const ur::TexturePtr*>(val.p);
             rc.ur_ctx->SetTexture(m_prog->QueryTexSlot(ip.var.type.name), tex);
         }
     }
@@ -93,7 +93,7 @@ void Shader::Bind(RenderContext& rc)
     //}
 }
 
-std::shared_ptr<ur2::ShaderProgram> Shader::GetShader(const RenderContext& rc)
+std::shared_ptr<ur::ShaderProgram> Shader::GetShader(const RenderContext& rc)
 {
     if (!m_prog) {
         Init(rc);

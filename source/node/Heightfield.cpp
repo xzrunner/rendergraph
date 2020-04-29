@@ -1,14 +1,14 @@
 #include "rendergraph/node/Heightfield.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender2/DrawState.h>
-#include <unirender2/Context.h>
-#include <unirender2/Device.h>
-#include <unirender2/VertexArray.h>
-#include <unirender2/ComponentDataType.h>
-#include <unirender2/VertexBufferAttribute.h>
-#include <unirender2/IndexBuffer.h>
-#include <unirender2/VertexBuffer.h>
+#include <unirender/DrawState.h>
+#include <unirender/Context.h>
+#include <unirender/Device.h>
+#include <unirender/VertexArray.h>
+#include <unirender/ComponentDataType.h>
+#include <unirender/VertexBufferAttribute.h>
+#include <unirender/IndexBuffer.h>
+#include <unirender/VertexBuffer.h>
 #include <renderpipeline/UniformNames.h>
 
 namespace
@@ -44,7 +44,7 @@ void Heightfield::Draw(RenderContext& rc) const
     }
 
     rc.ur_ds.vertex_array = m_vertex_array;
-    rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, rc.ur_ds, nullptr);
+    rc.ur_ctx->Draw(ur::PrimitiveType::Triangles, rc.ur_ds, nullptr);
 
 }
 
@@ -90,7 +90,7 @@ void Heightfield::Init(const RenderContext& rc) const
     assert(!m_vertex_array);
     m_vertex_array = rc.ur_dev->CreateVertexArray();
 
-    auto usage = ur2::BufferUsageHint::StaticDraw;
+    auto usage = ur::BufferUsageHint::StaticDraw;
 
     auto ibuf_sz = sizeof(unsigned int) * indices.size();
     auto ibuf = rc.ur_dev->CreateIndexBuffer(usage, ibuf_sz);
@@ -102,13 +102,13 @@ void Heightfield::Init(const RenderContext& rc) const
     vbuf->ReadFromMemory(verts.data(), vbuf_sz, 0);
     m_vertex_array->SetVertexBuffer(vbuf);
 
-    std::vector<std::shared_ptr<ur2::VertexBufferAttribute>> vbuf_attrs;
+    std::vector<std::shared_ptr<ur::VertexBufferAttribute>> vbuf_attrs;
     vbuf_attrs.resize(2);
-    vbuf_attrs[0] = std::make_shared<ur2::VertexBufferAttribute>(
-        ur2::ComponentDataType::Float, 2, 0, 4 * 5
+    vbuf_attrs[0] = std::make_shared<ur::VertexBufferAttribute>(
+        ur::ComponentDataType::Float, 2, 0, 4 * 5
     );
-    vbuf_attrs[1] = std::make_shared<ur2::VertexBufferAttribute>(
-        ur2::ComponentDataType::Float, 2, 4 * 3, 4 * 5
+    vbuf_attrs[1] = std::make_shared<ur::VertexBufferAttribute>(
+        ur::ComponentDataType::Float, 2, 4 * 3, 4 * 5
     );
     m_vertex_array->SetVertexBufferAttrs(vbuf_attrs);
 }

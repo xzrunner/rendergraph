@@ -2,7 +2,7 @@
 
 #include "rendergraph/Node.h"
 
-namespace ur2 { class VertexArray; }
+namespace ur { class VertexArray; }
 
 namespace rendergraph
 {
@@ -42,7 +42,7 @@ private:
     void Rebuild(const RenderContext& rc) const;
 
 private:
-    mutable std::shared_ptr<ur2::VertexArray> m_vertex_array = nullptr;
+    mutable std::shared_ptr<ur::VertexArray> m_vertex_array = nullptr;
 
     std::vector<VertexAttrib> m_va_list;
 

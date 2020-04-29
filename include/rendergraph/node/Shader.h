@@ -4,7 +4,7 @@
 
 #include <painting0/UniformNames.h>
 
-namespace ur2 { class ShaderProgram; }
+namespace ur { class ShaderProgram; }
 
 namespace rendergraph
 {
@@ -32,7 +32,7 @@ public:
 
     void Bind(RenderContext& rc);
 
-    std::shared_ptr<ur2::ShaderProgram> GetShader(const RenderContext& rc);
+    std::shared_ptr<ur::ShaderProgram> GetShader(const RenderContext& rc);
 
 //    auto& GetUniformNames() const { return m_unif_names; }
 
@@ -49,7 +49,7 @@ private:
         std::vector<uint32_t>& texture_ids);
 
 private:
-    std::shared_ptr<ur2::ShaderProgram> m_prog = nullptr;
+    std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;
 
     std::vector<std::string> m_textures;
 

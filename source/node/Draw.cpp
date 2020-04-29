@@ -29,7 +29,7 @@ void Draw::Execute(const std::shared_ptr<dag::Context>& ctx)
     }
 
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
-    std::shared_ptr<ur2::ShaderProgram> prog = nullptr;
+    std::shared_ptr<ur::ShaderProgram> prog = nullptr;
     if (shader) {
         prog = shader->GetShader(*rc);
     }

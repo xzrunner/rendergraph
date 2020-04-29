@@ -16,13 +16,13 @@ void Cull::Execute(const std::shared_ptr<dag::Context>& ctx)
         rc->ur_ds.render_state.facet_culling.enabled = false;
         break;
     case Mode::Front:
-        rc->ur_ds.render_state.facet_culling.face = ur2::CullFace::Front;
+        rc->ur_ds.render_state.facet_culling.face = ur::CullFace::Front;
         break;
     case Mode::Back:
-        rc->ur_ds.render_state.facet_culling.face = ur2::CullFace::Back;
+        rc->ur_ds.render_state.facet_culling.face = ur::CullFace::Back;
         break;
     case Mode::FrontAndBack:
-        rc->ur_ds.render_state.facet_culling.face = ur2::CullFace::FrontAndBack;
+        rc->ur_ds.render_state.facet_culling.face = ur::CullFace::FrontAndBack;
         break;
     }
 }

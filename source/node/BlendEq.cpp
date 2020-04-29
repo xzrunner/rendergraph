@@ -12,19 +12,19 @@ void BlendEq::Execute(const std::shared_ptr<dag::Context>& ctx)
     switch (m_mode)
     {
     case Mode::FuncAdd:
-        blend.equation = ur2::BlendEquation::Add;
+        blend.equation = ur::BlendEquation::Add;
         break;
     case Mode::FuncSubtract:
-        blend.equation = ur2::BlendEquation::Subtract;
+        blend.equation = ur::BlendEquation::Subtract;
         break;
     case Mode::FuncReverseSubtract:
-        blend.equation = ur2::BlendEquation::ReverseSubtract;
+        blend.equation = ur::BlendEquation::ReverseSubtract;
         break;
     case Mode::Min:
-        blend.equation = ur2::BlendEquation::Minimum;
+        blend.equation = ur::BlendEquation::Minimum;
         break;
     case Mode::Max:
-        blend.equation = ur2::BlendEquation::Maximum;
+        blend.equation = ur::BlendEquation::Maximum;
         break;
     }
 }

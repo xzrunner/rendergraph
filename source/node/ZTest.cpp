@@ -8,7 +8,7 @@ namespace node
 
 void ZTest::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    ur2::DepthTest depth;
+    ur::DepthTest depth;
     depth.enabled = true;
 
     switch (m_func)
@@ -17,28 +17,28 @@ void ZTest::Execute(const std::shared_ptr<dag::Context>& ctx)
         depth.enabled = false;
         break;
     case Func::Never:
-        depth.function = ur2::DepthTestFunc::Never;
+        depth.function = ur::DepthTestFunc::Never;
         break;
     case Func::Less:
-        depth.function = ur2::DepthTestFunc::Less;
+        depth.function = ur::DepthTestFunc::Less;
         break;
     case Func::Equal:
-        depth.function = ur2::DepthTestFunc::Equal;
+        depth.function = ur::DepthTestFunc::Equal;
         break;
     case Func::LEqual:
-        depth.function = ur2::DepthTestFunc::LessThanOrEqual;
+        depth.function = ur::DepthTestFunc::LessThanOrEqual;
         break;
     case Func::Greater:
-        depth.function = ur2::DepthTestFunc::Greater;
+        depth.function = ur::DepthTestFunc::Greater;
         break;
     case Func::NotEqual:
-        depth.function = ur2::DepthTestFunc::NotEqual;
+        depth.function = ur::DepthTestFunc::NotEqual;
         break;
     case Func::GEqual:
-        depth.function = ur2::DepthTestFunc::GreaterThanOrEqual;
+        depth.function = ur::DepthTestFunc::GreaterThanOrEqual;
         break;
     case Func::Always:
-        depth.function = ur2::DepthTestFunc::Always;
+        depth.function = ur::DepthTestFunc::Always;
         break;
     }
 

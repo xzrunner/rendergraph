@@ -39,7 +39,7 @@ void Model::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
     //    pt0::RenderVariant(wc->GetProjMat())
     //);
 
-    std::shared_ptr<ur2::ShaderProgram> ur_shader = nullptr;
+    std::shared_ptr<ur::ShaderProgram> ur_shader = nullptr;
     //pt0::UniformNames uniforms;
     //if (shader) {
     //    ur_shader = shader->GetShader(rc.rc);

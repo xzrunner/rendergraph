@@ -2,8 +2,8 @@
 #include "rendergraph/node/Texture.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender2/Device.h>
-#include <unirender2/Framebuffer.h>
+#include <unirender/Device.h>
+#include <unirender/Framebuffer.h>
 
 namespace rendergraph
 {
@@ -44,15 +44,15 @@ void RenderTarget::Init(const RenderContext& rc)
     // init rbo
     if (m_enable_rbo_depth && m_width != 0 && m_height != 0)
     {
-        auto type = ur2::AttachmentType::Depth;
-        auto rbo = rc.ur_dev->CreateRenderBuffer(m_width, m_height, ur2::InternalFormat::DepthComponent, type);
-        m_frame_buffer->SetAttachment(type, ur2::TextureTarget::Texture2D, nullptr, rbo);
+        auto type = ur::AttachmentType::Depth;
+        auto rbo = rc.ur_dev->CreateRenderBuffer(m_width, m_height, ur::InternalFormat::DepthComponent, type);
+        m_frame_buffer->SetAttachment(type, ur::TextureTarget::Texture2D, nullptr, rbo);
     }
     if (m_enable_rbo_color && m_width != 0 && m_height != 0)
     {
-        auto type = ur2::AttachmentType::Color0;
-        auto rbo = rc.ur_dev->CreateRenderBuffer(m_width, m_height, ur2::InternalFormat::RGB, type);
-        m_frame_buffer->SetAttachment(type, ur2::TextureTarget::Texture2D, nullptr, rbo);
+        auto type = ur::AttachmentType::Color0;
+        auto rbo = rc.ur_dev->CreateRenderBuffer(m_width, m_height, ur::InternalFormat::RGB, type);
+        m_frame_buffer->SetAttachment(type, ur::TextureTarget::Texture2D, nullptr, rbo);
     }
 }
 
@@ -82,14 +82,14 @@ void RenderTarget::InitTexture(int input_idx, const RenderContext& rc)
         }
     }
 
-    ur2::AttachmentType atta_type;
+    ur::AttachmentType atta_type;
     if (input_idx >= I_COLOR_TEX0 && input_idx <= I_COLOR_TEX3) {
-        atta_type = static_cast<ur2::AttachmentType>(input_idx);
+        atta_type = static_cast<ur::AttachmentType>(input_idx);
     } else {
         assert(input_idx == I_DEPTH_TEX);
-        atta_type = ur2::AttachmentType::Depth;
+        atta_type = ur::AttachmentType::Depth;
     }
-    m_frame_buffer->SetAttachment(atta_type, ur2::TextureTarget::Texture2D, tex->GetTexture(), nullptr);
+    m_frame_buffer->SetAttachment(atta_type, ur::TextureTarget::Texture2D, tex->GetTexture(), nullptr);
 }
 
 }

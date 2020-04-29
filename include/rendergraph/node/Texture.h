@@ -2,7 +2,7 @@
 
 #include "rendergraph/Node.h"
 
-#include <unirender2/typedef.h>
+#include <unirender/typedef.h>
 
 namespace rendergraph
 {
@@ -38,7 +38,7 @@ public:
     void Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const;
 
     auto GetTexture() const { return m_tex; }
-    void SetTexture(const ur2::TexturePtr& tex) { m_tex = tex; }
+    void SetTexture(const ur::TexturePtr& tex) { m_tex = tex; }
 
     enum class Type
     {
@@ -73,7 +73,7 @@ public:
     };
 
 private:
-    mutable ur2::TexturePtr m_tex = nullptr;
+    mutable ur::TexturePtr m_tex = nullptr;
 
     RTTR_ENABLE(Node)
 

@@ -2,7 +2,7 @@
 
 #include "rendergraph/Node.h"
 
-namespace ur2 { class VertexArray; }
+namespace ur { class VertexArray; }
 
 namespace rendergraph
 {
@@ -27,7 +27,7 @@ private:
     void Init(const RenderContext& rc) const;
 
 private:
-    mutable std::shared_ptr<ur2::VertexArray> m_vertex_array;
+    mutable std::shared_ptr<ur::VertexArray> m_vertex_array;
 
     RTTR_ENABLE(Node)
 

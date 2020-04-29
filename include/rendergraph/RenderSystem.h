@@ -4,7 +4,7 @@
 
 #include <memory>
 
-namespace ur2 { class ShaderProgram; class Texture; }
+namespace ur { class ShaderProgram; class Texture; }
 
 namespace rendergraph
 {
@@ -15,10 +15,10 @@ class RenderSystem
 {
 public:
     void DrawTextureToScreen(const RenderContext& rc,
-        const ur2::Texture& tex) const;
+        const ur::Texture& tex) const;
 
 private:
-    mutable std::shared_ptr<ur2::ShaderProgram> m_prog = nullptr;
+    mutable std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;
 
     CU_SINGLETON_DECLARATION(RenderSystem)
 

@@ -4,40 +4,40 @@
 namespace
 {
 
-ur2::BlendingFactor trans_blend_factor(rendergraph::node::BlendFunc::Factor factor)
+ur::BlendingFactor trans_blend_factor(rendergraph::node::BlendFunc::Factor factor)
 {
-    ur2::BlendingFactor ret;
+    ur::BlendingFactor ret;
     switch (factor)
     {
     case rendergraph::node::BlendFunc::Factor::Zero:
-        ret = ur2::BlendingFactor::Zero;
+        ret = ur::BlendingFactor::Zero;
         break;
     case rendergraph::node::BlendFunc::Factor::One:
-        ret = ur2::BlendingFactor::One;
+        ret = ur::BlendingFactor::One;
         break;
     case rendergraph::node::BlendFunc::Factor::SrcColor:
-        ret = ur2::BlendingFactor::SrcColor;
+        ret = ur::BlendingFactor::SrcColor;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusSrcColor:
-        ret = ur2::BlendingFactor::OneMinusSrcColor;
+        ret = ur::BlendingFactor::OneMinusSrcColor;
         break;
     case rendergraph::node::BlendFunc::Factor::DstColor:
-        ret = ur2::BlendingFactor::DstColor;
+        ret = ur::BlendingFactor::DstColor;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusDstColor:
-        ret = ur2::BlendingFactor::OneMinusDstColor;
+        ret = ur::BlendingFactor::OneMinusDstColor;
         break;
     case rendergraph::node::BlendFunc::Factor::SrcAlpha:
-        ret = ur2::BlendingFactor::SrcAlpha;
+        ret = ur::BlendingFactor::SrcAlpha;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusSrcAlpha:
-        ret = ur2::BlendingFactor::OneMinusSrcAlpha;
+        ret = ur::BlendingFactor::OneMinusSrcAlpha;
         break;
     case rendergraph::node::BlendFunc::Factor::DstAlpha:
-        ret = ur2::BlendingFactor::DstAlpha;
+        ret = ur::BlendingFactor::DstAlpha;
         break;
     case rendergraph::node::BlendFunc::Factor::OneMinusDstAlpha:
-        ret = ur2::BlendingFactor::OneMinusDstAlpha;
+        ret = ur::BlendingFactor::OneMinusDstAlpha;
         break;
     }
     return ret;
@@ -52,7 +52,7 @@ namespace node
 
 void BlendFunc::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    ur2::Blending blend;
+    ur::Blending blend;
     blend.enabled = true;
     blend.separately = false;
     if (m_src == Factor::Off || m_dst == Factor::Off)

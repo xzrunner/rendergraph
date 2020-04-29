@@ -8,7 +8,7 @@ namespace node
 
 void AlphaTest::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    ur2::AlphaTest alpha;
+    ur::AlphaTest alpha;
     alpha.enabled = true;
 
     switch (m_func)
@@ -17,28 +17,28 @@ void AlphaTest::Execute(const std::shared_ptr<dag::Context>& ctx)
         alpha.enabled = false;
         break;
     case Func::Never:
-        alpha.function = ur2::AlphaTestFunc::Never;
+        alpha.function = ur::AlphaTestFunc::Never;
         break;
     case Func::Less:
-        alpha.function = ur2::AlphaTestFunc::Less;
+        alpha.function = ur::AlphaTestFunc::Less;
         break;
     case Func::Equal:
-        alpha.function = ur2::AlphaTestFunc::Equal;
+        alpha.function = ur::AlphaTestFunc::Equal;
         break;
     case Func::LEqual:
-        alpha.function = ur2::AlphaTestFunc::LessThanOrEqual;
+        alpha.function = ur::AlphaTestFunc::LessThanOrEqual;
         break;
     case Func::Greater:
-        alpha.function = ur2::AlphaTestFunc::Greater;
+        alpha.function = ur::AlphaTestFunc::Greater;
         break;
     case Func::NotEqual:
-        alpha.function = ur2::AlphaTestFunc::NotEqual;
+        alpha.function = ur::AlphaTestFunc::NotEqual;
         break;
     case Func::GEqual:
-        alpha.function = ur2::AlphaTestFunc::GreaterThanOrEqual;
+        alpha.function = ur::AlphaTestFunc::GreaterThanOrEqual;
         break;
     case Func::Always:
-        alpha.function = ur2::AlphaTestFunc::Always;
+        alpha.function = ur::AlphaTestFunc::Always;
         break;
     }
 

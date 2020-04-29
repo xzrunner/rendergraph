@@ -1,8 +1,8 @@
 #include "rendergraph/node/Clear.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender2/ClearState.h>
-#include <unirender2/Context.h>
+#include <unirender/ClearState.h>
+#include <unirender/Context.h>
 
 namespace rendergraph
 {
@@ -15,7 +15,7 @@ void Clear::Execute(const std::shared_ptr<dag::Context>& ctx)
         return;
     }
 
-    ur2::ClearState clear;
+    ur::ClearState clear;
     int clear_mask = 0;
     for (auto& type : m_clear_type)
     {
@@ -23,7 +23,7 @@ void Clear::Execute(const std::shared_ptr<dag::Context>& ctx)
         {
         case Type::Color:
         {
-            clear_mask |= static_cast<int>(ur2::ClearBuffers::ColorBuffer);
+            clear_mask |= static_cast<int>(ur::ClearBuffers::ColorBuffer);
 
             clear.color.r = m_col.r;
             clear.color.g = m_col.g;
@@ -32,15 +32,15 @@ void Clear::Execute(const std::shared_ptr<dag::Context>& ctx)
         }
             break;
         case Type::Depth:
-            clear_mask |= static_cast<int>(ur2::ClearBuffers::DepthBuffer);
+            clear_mask |= static_cast<int>(ur::ClearBuffers::DepthBuffer);
             break;
         case Type::Stencil:
-            clear_mask |= static_cast<int>(ur2::ClearBuffers::StencilBuffer);
+            clear_mask |= static_cast<int>(ur::ClearBuffers::StencilBuffer);
             break;
         }
     }
 
-    clear.buffers = static_cast<ur2::ClearBuffers>(clear_mask);
+    clear.buffers = static_cast<ur::ClearBuffers>(clear_mask);
 
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
     rc->ur_ctx->Clear(clear);

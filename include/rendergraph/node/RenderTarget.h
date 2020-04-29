@@ -2,7 +2,7 @@
 
 #include "rendergraph/Node.h"
 
-namespace ur2 { class Framebuffer; }
+namespace ur { class Framebuffer; }
 
 namespace rendergraph
 {
@@ -54,7 +54,7 @@ private:
     void InitTexture(int input_idx, const RenderContext& rc);
 
 private:
-    std::shared_ptr<ur2::Framebuffer> m_frame_buffer = nullptr;
+    std::shared_ptr<ur::Framebuffer> m_frame_buffer = nullptr;
 
     RTTR_ENABLE(Node)
 

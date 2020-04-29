@@ -1,9 +1,9 @@
 #include "rendergraph/RenderSystem.h"
 #include "rendergraph/RenderContext.h"
 
-#include <unirender2/Context.h>
-#include <unirender2/DrawState.h>
-#include <unirender2/Device.h>
+#include <unirender/Context.h>
+#include <unirender/DrawState.h>
+#include <unirender/Device.h>
 
 #include <string>
 
@@ -54,18 +54,18 @@ RenderSystem::RenderSystem()
 }
 
 void RenderSystem::DrawTextureToScreen(const RenderContext& rc,
-                                       const ur2::Texture& tex) const
+                                       const ur::Texture& tex) const
 {
     if (!m_prog) {
         m_prog = rc.ur_dev->CreateShaderProgram(vert, frag);
         assert(m_prog);
     }
 
-    ur2::DrawState ds = rc.ur_ds;
+    ur::DrawState ds = rc.ur_ds;
     ds.render_state = rc.ur_ds.render_state;
     ds.program      = m_prog;
-    ds.vertex_array = rc.ur_dev->GetVertexArray(ur2::Device::PrimitiveType::Cube, ur2::VertexLayoutType::PosTex);
-    rc.ur_ctx->Draw(ur2::PrimitiveType::Triangles, ds, nullptr);
+    ds.vertex_array = rc.ur_dev->GetVertexArray(ur::Device::PrimitiveType::Cube, ur::VertexLayoutType::PosTex);
+    rc.ur_ctx->Draw(ur::PrimitiveType::Triangles, ds, nullptr);
 }
 
 }

@@ -9,6 +9,7 @@
 #include <unirender/Context.h>
 #include <unirender/ShaderProgram.h>
 #include <unirender/Uniform.h>
+#include <painting0/ModelMatUpdater.h>
 
 namespace rendergraph
 {
@@ -61,6 +62,11 @@ void Shader::Bind(RenderContext& rc)
         auto val = Evaluator::Calc(rc, ip, ip.var.type.type, ip.var.type.count, flags);
         std::vector<uint32_t> texture_ids;
         SetUniformValue(ip.var.type, val, texture_ids);
+
+        if (flags & Evaluator::FLAG_MODEL_MAT) {
+            auto up = std::make_shared<pt0::ModelMatUpdater>(*m_prog, ip.var.type.name);
+            m_prog->AddUniformUpdater(up);
+        }
 
         if (val.type == VariableType::Sampler2D ||
             val.type == VariableType::SamplerCube)

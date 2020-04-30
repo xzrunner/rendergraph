@@ -3,6 +3,7 @@
 #include "rendergraph/RenderContext.h"
 
 #include <unirender/Device.h>
+#include <unirender/Context.h>
 #include <unirender/Framebuffer.h>
 
 namespace rendergraph
@@ -16,7 +17,8 @@ void RenderTarget::Bind(const RenderContext& rc)
         Init(rc);
     }
 
-    m_frame_buffer->Bind();
+    rc.ur_ctx->SetViewport(0, 0, m_width, m_height);
+    rc.ur_ctx->SetFramebuffer(m_frame_buffer);
 }
 
 void RenderTarget::SetSize(uint32_t width, uint32_t height)

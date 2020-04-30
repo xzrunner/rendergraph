@@ -193,22 +193,22 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v,
         uniform->SetValue(&v.vec1, 1);
         break;
     case VariableType::Vector2:
-        uniform->SetValue(v.vec2.xy, 1);
+        uniform->SetValue(v.vec2.xy, 2);
         break;
     case VariableType::Vector3:
-        uniform->SetValue(v.vec3.xyz, 1);
+        uniform->SetValue(v.vec3.xyz, 3);
         break;
     case VariableType::Vector4:
-        uniform->SetValue(v.vec4.xyzw, 1);
+        uniform->SetValue(v.vec4.xyzw, 4);
         break;
     case VariableType::Matrix2:
-        uniform->SetValue(v.mat2.x, 1);
+        uniform->SetValue(v.mat2.x, 2 * 2);
         break;
     case VariableType::Matrix3:
-        uniform->SetValue(v.mat3.x, 1);
+        uniform->SetValue(v.mat3.x, 3 * 3);
         break;
     case VariableType::Matrix4:
-        uniform->SetValue(v.mat4.x, 1);
+        uniform->SetValue(v.mat4.x, 4 * 4);
         break;
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
@@ -222,21 +222,21 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v,
         //}
         break;
     case VariableType::Vec2Array:
-        uniform->SetValue(v.vec2_array[0].xy, v.vec2_array.size());
+        uniform->SetValue(v.vec2_array[0].xy, v.vec2_array.size() * 2);
         //for (int i = 0, n = v.vec2_array.size(); i < n; ++i) {
         //    auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
         //    m_prog->SetVec2(name, v.vec2_array[i].xy);
         //}
         break;
     case VariableType::Vec3Array:
-        uniform->SetValue(v.vec3_array[0].xyz, v.vec3_array.size());
+        uniform->SetValue(v.vec3_array[0].xyz, v.vec3_array.size() * 3);
         //for (int i = 0, n = v.vec3_array.size(); i < n; ++i) {
         //    auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
         //    m_prog->SetVec3(name, v.vec3_array[i].xyz);
         //}
         break;
     case VariableType::Vec4Array:
-        uniform->SetValue(v.vec4_array[0].xyzw, v.vec4_array.size());
+        uniform->SetValue(v.vec4_array[0].xyzw, v.vec4_array.size() * 4);
         //for (int i = 0, n = v.vec4_array.size(); i < n; ++i) {
         //    auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
         //    m_prog->SetVec4(name, v.vec4_array[i].xyzw);

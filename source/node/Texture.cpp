@@ -147,14 +147,14 @@ void Texture::Bind(const RenderContext& rc, int channel)
     }
 }
 
-void Texture::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
+void Texture::Draw(const RenderContext& rc) const
 {
-    if (shader) {
-        //shader->Bind(rc);
-        //rc.rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_TEX);
-    } else {
+    //if (shader) {
+    //    //shader->Bind(rc);
+    //    //rc.rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_TEX);
+    //} else {
         RenderSystem::Instance()->DrawTextureToScreen(rc, *m_tex);
-    }
+    //}
 }
 
 }

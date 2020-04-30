@@ -11,8 +11,6 @@ namespace rendergraph
 namespace node
 {
 
-class Shader;
-
 class Model : public Node
 {
 public:
@@ -23,7 +21,7 @@ public:
         };
     }
 
-    void Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const;
+    void Draw(const RenderContext& rc) const;
 
     void SetModel(const std::shared_ptr<model::ModelInstance>& model);
 

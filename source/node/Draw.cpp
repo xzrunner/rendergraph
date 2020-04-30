@@ -49,11 +49,11 @@ void Draw::Execute(const std::shared_ptr<dag::Context>& ctx)
         if (type == rttr::type::get<PrimitiveShape>()) {
             std::static_pointer_cast<PrimitiveShape>(node)->Draw(*rc);
         } else if (type == rttr::type::get<Texture>()) {
-            std::static_pointer_cast<Texture>(node)->Draw(*rc, shader);
+            std::static_pointer_cast<Texture>(node)->Draw(*rc);
         } else if (type == rttr::type::get<VertexArray>()) {
             std::static_pointer_cast<VertexArray>(node)->Draw(*rc);
         } else if (type == rttr::type::get<Model>()) {
-            std::static_pointer_cast<Model>(node)->Draw(*rc, shader);
+            std::static_pointer_cast<Model>(node)->Draw(*rc);
         } else if (type == rttr::type::get<Heightfield>()) {
             std::static_pointer_cast<Heightfield>(node)->Draw(*rc);
         }

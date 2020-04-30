@@ -9,8 +9,6 @@ namespace rendergraph
 namespace node
 {
 
-class Shader;
-
 class Texture : public Node
 {
 public:
@@ -35,7 +33,7 @@ public:
 
     void Bind(const RenderContext& rc, int channel);
 
-    void Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const;
+    void Draw(const RenderContext& rc) const;
 
     auto GetTexture() const { return m_tex; }
     void SetTexture(const ur::TexturePtr& tex) { m_tex = tex; }

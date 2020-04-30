@@ -1,5 +1,4 @@
 #include "rendergraph/node/Model.h"
-#include "rendergraph/node/Shader.h"
 #include "rendergraph/RenderContext.h"
 
 #include <model/Model.h>
@@ -15,7 +14,7 @@ namespace rendergraph
 namespace node
 {
 
-void Model::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
+void Model::Draw(const RenderContext& rc) const
 {
 	pt3::RenderParams params;
 
@@ -39,14 +38,16 @@ void Model::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
     //    pt0::RenderVariant(wc->GetProjMat())
     //);
 
-    std::shared_ptr<ur::ShaderProgram> ur_shader = nullptr;
-    //pt0::UniformNames uniforms;
-    if (shader) {
-        ur_shader = shader->GetShader(rc);
-        //uniforms  = shader->GetUniformNames();
-    }
+    //std::shared_ptr<ur::ShaderProgram> ur_shader = nullptr;
+    ////pt0::UniformNames uniforms;
+    //if (shader) {
+    //    ur_shader = shader->GetShader(rc);
+    //    //uniforms  = shader->GetUniformNames();
+    //}
+
     pt3::RenderSystem::Instance()->DrawModel(
-        *rc.ur_dev, *rc.ur_ctx, *m_model, m_materials, params, ctx, ur_shader
+        *rc.ur_dev, *rc.ur_ctx, rc.ur_ds,
+        *m_model, m_materials, params, ctx
     );
 }
 

@@ -41,13 +41,13 @@ void Model::Draw(const RenderContext& rc, std::shared_ptr<Shader>& shader) const
 
     std::shared_ptr<ur::ShaderProgram> ur_shader = nullptr;
     //pt0::UniformNames uniforms;
-    //if (shader) {
-    //    ur_shader = shader->GetShader(rc.rc);
-    //    uniforms  = shader->GetUniformNames();
-    //}
-    //pt3::RenderSystem::Instance()->DrawModel(
-    //    *m_model, m_materials, params, ctx, ur_shader, uniforms
-    //);
+    if (shader) {
+        ur_shader = shader->GetShader(rc);
+        //uniforms  = shader->GetUniformNames();
+    }
+    pt3::RenderSystem::Instance()->DrawModel(
+        *rc.ur_dev, *rc.ur_ctx, *m_model, m_materials, params, ctx, ur_shader
+    );
 }
 
 void Model::SetModel(const std::shared_ptr<model::ModelInstance>& model)

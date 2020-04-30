@@ -65,8 +65,10 @@ void Shader::Bind(RenderContext& rc)
         if (val.type == VariableType::Sampler2D ||
             val.type == VariableType::SamplerCube)
         {
-            ur::TexturePtr tex = *reinterpret_cast<const ur::TexturePtr*>(val.p);
-            rc.ur_ctx->SetTexture(m_prog->QueryTexSlot(ip.var.type.name), tex);
+            if (val.p) {
+                ur::TexturePtr tex = *reinterpret_cast<const ur::TexturePtr*>(val.p);
+                rc.ur_ctx->SetTexture(m_prog->QueryTexSlot(ip.var.type.name), tex);
+            }
         }
     }
 

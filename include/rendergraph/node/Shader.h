@@ -45,8 +45,7 @@ public:
 private:
     void Init(const RenderContext& rc);
 
-    void SetUniformValue(const Variable& key, const ShaderVariant& val,
-        std::vector<uint32_t>& texture_ids);
+    void SetUniformValue(const Variable& key, const ShaderVariant& val);
 
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;

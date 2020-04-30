@@ -60,8 +60,7 @@ void Shader::Bind(RenderContext& rc)
     {
         uint32_t flags = 0;
         auto val = Evaluator::Calc(rc, ip, ip.var.type.type, ip.var.type.count, flags);
-        std::vector<uint32_t> texture_ids;
-        SetUniformValue(ip.var.type, val, texture_ids);
+        SetUniformValue(ip.var.type, val);
 
         if (flags & Evaluator::FLAG_MODEL_MAT) {
             auto up = std::make_shared<pt0::ModelMatUpdater>(*m_prog, ip.var.type.name);
@@ -77,28 +76,6 @@ void Shader::Bind(RenderContext& rc)
             }
         }
     }
-
-//    m_prog->Bind();
-
-    //std::vector<uint32_t> texture_ids;
-    //for (int i = 0, n = m_imports.size(); i < n; ++i)
-    //{
-    //    auto& key = m_imports[i].var;
-
-    //    uint32_t flags = 0;
-    //    auto val = Evaluator::Calc(rc, m_imports[i], key.type.type, key.type.count, flags);
-    //    SetUniformValue(key.type, val, texture_ids);
-
-    //    if (flags & Evaluator::FLAG_MODEL_MAT) {
-    //        m_unif_names.Add(pt0::UniformTypes::ModelMat, key.type.GetDisplayName());
-    //    }
-    //}
-
-    //if (!texture_ids.empty()) {
-    //    assert(m_textures.size() == texture_ids.size());
-    //    m_prog->SetUsedTextures(texture_ids);
-    //    m_prog->Use();    // fixme: to call BindTexture()
-    //}
 }
 
 std::shared_ptr<ur::ShaderProgram> Shader::GetShader(const RenderContext& rc)
@@ -131,24 +108,7 @@ void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
         return;
     }
 
-    std::vector<uint32_t> texture_ids;
-    SetUniformValue(m_imports[key_idx].var.type, val, texture_ids);
-
-
-
-    //if (!texture_ids.empty())
-    //{
-    //    assert(texture_ids.size() == 1);
-    //    int tex_channel = -1;
-    //    for (int i = 0, n = m_textures.size(); i < n; ++i) {
-    //        if (m_textures[i] == m_imports[key_idx].var.full_name) {
-    //            tex_channel = i;
-    //            break;
-    //        }
-    //    }
-    //    assert(tex_channel != -1);
-    //    ur_rc.BindTexture(texture_ids[0], tex_channel);
-    //}
+    SetUniformValue(m_imports[key_idx].var.type, val);
 }
 
 void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms,
@@ -177,8 +137,7 @@ void Shader::Init(const RenderContext& rc)
     }
 }
 
-void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v,
-                             std::vector<uint32_t>& texture_ids)
+void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
 {
     auto uniform = m_prog->QueryUniform(k.name);
     assert(uniform);
@@ -220,35 +179,18 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v,
         break;
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
-        //texture_ids.push_back(v.res_id);
         break;
     case VariableType::Vec1Array:
         uniform->SetValue(v.vec1_array.data(), v.vec1_array.size());
-        //for (int i = 0, n = v.vec1_array.size(); i < n; ++i) {
-        //    auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
-        //    m_prog->SetFloat(name, v.vec1_array[i]);
-        //}
         break;
     case VariableType::Vec2Array:
         uniform->SetValue(v.vec2_array[0].xy, v.vec2_array.size() * 2);
-        //for (int i = 0, n = v.vec2_array.size(); i < n; ++i) {
-        //    auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
-        //    m_prog->SetVec2(name, v.vec2_array[i].xy);
-        //}
         break;
     case VariableType::Vec3Array:
         uniform->SetValue(v.vec3_array[0].xyz, v.vec3_array.size() * 3);
-        //for (int i = 0, n = v.vec3_array.size(); i < n; ++i) {
-        //    auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
-        //    m_prog->SetVec3(name, v.vec3_array[i].xyz);
-        //}
         break;
     case VariableType::Vec4Array:
         uniform->SetValue(v.vec4_array[0].xyzw, v.vec4_array.size() * 4);
-        //for (int i = 0, n = v.vec4_array.size(); i < n; ++i) {
-        //    auto name = k.user_type + "[" + std::to_string(i) + "]." + k.name;
-        //    m_prog->SetVec4(name, v.vec4_array[i].xyzw);
-        //}
         break;
     }
 }

@@ -9,7 +9,8 @@ namespace rendergraph
 class Evaluator
 {
 public:
-    static const uint32_t FLAG_MODEL_MAT = 0x0001;
+    static const uint32_t FLAG_MODEL_MAT  = 0x0001;
+    static const uint32_t FLAG_CAMERA_POS = 0x0002;
 
     static ShaderVariant Calc(const RenderContext& rc,
         const Node::Port& in_port, VariableType type, int var_count, uint32_t& flags);

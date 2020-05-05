@@ -10,6 +10,7 @@
 #include <unirender/ShaderProgram.h>
 #include <unirender/Uniform.h>
 #include <painting0/ModelMatUpdater.h>
+#include <painting0/CamPosUpdater.h>
 
 namespace rendergraph
 {
@@ -66,7 +67,10 @@ void Shader::Bind(RenderContext& rc)
             auto up = std::make_shared<pt0::ModelMatUpdater>(*m_prog, ip.var.type.name);
             m_prog->AddUniformUpdater(up);
         }
-
+        if (flags & Evaluator::FLAG_CAMERA_POS) {
+            auto up = std::make_shared<pt0::CamPosUpdater>(*m_prog, ip.var.type.name);
+            m_prog->AddUniformUpdater(up);
+        }
         if (val.type == VariableType::Sampler2D ||
             val.type == VariableType::SamplerCube)
         {
@@ -140,7 +144,6 @@ void Shader::Init(const RenderContext& rc)
 void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
 {
     auto uniform = m_prog->QueryUniform(k.name);
-    assert(uniform);
     if (!uniform) {
         return;
     }

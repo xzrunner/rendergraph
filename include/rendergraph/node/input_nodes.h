@@ -49,6 +49,7 @@ public:
     CameraPosition() { m_exports = {{{ VariableType::Vector3, "out" }}}; }
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override {
+        flags |= Evaluator::FLAG_CAMERA_POS;
         var.vec3 = rc.cam_position;
     }
     RTTR_ENABLE(Node)

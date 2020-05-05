@@ -3,7 +3,9 @@
 
 #include <model/Model.h>
 #include <model/ModelInstance.h>
+#include <unirender/ShaderProgram.h>
 #include <painting0/Material.h>
+#include <painting0/CamPosUpdater.h>
 #include <painting3/MaterialMgr.h>
 #include <painting3/RenderSystem.h>
 #include <painting3/Blackboard.h>
@@ -44,6 +46,11 @@ void Model::Draw(const RenderContext& rc) const
     //    ur_shader = shader->GetShader(rc);
     //    //uniforms  = shader->GetUniformNames();
     //}
+
+    auto cam_pos_up = rc.ur_ds.program->QueryUniformUpdater(ur::GetUpdaterTypeID<pt0::CamPosUpdater>());
+    if (cam_pos_up) {
+        std::static_pointer_cast<pt0::CamPosUpdater>(cam_pos_up)->Update(rc.cam_position);
+    }
 
     pt3::RenderSystem::Instance()->DrawModel(
         *rc.ur_dev, *rc.ur_ctx, rc.ur_ds,

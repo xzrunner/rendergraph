@@ -35,7 +35,7 @@ public:
         m_exports[O_NEXT] = {{ VariableType::Port, "next" }};
     }
 
-    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
+    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
 
     void SetCode(const std::string& code);
 

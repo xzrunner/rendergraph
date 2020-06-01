@@ -20,7 +20,7 @@ public:
         };
     }
 
-    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr);
+    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
 
     RTTR_ENABLE(Node)
 

@@ -102,7 +102,7 @@ void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
 
     int key_idx = -1;
     for (int i = 0, n = m_imports.size(); i < n; ++i) {
-        if (m_imports[i].var.full_name == key) {
+        if (m_imports[i].var.type.name == key) {
             key_idx = i;
             break;
         }

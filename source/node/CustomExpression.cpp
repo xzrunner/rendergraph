@@ -28,21 +28,21 @@ void CustomExpression::Execute(const std::shared_ptr<dag::Context>& ctx)
             auto node = port.conns[0].node.lock();
             assert(node->get_type() == rttr::type::get<node::Shader>());
             auto shader = std::static_pointer_cast<node::Shader>(node);
-            chai->add(chaiscript::var(shader), port.var.full_name);
+            chai->add(chaiscript::var(shader), port.var.type.name);
         }
         else if (port.var.type.type == VariableType::Vec1Array)
         {
             auto node = port.conns[0].node.lock();
             assert(node->get_type() == rttr::type::get<node::UserScript>());
             auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(port.var.type.type).vec1_array;
-            chai->add(chaiscript::var(vec), port.var.full_name);
+            chai->add(chaiscript::var(vec), port.var.type.name);
         }
         else if (port.var.type.type == VariableType::Vec2Array)
         {
             auto node = port.conns[0].node.lock();
             assert(node->get_type() == rttr::type::get<node::UserScript>());
             auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(port.var.type.type).vec2_array;
-            chai->add(chaiscript::var(vec), port.var.full_name);
+            chai->add(chaiscript::var(vec), port.var.type.name);
         }
         else if (port.var.type.type == VariableType::Vec3Array)
         {
@@ -58,14 +58,14 @@ void CustomExpression::Execute(const std::shared_ptr<dag::Context>& ctx)
             //}
             //chai->add(chaiscript::var(chai_vec), port.var.name);
 
-            chai->add(chaiscript::var(vec), port.var.full_name);
+            chai->add(chaiscript::var(vec), port.var.type.name);
         }
         else if (port.var.type.type == VariableType::Vec4Array)
         {
             auto node = port.conns[0].node.lock();
             assert(node->get_type() == rttr::type::get<node::UserScript>());
             auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(port.var.type.type).vec4_array;
-            chai->add(chaiscript::var(vec), port.var.full_name);
+            chai->add(chaiscript::var(vec), port.var.type.name);
         }
     }
 

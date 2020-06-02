@@ -4,6 +4,7 @@
 #include "rendergraph/Variable.h"
 #include "rendergraph/RenderContext.h"
 #include "rendergraph/Utility.h"
+#include "rendergraph/node/Texture.h"
 
 #include <unirender/Device.h>
 #include <unirender/Context.h>
@@ -71,16 +72,13 @@ void Shader::Bind(RenderContext& rc)
             auto up = std::make_shared<pt0::CamPosUpdater>(*m_prog, ip.var.type.name);
             m_prog->AddUniformUpdater(up);
         }
-        if (val.type == VariableType::Sampler2D ||
-            val.type == VariableType::SamplerCube)
+        if (val.type == VariableType::Texture && val.p)
         {
-            if (val.p)
-            {
-                const int slot = m_prog->QueryTexSlot(ip.var.type.name);
-                SetUniformValue(rc, ip.var.type.name, ShaderVariant(slot));
-                ur::TexturePtr tex = *reinterpret_cast<const ur::TexturePtr*>(val.p);
-                rc.ur_ctx->SetTexture(slot, tex);
-            }
+            const int slot = m_prog->QueryTexSlot(ip.var.type.name);
+            SetUniformValue(rc, ip.var.type.name, ShaderVariant(slot));
+            auto tex = reinterpret_cast<const node::Texture*>(val.p);
+            rc.ur_ctx->SetTexture(slot, tex->GetTexture());
+            rc.ur_ctx->SetTextureSampler(slot, tex->GetSampler());
         }
     }
 }

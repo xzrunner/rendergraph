@@ -21,12 +21,8 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
 {
     if (port_idx == O_OUT)
     {
-        // todo: other texture type
-        if (m_tex)
-        {
-            var.type = VariableType::Sampler2D;
-            var.p    = &m_tex;
-        }
+        var.type = VariableType::Texture;
+        var.p    = this;
     }
 }
 
@@ -138,6 +134,7 @@ void Texture::Init(const RenderContext& rc) const
     }
 
     m_tex = rc.ur_dev->CreateTexture(desc);
+    m_sampler = rc.ur_dev->CreateTextureSampler(min_filter, mag_filter, wrap_s, wrap_t);
 }
 
 void Texture::Bind(const RenderContext& rc, int channel)

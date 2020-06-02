@@ -20,6 +20,7 @@ ShaderVariant& ShaderVariant::operator = (const ShaderVariant& var)
     {
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
+    case VariableType::Texture:
         p = var.p;
         break;
     case VariableType::Int:

@@ -4,6 +4,8 @@
 
 #include <unirender/typedef.h>
 
+namespace ur { class TextureSampler; }
+
 namespace rendergraph
 {
 namespace node
@@ -37,6 +39,11 @@ public:
 
     auto GetTexture() const { return m_tex; }
     void SetTexture(const ur::TexturePtr& tex) { m_tex = tex; }
+
+    auto GetSampler() const { return m_sampler; }
+    void SetSampler(const std::shared_ptr<ur::TextureSampler>& sampler) {
+        m_sampler = sampler;
+    }
 
     enum class Type
     {
@@ -72,6 +79,7 @@ public:
 
 private:
     mutable ur::TexturePtr m_tex = nullptr;
+    mutable std::shared_ptr<ur::TextureSampler> m_sampler = nullptr;
 
     RTTR_ENABLE(Node)
 

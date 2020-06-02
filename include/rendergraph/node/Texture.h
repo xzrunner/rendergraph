@@ -33,8 +33,6 @@ public:
 
     void Init(const RenderContext& rc) const;
 
-    void Bind(const RenderContext& rc, int channel);
-
     void Draw(const RenderContext& rc) const;
 
     auto GetTexture() const { return m_tex; }

@@ -137,13 +137,6 @@ void Texture::Init(const RenderContext& rc) const
     m_sampler = rc.ur_dev->CreateTextureSampler(min_filter, mag_filter, wrap_s, wrap_t);
 }
 
-void Texture::Bind(const RenderContext& rc, int channel)
-{
-    if (m_tex) {
-        m_tex->Bind();
-    }
-}
-
 void Texture::Draw(const RenderContext& rc) const
 {
     //if (shader) {

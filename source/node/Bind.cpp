@@ -23,9 +23,7 @@ void Bind::Execute(const std::shared_ptr<dag::Context>& ctx)
         auto rc = std::static_pointer_cast<RenderContext>(ctx);
 
         auto type = node->get_type();
-        if (type == rttr::type::get<node::Texture>()) {
-            std::static_pointer_cast<node::Texture>(node)->Bind(*rc, m_channel);
-        } else if (type == rttr::type::get<node::RenderTarget>()) {
+        if (type == rttr::type::get<node::RenderTarget>()) {
             std::static_pointer_cast<node::RenderTarget>(node)->Bind(*rc);
         } else if (type == rttr::type::get<node::Shader>()) {
             std::static_pointer_cast<node::Shader>(node)->Bind(*rc);

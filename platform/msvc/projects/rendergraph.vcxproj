@@ -130,7 +130,7 @@
     <ClCompile Include="..\..\..\source\Utility.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>3.rendergraph</ProjectName>
+    <ProjectName>rendergraph</ProjectName>
     <ProjectGuid>{52480C29-042F-4F4C-9690-88EF0EEF494E}</ProjectGuid>
     <RootNamespace>rendergraph</RootNamespace>
     <Keyword>Win32Proj</Keyword>

@@ -92,7 +92,7 @@ void VertexArray::Rebuild(const RenderContext& rc) const
         }
 
         vbuf_attrs[i] = std::make_shared<ur::VertexBufferAttribute>(
-            type, attr.num, offset_in_bytes, stride_in_bytes
+            i, type, attr.num, offset_in_bytes, stride_in_bytes
         );
         offset_in_bytes += attr.num * attr.size;
     }

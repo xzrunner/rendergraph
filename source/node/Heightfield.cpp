@@ -105,10 +105,10 @@ void Heightfield::Init(const RenderContext& rc) const
     std::vector<std::shared_ptr<ur::VertexBufferAttribute>> vbuf_attrs;
     vbuf_attrs.resize(2);
     vbuf_attrs[0] = std::make_shared<ur::VertexBufferAttribute>(
-        ur::ComponentDataType::Float, 2, 0, 4 * 5
+        0, ur::ComponentDataType::Float, 2, 0, 4 * 5
     );
     vbuf_attrs[1] = std::make_shared<ur::VertexBufferAttribute>(
-        ur::ComponentDataType::Float, 2, 4 * 3, 4 * 5
+        1, ur::ComponentDataType::Float, 2, 4 * 3, 4 * 5
     );
     m_vertex_array->SetVertexBufferAttrs(vbuf_attrs);
 }

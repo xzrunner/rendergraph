@@ -38,6 +38,7 @@ void PrimitiveShape::Draw(const RenderContext& rc) const
         ds.vertex_array = rc.ur_dev->GetVertexArray(ur::Device::PrimitiveType::Quad, layout);
         break;
     case PrimitiveShape::Type::Cube:
+        ds.vertex_array = rc.ur_dev->GetVertexArray(ur::Device::PrimitiveType::Cube, layout);
         break;
     }
     rc.ur_ctx->Draw(ur::PrimitiveType::TriangleStrip, ds, nullptr);

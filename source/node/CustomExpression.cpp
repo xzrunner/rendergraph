@@ -83,7 +83,8 @@ void CustomExpression::SetCode(const std::string& code)
         return;
     }
 
-    ExpressionParser parser(Utility::FormatCode(code));
+    auto code_str = Utility::FormatCode(code);
+    ExpressionParser parser(code_str);
     parser.Parse();
 
     m_body = parser.GetBody();

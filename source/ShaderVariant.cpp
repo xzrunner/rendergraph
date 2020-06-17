@@ -18,6 +18,8 @@ ShaderVariant& ShaderVariant::operator = (const ShaderVariant& var)
     type = var.type;
     switch (type)
     {
+    case VariableType::Any:
+        break;
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
     case VariableType::Texture:

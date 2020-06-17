@@ -160,7 +160,7 @@ void ExpressionParser::ParseVariable(Variable& var)
         var.type = VariableType::Texture;
     } else if (type == "RT") {
         var.type = VariableType::RenderTarget;
-    } else if (type == "Shader") {
+    } else if (type == "shader") {
         var.type = VariableType::Shader;
     } else if (type == "Model") {
         var.type = VariableType::Model;

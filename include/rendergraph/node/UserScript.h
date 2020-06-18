@@ -36,10 +36,10 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
 
-    const ShaderVariant& GetCachedVar(VariableType type) const;
+    const ShaderVariant& GetCachedVar(const RenderContext& rc, VariableType type) const;
 
 private:
-    static ShaderVariant Run(const std::string& code, VariableType type);
+    ShaderVariant Run(const RenderContext& rc, const std::string& code, VariableType type) const;
 
 private:
     mutable ShaderVariant m_cached;

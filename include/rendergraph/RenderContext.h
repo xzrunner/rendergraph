@@ -13,9 +13,15 @@ namespace ur { class Context; class Device; }
 namespace rendergraph
 {
 
+class ScriptEnv;
 class RenderContext : public dag::Context
 {
 public:
+    RenderContext(const std::shared_ptr<ScriptEnv>& script_env) 
+        : script_env(script_env) 
+    {
+    }
+
     ur::DrawState     ur_ds;
     ur::Context*      ur_ctx = nullptr;
     const ur::Device* ur_dev = nullptr;
@@ -26,6 +32,8 @@ public:
 
     sm::vec3 cam_position;
     sm::vec3 light_position;
+
+    std::shared_ptr<ScriptEnv> script_env = nullptr;
 
 }; // RenderContext
 

@@ -5,17 +5,19 @@
 #include <SM_Vector.h>
 #include <SM_Matrix.h>
 #include <sm_const.h>
+#include <unirender/Device.h>
+#include <unirender/Context.h>
 
 #include <chaiscript/chaiscript.hpp>
+
+#undef DrawState
 
 namespace rendergraph
 {
 
-CU_SINGLETON_DEFINITION(ScriptEnv);
-
 ScriptEnv::ScriptEnv()
 {
-    m_chai = std::make_unique<chaiscript::ChaiScript>();
+    m_chai = std::make_shared<chaiscript::ChaiScript>();
 
     // math
     m_chai->add(chaiscript::user_type<sm::vec2>(), "vec2");
@@ -39,14 +41,16 @@ ScriptEnv::ScriptEnv()
     m_chai->add(
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val) {
-            //auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            //shader->SetUniformValue(rc, key, ShaderVariant(val));
+            if (m_rc) {
+                shader->SetUniformValue(m_rc->ur_dev, key, ShaderVariant(val));
+            }
         }), "set_uniform");
     m_chai->add(
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val) {
-            //auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            //shader->SetUniformValue(rc, key, ShaderVariant(val));
+            if (m_rc) {
+                shader->SetUniformValue(m_rc->ur_dev, key, ShaderVariant(val));
+            }
         }), "set_uniform");
 
     // for return vector
@@ -125,8 +129,12 @@ ScriptEnv::ScriptEnv()
     m_chai->add(
       chaiscript::fun<std::function<void()>>(
         [&]() {
-            //auto& rc = ur::Blackboard::Instance()->GetRenderContext();
-            //rc.RenderCube(ur::RenderContext::VertLayout::VL_POS_NORM_TEX);
+            if (m_rc)
+            {
+                ur::DrawState ds = m_rc->ur_ds;
+                ds.vertex_array = m_rc->ur_dev->GetVertexArray(ur::Device::PrimitiveType::Cube, ur::VertexLayoutType::PosNormTex);
+                m_rc->ur_ctx->Draw(ur::PrimitiveType::TriangleStrip, ds, nullptr);
+            }
         }), "render_cube");
 }
 

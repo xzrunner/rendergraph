@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cu/cu_macro.h>
-
 #include <memory>
 
 namespace chaiscript { class ChaiScript; }
@@ -9,15 +7,21 @@ namespace chaiscript { class ChaiScript; }
 namespace rendergraph
 {
 
+class RenderContext;
+
 class ScriptEnv
 {
 public:
-    auto& GetChai() { return m_chai; }
+    ScriptEnv();
+
+    auto GetChai() const { return m_chai; }
+
+    void SetRenderContext(const std::shared_ptr<RenderContext>& rc) { m_rc = rc; }
 
 private:
-    std::unique_ptr<chaiscript::ChaiScript> m_chai = nullptr;
-    
-    CU_SINGLETON_DECLARATION(ScriptEnv)
+    std::shared_ptr<chaiscript::ChaiScript> m_chai = nullptr;
+
+    std::shared_ptr<RenderContext> m_rc = nullptr;
 
 }; // ScriptEnv
 

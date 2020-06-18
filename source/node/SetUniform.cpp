@@ -30,7 +30,7 @@ void SetUniform::Execute(const std::shared_ptr<dag::Context>& ctx)
     auto expected = Evaluator::DefaultValue(m_var_type);
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
     auto val = Evaluator::Calc(*rc, m_imports[I_VALUE], expected, flags);
-    shader->SetUniformValue(*rc, m_var_name, val);
+    shader->SetUniformValue(rc->ur_dev, m_var_name, val);
 }
 
 }

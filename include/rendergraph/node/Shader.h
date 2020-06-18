@@ -4,7 +4,7 @@
 
 #include <painting0/UniformNames.h>
 
-namespace ur { class ShaderProgram; }
+namespace ur { class Device; class ShaderProgram; }
 
 namespace rendergraph
 {
@@ -36,14 +36,14 @@ public:
 
 //    auto& GetUniformNames() const { return m_unif_names; }
 
-    void SetUniformValue(const RenderContext& rc, const std::string& key,
+    void SetUniformValue(const ur::Device* dev, const std::string& key,
         const ShaderVariant& val);
 
     static void GetCodeUniforms(const std::string& code,
         std::vector<Variable>& uniforms, std::set<std::string>& unique_names);
 
 private:
-    void Init(const RenderContext& rc);
+    void Init(const ur::Device& dev);
 
     void SetUniformValue(const Variable& key, const ShaderVariant& val);
     void SetUniformValue(const std::string& name, const ShaderVariant& val);

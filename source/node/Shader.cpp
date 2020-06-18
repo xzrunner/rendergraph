@@ -51,8 +51,8 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
 void Shader::Bind(RenderContext& rc)
 {
-    if (!m_prog) {
-        Init(rc);
+    if (!m_prog && rc.ur_dev) {
+        Init(*rc.ur_dev);
     }
     if (!m_prog || !m_prog->CheckStatus()) {
         return;
@@ -76,7 +76,7 @@ void Shader::Bind(RenderContext& rc)
         if (val.type == VariableType::Texture && val.p)
         {
             const int slot = m_prog->QueryTexSlot(ip.var.type.name);
-            SetUniformValue(rc, ip.var.type.name, ShaderVariant(slot));
+            SetUniformValue(rc.ur_dev, ip.var.type.name, ShaderVariant(slot));
             auto tex = reinterpret_cast<const node::Texture*>(val.p);
             rc.ur_ctx->SetTexture(slot, tex->GetTexture());
             rc.ur_ctx->SetTextureSampler(slot, tex->GetSampler());
@@ -86,17 +86,17 @@ void Shader::Bind(RenderContext& rc)
 
 std::shared_ptr<ur::ShaderProgram> Shader::GetShader(const RenderContext& rc)
 {
-    if (!m_prog) {
-        Init(rc);
+    if (!m_prog && rc.ur_dev) {
+        Init(*rc.ur_dev);
     }
     return m_prog;
 }
 
-void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
+void Shader::SetUniformValue(const ur::Device* dev, const std::string& key,
                              const ShaderVariant& val)
 {
-    if (!m_prog) {
-        Init(rc);
+    if (!m_prog && dev) {
+        Init(*dev);
     }
     if (!m_prog || !m_prog->CheckStatus()) {
         return;
@@ -133,13 +133,13 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
     }
 }
 
-void Shader::Init(const RenderContext& rc)
+void Shader::Init(const ur::Device& dev)
 {
     if (!m_prog && !m_vert.empty() && !m_frag.empty())
     {
         auto vert = Utility::FormatCode(m_vert);
         auto frag = Utility::FormatCode(m_frag);
-        m_prog = rc.ur_dev->CreateShaderProgram(vert, frag);
+        m_prog = dev.CreateShaderProgram(vert, frag);
     }
 }
 

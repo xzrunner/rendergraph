@@ -31,17 +31,20 @@ void PrimitiveShape::Draw(const RenderContext& rc) const
         assert(0);
     }
 
+    ur::PrimitiveType prim_type = ur::PrimitiveType::TriangleStrip;
     ur::DrawState ds = rc.ur_ds;
     switch (m_type)
     {
     case PrimitiveShape::Type::Quad:
+        prim_type = ur::PrimitiveType::TriangleStrip;
         ds.vertex_array = rc.ur_dev->GetVertexArray(ur::Device::PrimitiveType::Quad, layout);
         break;
     case PrimitiveShape::Type::Cube:
+        prim_type = ur::PrimitiveType::Triangles;
         ds.vertex_array = rc.ur_dev->GetVertexArray(ur::Device::PrimitiveType::Cube, layout);
         break;
     }
-    rc.ur_ctx->Draw(ur::PrimitiveType::TriangleStrip, ds, nullptr);
+    rc.ur_ctx->Draw(prim_type, ds, nullptr);
 }
 
 }

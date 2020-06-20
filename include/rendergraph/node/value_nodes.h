@@ -197,18 +197,16 @@ class Matrix3 : public Node
 public:
     Matrix3()
     {
+        m_imports = {
+            {{ VariableType::Matrix4, "in" }}
+        };
         m_exports = {
             {{ VariableType::Matrix3, "out" }}
         };
     }
 
     virtual void Eval(const RenderContext& rc, size_t port_idx,
-                      ShaderVariant& var, uint32_t& flags) const override
-    {
-        if (var.type == VariableType::Matrix3) {
-            var.mat3 = m_val;
-        }
-    }
+        ShaderVariant& var, uint32_t& flags) const override;
 
     RTTR_ENABLE(Node)
 
@@ -223,18 +221,16 @@ class Matrix4 : public Node
 public:
     Matrix4()
     {
+        m_imports = {
+            {{ VariableType::Matrix3, "in" }}
+        };
         m_exports = {
             {{ VariableType::Matrix4, "out" }}
         };
     }
 
     virtual void Eval(const RenderContext& rc, size_t port_idx,
-                      ShaderVariant& var, uint32_t& flags) const override
-    {
-        if (var.type == VariableType::Matrix4) {
-            var.mat4 = m_val;
-        }
-    }
+        ShaderVariant& var, uint32_t& flags) const override;
 
     RTTR_ENABLE(Node)
 

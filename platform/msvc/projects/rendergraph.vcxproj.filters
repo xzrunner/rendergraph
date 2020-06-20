@@ -107,6 +107,9 @@
     <ClCompile Include="..\..\..\source\node\TextureCube.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\value_nodes.cpp">
+      <Filter>nodes\others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">

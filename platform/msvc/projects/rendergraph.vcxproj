@@ -118,6 +118,7 @@
     <ClCompile Include="..\..\..\source\node\TextureCube.cpp" />
     <ClCompile Include="..\..\..\source\node\Unbind.cpp" />
     <ClCompile Include="..\..\..\source\node\UserScript.cpp" />
+    <ClCompile Include="..\..\..\source\node\value_nodes.cpp" />
     <ClCompile Include="..\..\..\source\node\VertexArray.cpp" />
     <ClCompile Include="..\..\..\source\node\Viewport.cpp" />
     <ClCompile Include="..\..\..\source\node\ZTest.cpp" />

@@ -1,4 +1,5 @@
 #include "rendergraph/ShaderVariant.h"
+#include "rendergraph/ValueImpl.h"
 
 namespace rendergraph
 {
@@ -23,7 +24,7 @@ ShaderVariant& ShaderVariant::operator = (const ShaderVariant& var)
     case VariableType::Sampler2D:
     case VariableType::SamplerCube:
     case VariableType::Texture:
-        p = var.p;
+        p = var.p ?  new TextureVal(*(TextureVal*)(var.p)) : nullptr;
         break;
     case VariableType::Int:
         i = var.i;
@@ -68,6 +69,16 @@ ShaderVariant& ShaderVariant::operator = (const ShaderVariant& var)
         assert(0);
     }
     return *this;
+}
+
+ShaderVariant::~ShaderVariant()
+{
+	switch (type)
+	{
+	case VariableType::Texture:
+		delete (TextureVal*)(p);
+		break;
+	}
 }
 
 }

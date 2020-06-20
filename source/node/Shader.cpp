@@ -1,10 +1,11 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/ShaderParser.h"
+#include "rendergraph/node/Texture.h"
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/Variable.h"
 #include "rendergraph/RenderContext.h"
 #include "rendergraph/Utility.h"
-#include "rendergraph/node/Texture.h"
+#include "rendergraph/ValueImpl.h"
 
 #include <unirender/Device.h>
 #include <unirender/Context.h>
@@ -77,9 +78,13 @@ void Shader::Bind(RenderContext& rc)
         {
             const int slot = m_prog->QueryTexSlot(ip.var.type.name);
             SetUniformValue(rc.ur_dev, ip.var.type.name, ShaderVariant(slot));
-            auto tex = reinterpret_cast<const node::Texture*>(val.p);
-            rc.ur_ctx->SetTexture(slot, tex->GetTexture());
-            rc.ur_ctx->SetTextureSampler(slot, tex->GetSampler());
+            auto tex = reinterpret_cast<const TextureVal*>(val.p);
+			if (tex->texture) {
+				rc.ur_ctx->SetTexture(slot, tex->texture);
+			}
+			if (tex->sampler) {
+				rc.ur_ctx->SetTextureSampler(slot, tex->sampler);
+			}
         }
     }
 }

@@ -2,6 +2,7 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/RenderContext.h"
 #include "rendergraph/RenderSystem.h"
+#include "rendergraph/ValueImpl.h"
 
 #include <unirender/TextureTarget.h>
 #include <unirender/TextureDescription.h>
@@ -22,7 +23,11 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
     if (port_idx == O_OUT)
     {
         var.type = VariableType::Texture;
-        var.p    = this;
+
+		auto tex = new TextureVal;
+		tex->texture = m_tex;
+		tex->sampler = m_sampler;
+        var.p = tex;
     }
 }
 

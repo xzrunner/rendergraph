@@ -16,7 +16,7 @@ public:
     ShaderVariant();
     ShaderVariant(const ShaderVariant& var);
     ShaderVariant& operator = (const ShaderVariant& var);
-    ~ShaderVariant() {}
+	~ShaderVariant();
 
     explicit ShaderVariant(VariableType type, int id) : type(type), i(id) {}
     explicit ShaderVariant(int v) : type(VariableType::Int), i(v) {}

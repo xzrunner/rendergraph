@@ -84,6 +84,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\RenderSystem.h" />
     <ClInclude Include="..\..\..\include\rendergraph\ScriptEnv.h" />
     <ClInclude Include="..\..\..\include\rendergraph\ShaderVariant.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\ValueImpl.h" />
     <ClInclude Include="..\..\..\include\rendergraph\typedef.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Utility.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Variable.h" />

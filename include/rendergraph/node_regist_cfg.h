@@ -17,6 +17,11 @@
 #include EXE_FILEPATH
 
 #define NO_PARM_FILEPATH
+#define PARM_NODE_TYPE TextureCube
+#define PARM_NODE_NAME texture_cube
+#include EXE_FILEPATH
+
+#define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE VertexArray
 #define PARM_NODE_NAME vertex_array
 #include EXE_FILEPATH

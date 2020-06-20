@@ -35,6 +35,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Translate.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Vector1.parm.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="..\..\..\source\node\Shader.cpp" />
     <ClCompile Include="..\..\..\source\node\ShaderParser.cpp" />
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />
+    <ClCompile Include="..\..\..\source\node\TextureCube.cpp" />
     <ClCompile Include="..\..\..\source\node\Unbind.cpp" />
     <ClCompile Include="..\..\..\source\node\UserScript.cpp" />
     <ClCompile Include="..\..\..\source\node\VertexArray.cpp" />

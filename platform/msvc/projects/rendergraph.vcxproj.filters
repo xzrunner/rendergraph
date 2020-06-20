@@ -104,6 +104,9 @@
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp">
       <Filter>tools\rtti</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\TextureCube.cpp">
+      <Filter>nodes\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -332,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ZWrite.parm.h">
       <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h">
+      <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\ValueImpl.h">
       <Filter>dataset\var</Filter>

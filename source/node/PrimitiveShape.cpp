@@ -21,6 +21,9 @@ void PrimitiveShape::Draw(const RenderContext& rc) const
     case VertLayout::PosTex:
         layout = ur::VertexLayoutType::PosTex;
         break;
+    case VertLayout::PosNorm:
+        layout = ur::VertexLayoutType::PosNorm;
+        break;
     case VertLayout::PosNormTex:
         layout = ur::VertexLayoutType::PosNormTex;
         break;

@@ -93,6 +93,7 @@ rttr::registration::enumeration<rendergraph::node::PrimitiveShape::VertLayout>("
 (
     REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::VertLayout::Pos,          "pos",             "Pos"),
     REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::VertLayout::PosTex,       "pos_tex",         "PosTex"),
+    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::VertLayout::PosNorm,      "pos_norm",        "PosNorm"),
     REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::VertLayout::PosNormTex,   "pos_norm_tex",    "PosNormTex"),
     REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::VertLayout::PosNormTexTB, "pos_norm_tex_tb", "PosNormTexTB")
 );

@@ -29,6 +29,7 @@ public:
     {
         Pos = 0,
         PosTex,
+        PosNorm,
         PosNormTex,
         PosNormTexTB,
     };

@@ -161,7 +161,11 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
             name = k.user_type;
         }
         auto get_var_name = [](const std::string& base, const std::string& child, int index) {
-            return cpputil::StringHelper::Format("%s[%d].%s", base.c_str(), index, child.c_str());
+			if (!base.empty()) {
+				return cpputil::StringHelper::Format("%s[%d].%s", base.c_str(), index, child.c_str());
+			} else {
+				return cpputil::StringHelper::Format("%s[%d]", child.c_str(), index);
+			}
         };
         switch (v.type)
         {

@@ -150,6 +150,10 @@ void Shader::Init(const ur::Device& dev)
 
 void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
 {
+	if (v.type == VariableType::Any) {
+		return;
+	}
+
     if (k.count > 1)
     {
         std::string name;

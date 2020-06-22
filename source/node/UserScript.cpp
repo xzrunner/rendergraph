@@ -30,6 +30,10 @@ const ShaderVariant& UserScript::GetCachedVar(const RenderContext& rc, VariableT
 
 ShaderVariant UserScript::Run(const RenderContext& rc, const std::string& code, VariableType type) const
 {
+	if (code.empty()) {
+		return ShaderVariant();
+	}
+
     ShaderVariant ret;
     ret.type = type;
 

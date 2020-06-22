@@ -89,6 +89,7 @@ ExpressionTokenizer::EmitToken()
                 static const std::string str_separator(Whitespace() + "{}();,");
                 e = ReadUntil(str_separator);
                 if (e == nullptr) {
+                    assert(0);
                     throw lexer::ParserException(start_line, start_column, "Unexpected character: " + std::string(c, 1));
                 }
 

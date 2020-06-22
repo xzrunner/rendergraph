@@ -18,6 +18,10 @@ namespace node
 
 void Model::Draw(const RenderContext& rc) const
 {
+    if (!rc.ur_ds.program) {
+        return;
+    }
+
 	pt3::RenderParams params;
 
     pt0::RenderContext ctx;

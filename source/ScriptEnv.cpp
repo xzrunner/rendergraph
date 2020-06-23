@@ -7,10 +7,24 @@
 #include <sm_const.h>
 #include <unirender/Device.h>
 #include <unirender/Context.h>
+#include <unirender/VertexBufferAttribute.h>
+#include <unirender/IndexBuffer.h>
+#include <unirender/VertexBuffer.h>
+#include <unirender/VertexArray.h>
+#include <model/ParametricSurface.h>
+#include <model/typedef.h>
+#include <model/ParametricEquations.h>
 
 #include <chaiscript/chaiscript.hpp>
 
 #undef DrawState
+
+namespace
+{
+
+std::shared_ptr<ur::VertexArray> SPHERE = nullptr;
+
+}
 
 namespace rendergraph
 {
@@ -136,6 +150,62 @@ ScriptEnv::ScriptEnv()
                 m_rc->ur_ctx->Draw(ur::PrimitiveType::TriangleStrip, ds, nullptr);
             }
         }), "render_cube");
+
+    m_chai->add(
+      chaiscript::fun<std::function<void()>>(
+        [&]() {
+            if (m_rc)
+            {
+                if (!SPHERE) 
+                {
+	                auto sphere = std::make_unique<model::Sphere>(1.0f);
+
+	                const int vertex_type = model::VERTEX_FLAG_NORMALS | model::VERTEX_FLAG_TEXCOORDS;
+	                const int stride = 8;
+
+                    std::vector<unsigned short> indices;
+                    sphere->GenerateTriangleIndices(indices);
+
+	                std::vector<float> vertices;
+	                sphere->GenerateVertices(vertex_type, vertices);
+
+                    auto va = m_rc->ur_dev->CreateVertexArray();
+
+                    auto usage = ur::BufferUsageHint::StaticDraw;
+
+                    auto ibuf_sz = sizeof(unsigned short) * indices.size();
+                    auto ibuf = m_rc->ur_dev->CreateIndexBuffer(usage, ibuf_sz);
+                    ibuf->ReadFromMemory(indices.data(), ibuf_sz, 0);
+                    va->SetIndexBuffer(ibuf);
+
+                    auto vbuf_sz = sizeof(float) * vertices.size();
+                    auto vbuf = m_rc->ur_dev->CreateVertexBuffer(ur::BufferUsageHint::StaticDraw, vbuf_sz);
+                    vbuf->ReadFromMemory(vertices.data(), vbuf_sz, 0);
+                    va->SetVertexBuffer(vbuf);
+
+                    std::vector<std::shared_ptr<ur::VertexBufferAttribute>> vbuf_attrs(3);
+                    // pos
+                    vbuf_attrs[0] = std::make_shared<ur::VertexBufferAttribute>(
+                        0, ur::ComponentDataType::Float, 3, 0, 32
+                    );
+                    // normal
+                    vbuf_attrs[1] = std::make_shared<ur::VertexBufferAttribute>(
+                        1, ur::ComponentDataType::Float, 3, 12, 32
+                    );
+                    // texcoord
+                    vbuf_attrs[2] = std::make_shared<ur::VertexBufferAttribute>(
+                        2, ur::ComponentDataType::Float, 2, 24, 32
+                    );
+                    va->SetVertexBufferAttrs(vbuf_attrs);
+
+                    SPHERE = va;
+                }
+                
+                ur::DrawState ds = m_rc->ur_ds;
+                ds.vertex_array = SPHERE;
+                m_rc->ur_ctx->Draw(ur::PrimitiveType::Triangles, ds, nullptr);
+            }
+        }), "render_sphere");
 }
 
 }

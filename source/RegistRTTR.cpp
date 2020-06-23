@@ -85,8 +85,9 @@ rttr::registration::enumeration<rendergraph::node::UserScript::ReturnType>("rg_u
 
 rttr::registration::enumeration<rendergraph::node::PrimitiveShape::Type>("rg_prim_shape_type")
 (
-    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Quad, "quad", "Quad"),
-    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Cube, "cube", "Cube")
+    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Quad,   "quad",   "Quad"),
+    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Cube,   "cube",   "Cube"),
+    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Sphere, "sphere", "Sphere")
 );
 
 rttr::registration::enumeration<rendergraph::node::PrimitiveShape::VertLayout>("rg_prim_shape_layout")

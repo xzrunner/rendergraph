@@ -158,36 +158,42 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
     {
         std::string name;
         if (!k.user_type.empty()) {
-            name = k.user_type;
+            name = k.user_type + ".";
         }
-        auto get_var_name = [](const std::string& base, const std::string& child, int index) {
-			if (!base.empty()) {
-				return cpputil::StringHelper::Format("%s[%d].%s", base.c_str(), index, child.c_str());
-			} else {
-				return cpputil::StringHelper::Format("%s[%d]", child.c_str(), index);
-			}
-        };
+		name += k.name;
         switch (v.type)
         {
         case VariableType::Vec1Array:
-            for (int i = 0, n = std::min(k.count, static_cast<int>(v.vec1_array.size())); i < n; ++i) {
-                SetUniformValue(get_var_name(name, k.name, i), ShaderVariant(v.vec1_array[i]));
-            }
+		{
+			ShaderVariant var;
+			var.type = VariableType::Vec1Array;
+			var.vec1_array = v.vec1_array;
+			SetUniformValue(name, var);
+		}
             break;
         case VariableType::Vec2Array:
-            for (int i = 0, n = std::min(k.count, static_cast<int>(v.vec2_array.size())); i < n; ++i) {
-                SetUniformValue(get_var_name(name, k.name, i), ShaderVariant(v.vec2_array[i]));
-            }
+		{
+			ShaderVariant var;
+			var.type = VariableType::Vec2Array;
+			var.vec2_array = v.vec2_array;
+			SetUniformValue(name, var);
+		}
             break;
         case VariableType::Vec3Array:
-            for (int i = 0, n = std::min(k.count, static_cast<int>(v.vec3_array.size())); i < n; ++i) {
-                SetUniformValue(get_var_name(name, k.name, i), ShaderVariant(v.vec3_array[i]));
-            }
+		{
+			ShaderVariant var;
+			var.type = VariableType::Vec3Array;
+			var.vec3_array = v.vec3_array;
+			SetUniformValue(name, var);
+		}
             break;
         case VariableType::Vec4Array:
-            for (int i = 0, n = std::min(k.count, static_cast<int>(v.vec4_array.size())); i < n; ++i) {
-                SetUniformValue(get_var_name(name, k.name, i), ShaderVariant(v.vec4_array[i]));
-            }
+		{
+			ShaderVariant var;
+			var.type = VariableType::Vec4Array;
+			var.vec4_array = v.vec4_array;
+			SetUniformValue(name, var);
+		}
             break;
         default:
             assert(0);

@@ -147,7 +147,7 @@ ScriptEnv::ScriptEnv()
             {
                 ur::DrawState ds = m_rc->ur_ds;
                 ds.vertex_array = m_rc->ur_dev->GetVertexArray(ur::Device::PrimitiveType::Cube, ur::VertexLayoutType::PosNormTex);
-                m_rc->ur_ctx->Draw(ur::PrimitiveType::TriangleStrip, ds, nullptr);
+                m_rc->ur_ctx->Draw(ur::PrimitiveType::Triangles, ds, nullptr);
             }
         }), "render_cube");
 

@@ -211,52 +211,58 @@ void Shader::SetUniformValue(const std::string& name, const ShaderVariant& v)
         return;
     }
 
-    switch (v.type)
-    {
-    case VariableType::Int:
-        uniform->SetValue(&v.i, 1);
-        break;
-    case VariableType::Bool:
-    {
-        int i = v.b ? 1 : 0;
-        uniform->SetValue(&i, 1);
-    }
-        break;
-    case VariableType::Vector1:
-        uniform->SetValue(&v.vec1, 1);
-        break;
-    case VariableType::Vector2:
-        uniform->SetValue(v.vec2.xy, 2);
-        break;
-    case VariableType::Vector3:
-        uniform->SetValue(v.vec3.xyz, 3);
-        break;
-    case VariableType::Vector4:
-        uniform->SetValue(v.vec4.xyzw, 4);
-        break;
-    case VariableType::Matrix2:
-        uniform->SetValue(v.mat2.x, 2 * 2);
-        break;
-    case VariableType::Matrix3:
-        uniform->SetValue(v.mat3.x, 3 * 3);
-        break;
-    case VariableType::Matrix4:
-        uniform->SetValue(v.mat4.x, 4 * 4);
-        break;
-    case VariableType::Sampler2D:
-    case VariableType::SamplerCube:
-        break;
-    case VariableType::Vec1Array:
-        uniform->SetValue(v.vec1_array.data(), v.vec1_array.size());
-        break;
-    case VariableType::Vec2Array:
-        uniform->SetValue(v.vec2_array[0].xy, v.vec2_array.size() * 2);
-        break;
-    case VariableType::Vec3Array:
-        uniform->SetValue(v.vec3_array[0].xyz, v.vec3_array.size() * 3);
+	switch (v.type)
+	{
+	case VariableType::Int:
+		uniform->SetValue(&v.i, 1);
+		break;
+	case VariableType::Bool:
+	{
+		int i = v.b ? 1 : 0;
+		uniform->SetValue(&i, 1);
+	}
+	break;
+	case VariableType::Vector1:
+		uniform->SetValue(&v.vec1, 1);
+		break;
+	case VariableType::Vector2:
+		uniform->SetValue(v.vec2.xy, 2);
+		break;
+	case VariableType::Vector3:
+		uniform->SetValue(v.vec3.xyz, 3);
+		break;
+	case VariableType::Vector4:
+		uniform->SetValue(v.vec4.xyzw, 4);
+		break;
+	case VariableType::Matrix2:
+		uniform->SetValue(v.mat2.x, 2 * 2);
+		break;
+	case VariableType::Matrix3:
+		uniform->SetValue(v.mat3.x, 3 * 3);
+		break;
+	case VariableType::Matrix4:
+		uniform->SetValue(v.mat4.x, 4 * 4);
+		break;
+	case VariableType::Sampler2D:
+	case VariableType::SamplerCube:
+		break;
+	case VariableType::Vec1Array:
+		uniform->SetValue(v.vec1_array.data(), v.vec1_array.size());
+		break;
+	case VariableType::Vec2Array:
+		if (!v.vec2_array.empty()) {
+			uniform->SetValue(v.vec2_array[0].xy, v.vec2_array.size() * 2);
+		}
+		break;
+	case VariableType::Vec3Array:
+		if (!v.vec3_array.empty()) {
+			uniform->SetValue(v.vec3_array[0].xyz, v.vec3_array.size() * 3);
+		}
         break;
     case VariableType::Vec4Array:
-        uniform->SetValue(v.vec4_array[0].xyzw, v.vec4_array.size() * 4);
+		if (!v.vec4_array.empty()) {
+			uniform->SetValue(v.vec4_array[0].xyzw, v.vec4_array.size() * 4);
+		}
         break;
     }
 }

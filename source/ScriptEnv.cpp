@@ -60,6 +60,13 @@ ScriptEnv::ScriptEnv()
             }
         }), "set_uniform");
     m_chai->add(
+      chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, float val)>>(
+        [&](std::shared_ptr<node::Shader>& shader, const std::string& key, float val) {
+            if (m_rc) {
+                shader->SetUniformValue(m_rc->ur_dev, key, ShaderVariant(val));
+            }
+        }), "set_uniform");
+    m_chai->add(
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val) {
             if (m_rc) {
@@ -81,6 +88,13 @@ ScriptEnv::ScriptEnv()
     m_chai->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<sm::vec4>>("Vec4Vector"));
 
     // functions
+
+    m_chai->add(
+      chaiscript::fun<std::function<float(float, float, float)>>(
+        [](float f, float f_min, float f_max) {
+            return min(f_max, max(f_min, f));
+            //return 0.0f;
+        }), "clamp");
 
     m_chai->add(
       chaiscript::fun<std::function<float()>>(

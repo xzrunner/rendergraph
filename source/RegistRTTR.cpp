@@ -74,13 +74,13 @@ rttr::registration::enumeration<rendergraph::node::Clear::Type>("rg_clear_type")
     REGIST_ENUM_ITEM(rendergraph::node::Clear::Type::Stencil, "stencil", "Stencil")
 );
 
-rttr::registration::enumeration<rendergraph::node::UserScript::ReturnType>("rg_user_script_return_type")
+rttr::registration::enumeration<rendergraph::node::CustomData::ReturnType>("rg_user_script_return_type")
 (
-    REGIST_ENUM_ITEM(rendergraph::node::UserScript::ReturnType::Void,      "void",       "Void"),
-    REGIST_ENUM_ITEM(rendergraph::node::UserScript::ReturnType::Vec1Array, "vec1_array", "Vec1Array"),
-    REGIST_ENUM_ITEM(rendergraph::node::UserScript::ReturnType::Vec2Array, "vec2_array", "Vec2Array"),
-    REGIST_ENUM_ITEM(rendergraph::node::UserScript::ReturnType::Vec3Array, "vec3_array", "Vec3Array"),
-    REGIST_ENUM_ITEM(rendergraph::node::UserScript::ReturnType::Vec4Array, "vec4_array", "Vec4Array")
+    REGIST_ENUM_ITEM(rendergraph::node::CustomData::ReturnType::Void,      "void",       "Void"),
+    REGIST_ENUM_ITEM(rendergraph::node::CustomData::ReturnType::Vec1Array, "vec1_array", "Vec1Array"),
+    REGIST_ENUM_ITEM(rendergraph::node::CustomData::ReturnType::Vec2Array, "vec2_array", "Vec2Array"),
+    REGIST_ENUM_ITEM(rendergraph::node::CustomData::ReturnType::Vec3Array, "vec3_array", "Vec3Array"),
+    REGIST_ENUM_ITEM(rendergraph::node::CustomData::ReturnType::Vec4Array, "vec4_array", "Vec4Array")
 );
 
 rttr::registration::enumeration<rendergraph::node::PrimitiveShape::Type>("rg_prim_shape_type")

@@ -1,4 +1,4 @@
-#include "rendergraph/node/ExpressionParser.h"
+#include "rendergraph/node/FunctionParser.h"
 
 #include <lexer/Exception.h>
 
@@ -8,17 +8,17 @@ namespace node
 {
 
 //////////////////////////////////////////////////////////////////////////
-// class ExpressionTokenizer
+// class FunctionTokenizer
 //////////////////////////////////////////////////////////////////////////
 
-ExpressionTokenizer::ExpressionTokenizer(const std::string& str)
-    : lexer::Tokenizer<ExpressionToken::Type>(str.c_str(), str.c_str() + str.length(), "\"", '\\')
+FunctionTokenizer::FunctionTokenizer(const std::string& str)
+    : lexer::Tokenizer<FunctionToken::Type>(str.c_str(), str.c_str() + str.length(), "\"", '\\')
     , m_skip_eol(true)
 {
 }
 
-lexer::Tokenizer<ExpressionToken::Type>::Token
-ExpressionTokenizer::EmitToken()
+lexer::Tokenizer<FunctionToken::Type>::Token
+FunctionTokenizer::EmitToken()
 {
     while (!Eof())
 	{
@@ -32,37 +32,37 @@ ExpressionTokenizer::EmitToken()
                 if (CurChar() == '/')
 				{
                     const char* e = DiscardUntil("\n\r");
-                    return Token(ExpressionToken::Comment, c, e, Offset(c), start_line, start_column);
+                    return Token(FunctionToken::Comment, c, e, Offset(c), start_line, start_column);
                 }
                 break;
             case '{':
                 Advance();
-                return Token(ExpressionToken::OBrace, c, c+1, Offset(c), start_line, start_column);
+                return Token(FunctionToken::OBrace, c, c+1, Offset(c), start_line, start_column);
             case '}':
                 Advance();
-                return Token(ExpressionToken::CBrace, c, c+1, Offset(c), start_line, start_column);
+                return Token(FunctionToken::CBrace, c, c+1, Offset(c), start_line, start_column);
             case '(':
                 Advance();
-                return Token(ExpressionToken::OParenthesis, c, c+1, Offset(c), start_line, start_column);
+                return Token(FunctionToken::OParenthesis, c, c+1, Offset(c), start_line, start_column);
             case ')':
                 Advance();
-                return Token(ExpressionToken::CParenthesis, c, c+1, Offset(c), start_line, start_column);
+                return Token(FunctionToken::CParenthesis, c, c+1, Offset(c), start_line, start_column);
             case '[':
                 Advance();
-                return Token(ExpressionToken::OBracket, c, c+1, Offset(c), start_line, start_column);
+                return Token(FunctionToken::OBracket, c, c+1, Offset(c), start_line, start_column);
             case ']':
                 Advance();
-                return Token(ExpressionToken::CBracket, c, c+1, Offset(c), start_line, start_column);
+                return Token(FunctionToken::CBracket, c, c+1, Offset(c), start_line, start_column);
             case '"': { // quoted string
                 Advance();
                 c = CurPos();
                 const char* e = ReadQuotedString('"', "\n}");
-                return Token(ExpressionToken::String, c, e, Offset(c), start_line, start_column);
+                return Token(FunctionToken::String, c, e, Offset(c), start_line, start_column);
             }
             case '\n':
                 if (!m_skip_eol) {
                     Advance();
-                    return Token(ExpressionToken::Eol, c, c+1, Offset(c), start_line, start_column);
+                    return Token(FunctionToken::Eol, c, c+1, Offset(c), start_line, start_column);
                 }
 //                SwitchFallthrough();
             case '\r':
@@ -78,12 +78,12 @@ ExpressionTokenizer::EmitToken()
             default: { // whitespace, integer, decimal or word
                 const char* e = ReadInteger(NumberDelim());
 				if (e != nullptr) {
-					return Token(ExpressionToken::Integer, c, e, Offset(c), start_line, start_column);
+					return Token(FunctionToken::Integer, c, e, Offset(c), start_line, start_column);
 				}
 
                 e = ReadDecimal(NumberDelim());
 				if (e != nullptr) {
-					return Token(ExpressionToken::Decimal, c, e, Offset(c), start_line, start_column);
+					return Token(FunctionToken::Decimal, c, e, Offset(c), start_line, start_column);
 				}
 
                 static const std::string str_separator(Whitespace() + "{}();,");
@@ -93,42 +93,42 @@ ExpressionTokenizer::EmitToken()
                     throw lexer::ParserException(start_line, start_column, "Unexpected character: " + std::string(c, 1));
                 }
 
-                return Token(ExpressionToken::String, c, e, Offset(c), start_line, start_column);
+                return Token(FunctionToken::String, c, e, Offset(c), start_line, start_column);
             }
         }
     }
-    return Token(ExpressionToken::Eof, nullptr, nullptr, Length(), Line(), Column());
+    return Token(FunctionToken::Eof, nullptr, nullptr, Length(), Line(), Column());
 }
 
-const std::string& ExpressionTokenizer::NumberDelim()
+const std::string& FunctionTokenizer::NumberDelim()
 {
     static const std::string number_delim(Whitespace() + ")]}");
     return number_delim;
 }
 
 //////////////////////////////////////////////////////////////////////////
-// class ExpressionParser
+// class FunctionParser
 //////////////////////////////////////////////////////////////////////////
 
-ExpressionParser::ExpressionParser(const std::string& str)
-    : m_tokenizer(ExpressionTokenizer(str))
+FunctionParser::FunctionParser(const std::string& str)
+    : m_tokenizer(FunctionTokenizer(str))
 {
 }
 
-void ExpressionParser::Parse()
+void FunctionParser::Parse()
 {
     Token token;
 
     // name
-    Expect(ExpressionToken::String, token = m_tokenizer.NextToken());
+    Expect(FunctionToken::String, token = m_tokenizer.NextToken());
     m_name = token.Data();
 
     // params
-    Expect(ExpressionToken::OParenthesis, token = m_tokenizer.NextToken());
-    while (token.GetType() != ExpressionToken::CParenthesis)
+    Expect(FunctionToken::OParenthesis, token = m_tokenizer.NextToken());
+    while (token.GetType() != FunctionToken::CParenthesis)
     {
         // in or out
-        Expect(ExpressionToken::String, token = m_tokenizer.NextToken());
+        Expect(FunctionToken::String, token = m_tokenizer.NextToken());
         auto in_out_str = token.Data();
         assert(in_out_str == "in" || in_out_str == "out");
 
@@ -146,16 +146,16 @@ void ExpressionParser::Parse()
 
         token = m_tokenizer.PeekToken();
     }
-    Expect(ExpressionToken::CParenthesis, token = m_tokenizer.NextToken());
+    Expect(FunctionToken::CParenthesis, token = m_tokenizer.NextToken());
 
     // body
-    m_body = m_tokenizer.ReadRemainder(ExpressionToken::Eof);
+    m_body = m_tokenizer.ReadRemainder(FunctionToken::Eof);
 }
 
-void ExpressionParser::ParseVariable(Variable& var)
+void FunctionParser::ParseVariable(Variable& var)
 {
     Token token;
-    Expect(ExpressionToken::String, token = m_tokenizer.NextToken());
+    Expect(FunctionToken::String, token = m_tokenizer.NextToken());
     auto type = token.Data();
     if (type == "Texture") {
         var.type = VariableType::Texture;
@@ -195,15 +195,15 @@ void ExpressionParser::ParseVariable(Variable& var)
         assert(0);
     }
 
-    Expect(ExpressionToken::String, token = m_tokenizer.NextToken());
+    Expect(FunctionToken::String, token = m_tokenizer.NextToken());
     var.name = token.Data();
 }
 
-std::map<ExpressionToken::Type, std::string> ExpressionParser::TokenNames() const
+std::map<FunctionToken::Type, std::string> FunctionParser::TokenNames() const
 {
-	using namespace ExpressionToken;
+	using namespace FunctionToken;
 
-	std::map<ExpressionToken::Type, std::string> names;
+	std::map<FunctionToken::Type, std::string> names;
 
 	return names;
 }

@@ -10,7 +10,7 @@ namespace rendergraph
 namespace node
 {
 
-namespace ExpressionToken
+namespace FunctionToken
 {
 	typedef unsigned int Type;
 
@@ -31,10 +31,10 @@ namespace ExpressionToken
 }
 
 
-class ExpressionTokenizer : public lexer::Tokenizer<ExpressionToken::Type>
+class FunctionTokenizer : public lexer::Tokenizer<FunctionToken::Type>
 {
 public:
-    ExpressionTokenizer(const std::string& str);
+    FunctionTokenizer(const std::string& str);
 
     void SetSkipEol(bool skip_eol) {
         m_skip_eol = skip_eol;
@@ -48,12 +48,12 @@ protected:
 private:
     bool m_skip_eol;
 
-}; // ExpressionTokenizer
+}; // FunctionTokenizer
 
-class ExpressionParser : public lexer::Parser<ExpressionToken::Type>
+class FunctionParser : public lexer::Parser<FunctionToken::Type>
 {
 public:
-    ExpressionParser(const std::string& str);
+    FunctionParser(const std::string& str);
 
     void Parse();
 
@@ -67,10 +67,10 @@ public:
 private:
     void ParseVariable(Variable& var);
 
-    virtual std::map<ExpressionToken::Type, std::string> TokenNames() const override;
+    virtual std::map<FunctionToken::Type, std::string> TokenNames() const override;
 
 private:
-    ExpressionTokenizer m_tokenizer;
+    FunctionTokenizer m_tokenizer;
 
     std::string m_name;
 
@@ -78,9 +78,9 @@ private:
 
     std::string m_body;
 
-    typedef ExpressionTokenizer::Token Token;
+    typedef FunctionTokenizer::Token Token;
 
-}; // ExpressionParser
+}; // FunctionParser
 
 }
 }

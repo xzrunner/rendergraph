@@ -7,7 +7,7 @@ namespace rendergraph
 namespace node
 {
 
-class UserScript : public Node
+class CustomData : public Node
 {
 public:
     enum OutputID
@@ -27,7 +27,7 @@ public:
     };
 
 public:
-    UserScript()
+    CustomData()
     {
         m_exports.resize(O_MAX_NUM);
         m_exports[O_OUT] = {{ VariableType::UserType, "out" }};
@@ -46,11 +46,11 @@ private:
 
     RTTR_ENABLE(Node)
 
-#define PARM_FILEPATH "rendergraph/node/UserScript.parm.h"
+#define PARM_FILEPATH "rendergraph/node/CustomData.parm.h"
 #include <dag/node_parms_gen.h>
 #undef PARM_FILEPATH
 
-}; // UserScript
+}; // CustomData
 
 }
 }

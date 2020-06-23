@@ -1,5 +1,5 @@
 #include "rendergraph/node/ForEachLoop.h"
-#include "rendergraph/node/UserScript.h"
+#include "rendergraph/node/CustomData.h"
 #include "rendergraph/ScriptEnv.h"
 #include "rendergraph/typedef.h"
 #include "rendergraph/DrawList.h"
@@ -43,21 +43,21 @@ void ForEachLoop::Execute(const std::shared_ptr<dag::Context>& ctx)
 
     auto array_node = m_imports[I_ARRAY].conns[0].node.lock();
     auto array_node_type = array_node->get_type();
-    if (array_node_type == rttr::type::get<UserScript>())
+    if (array_node_type == rttr::type::get<CustomData>())
     {
-        auto ret_type = std::static_pointer_cast<UserScript>(array_node)->GetRetType();
+        auto ret_type = std::static_pointer_cast<CustomData>(array_node)->GetRetType();
         switch (ret_type)
         {
-        case UserScript::ReturnType::Vec1Array:
+        case CustomData::ReturnType::Vec1Array:
             m_array_var.type = VariableType::Vec1Array;
             break;
-        case UserScript::ReturnType::Vec2Array:
+        case CustomData::ReturnType::Vec2Array:
             m_array_var.type = VariableType::Vec2Array;
             break;
-        case UserScript::ReturnType::Vec3Array:
+        case CustomData::ReturnType::Vec3Array:
             m_array_var.type = VariableType::Vec3Array;
             break;
-        case UserScript::ReturnType::Vec4Array:
+        case CustomData::ReturnType::Vec4Array:
             m_array_var.type = VariableType::Vec4Array;
             break;
         default:
@@ -66,7 +66,7 @@ void ForEachLoop::Execute(const std::shared_ptr<dag::Context>& ctx)
 
         uint32_t flags;
         auto rc = std::static_pointer_cast<RenderContext>(ctx);
-        std::static_pointer_cast<Node>(array_node)->Eval(*rc, UserScript::O_OUT, m_array_var, flags);
+        std::static_pointer_cast<Node>(array_node)->Eval(*rc, CustomData::O_OUT, m_array_var, flags);
         switch (m_array_var.type)
         {
         case VariableType::Vec1Array:

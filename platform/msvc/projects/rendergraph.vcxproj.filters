@@ -83,15 +83,6 @@
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp">
       <Filter>nodes\others\control flow</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\CustomExpression.cpp">
-      <Filter>nodes\others\script</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\ExpressionParser.cpp">
-      <Filter>nodes\others\script</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\UserScript.cpp">
-      <Filter>nodes\others\script</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\node\Group.cpp">
       <Filter>nodes\others</Filter>
     </ClCompile>
@@ -109,6 +100,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\value_nodes.cpp">
       <Filter>nodes\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\CustomFunction.cpp">
+      <Filter>nodes\others\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\CustomData.cpp">
+      <Filter>nodes\others\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\FunctionParser.cpp">
+      <Filter>nodes\others\script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,15 +213,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h">
       <Filter>nodes\others\control flow</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.h">
-      <Filter>nodes\others\script</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\ExpressionParser.h">
-      <Filter>nodes\others\script</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.h">
-      <Filter>nodes\others\script</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Group.h">
       <Filter>nodes\others</Filter>
     </ClInclude>
@@ -250,9 +241,6 @@
       <Filter>nodes\op</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.parm.h">
-      <Filter>nodes\others\script</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.parm.h">
       <Filter>nodes\others\script</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.parm.h">
@@ -344,6 +332,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\ValueImpl.h">
       <Filter>dataset\var</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomFunction.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomData.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomData.parm.h">
+      <Filter>nodes\others\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\FunctionParser.h">
+      <Filter>nodes\others\script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

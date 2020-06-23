@@ -3,4 +3,4 @@
 #endif
 
 PARAM_INFO(Code, std::string, code, m_code, ())
-PARAM_INFO(RetType, rendergraph::node::UserScript::ReturnType, ret_type, m_ret_type, (rendergraph::node::UserScript::ReturnType::Void))
+PARAM_INFO(RetType, rendergraph::node::CustomData::ReturnType, ret_type, m_ret_type, (rendergraph::node::CustomData::ReturnType::Void))

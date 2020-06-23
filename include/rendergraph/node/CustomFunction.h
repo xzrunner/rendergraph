@@ -8,7 +8,7 @@ namespace rendergraph
 namespace node
 {
 
-class CustomExpression : public Node
+class CustomFunction : public Node
 {
 public:
     enum InputID
@@ -26,7 +26,7 @@ public:
     };
 
 public:
-    CustomExpression()
+    CustomFunction()
     {
         m_imports.resize(I_MAX_NUM);
         m_imports[I_PREV] = {{ VariableType::Port, "prev" }};
@@ -44,7 +44,7 @@ private:
 
     RTTR_ENABLE(Node)
 
-}; // CustomExpression
+}; // CustomFunction
 
 }
 }

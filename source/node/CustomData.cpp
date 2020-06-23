@@ -1,4 +1,4 @@
-#include "rendergraph/node/UserScript.h"
+#include "rendergraph/node/CustomData.h"
 #include "rendergraph/ScriptEnv.h"
 #include "rendergraph/Utility.h"
 #include "rendergraph/RenderContext.h"
@@ -10,7 +10,7 @@ namespace rendergraph
 namespace node
 {
 
-void UserScript::Eval(const RenderContext& rc, size_t port_idx, ShaderVariant& var, uint32_t& flags) const
+void CustomData::Eval(const RenderContext& rc, size_t port_idx, ShaderVariant& var, uint32_t& flags) const
 {
     if (m_cached.type == VariableType::Any) {
         var = Run(rc, m_code, var.type);
@@ -20,7 +20,7 @@ void UserScript::Eval(const RenderContext& rc, size_t port_idx, ShaderVariant& v
     }
 }
 
-const ShaderVariant& UserScript::GetCachedVar(const RenderContext& rc, VariableType type) const
+const ShaderVariant& CustomData::GetCachedVar(const RenderContext& rc, VariableType type) const
 {
     if (m_cached.type == VariableType::Any) {
         m_cached = Run(rc, m_code, type);
@@ -28,7 +28,7 @@ const ShaderVariant& UserScript::GetCachedVar(const RenderContext& rc, VariableT
     return m_cached;
 }
 
-ShaderVariant UserScript::Run(const RenderContext& rc, const std::string& code, VariableType type) const
+ShaderVariant CustomData::Run(const RenderContext& rc, const std::string& code, VariableType type) const
 {
 	if (code.empty()) {
 		return ShaderVariant();

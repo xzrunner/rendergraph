@@ -1,7 +1,7 @@
-#include "rendergraph/node/CustomExpression.h"
-#include "rendergraph/node/ExpressionParser.h"
+#include "rendergraph/node/CustomFunction.h"
+#include "rendergraph/node/FunctionParser.h"
 #include "rendergraph/node/Shader.h"
-#include "rendergraph/node/UserScript.h"
+#include "rendergraph/node/CustomData.h"
 #include "rendergraph/ScriptEnv.h"
 #include "rendergraph/Utility.h"
 #include "rendergraph/RenderContext.h"
@@ -13,7 +13,7 @@ namespace rendergraph
 namespace node
 {
 
-void CustomExpression::Execute(const std::shared_ptr<dag::Context>& ctx)
+void CustomFunction::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
     auto& rc = std::static_pointer_cast<RenderContext>(ctx);
     auto& chai = rc->script_env->GetChai();
@@ -35,22 +35,22 @@ void CustomExpression::Execute(const std::shared_ptr<dag::Context>& ctx)
         else if (port.var.type.type == VariableType::Vec1Array)
         {
             auto node = port.conns[0].node.lock();
-            assert(node->get_type() == rttr::type::get<node::UserScript>());
-            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(*rc, port.var.type.type).vec1_array;
+            assert(node->get_type() == rttr::type::get<node::CustomData>());
+            auto& vec = std::static_pointer_cast<node::CustomData>(node)->GetCachedVar(*rc, port.var.type.type).vec1_array;
             chai->add(chaiscript::var(vec), port.var.type.name);
         }
         else if (port.var.type.type == VariableType::Vec2Array)
         {
             auto node = port.conns[0].node.lock();
-            assert(node->get_type() == rttr::type::get<node::UserScript>());
-            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(*rc, port.var.type.type).vec2_array;
+            assert(node->get_type() == rttr::type::get<node::CustomData>());
+            auto& vec = std::static_pointer_cast<node::CustomData>(node)->GetCachedVar(*rc, port.var.type.type).vec2_array;
             chai->add(chaiscript::var(vec), port.var.type.name);
         }
         else if (port.var.type.type == VariableType::Vec3Array)
         {
             auto node = port.conns[0].node.lock();
-            assert(node->get_type() == rttr::type::get<node::UserScript>());
-            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(*rc, port.var.type.type).vec3_array;
+            assert(node->get_type() == rttr::type::get<node::CustomData>());
+            auto& vec = std::static_pointer_cast<node::CustomData>(node)->GetCachedVar(*rc, port.var.type.type).vec3_array;
 
             // without:     m_chai->add(chaiscript::bootstrap::standard_library::vector_type<std::vector<sm::vec3>>("Vec3Vector"));
             //std::vector<chaiscript::Boxed_Value> chai_vec;
@@ -65,8 +65,8 @@ void CustomExpression::Execute(const std::shared_ptr<dag::Context>& ctx)
         else if (port.var.type.type == VariableType::Vec4Array)
         {
             auto node = port.conns[0].node.lock();
-            assert(node->get_type() == rttr::type::get<node::UserScript>());
-            auto& vec = std::static_pointer_cast<node::UserScript>(node)->GetCachedVar(*rc, port.var.type.type).vec4_array;
+            assert(node->get_type() == rttr::type::get<node::CustomData>());
+            auto& vec = std::static_pointer_cast<node::CustomData>(node)->GetCachedVar(*rc, port.var.type.type).vec4_array;
             chai->add(chaiscript::var(vec), port.var.type.name);
         }
     }
@@ -79,14 +79,14 @@ void CustomExpression::Execute(const std::shared_ptr<dag::Context>& ctx)
     }
 }
 
-void CustomExpression::SetCode(const std::string& code)
+void CustomFunction::SetCode(const std::string& code)
 {
     if (code.empty()) {
         return;
     }
 
     auto code_str = Utility::FormatCode(code);
-    ExpressionParser parser(code_str);
+    FunctionParser parser(code_str);
     parser.Parse();
 
     m_body = parser.GetBody();

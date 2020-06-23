@@ -210,8 +210,13 @@
 
 #undef NO_FILEPATH_INCLUDE
 
-#define PARM_NODE_TYPE UserScript
-#define PARM_NODE_NAME user_script
+#define PARM_NODE_TYPE CustomData
+#define PARM_NODE_NAME custom_data
+#include EXE_FILEPATH
+
+#define NO_PARM_FILEPATH
+#define PARM_NODE_TYPE CustomFunction
+#define PARM_NODE_NAME custom_function
 #include EXE_FILEPATH
 
 // control flow
@@ -219,11 +224,4 @@
 #define NO_PARM_FILEPATH
 #define PARM_NODE_TYPE ForEachLoop
 #define PARM_NODE_NAME for_each_loop
-#include EXE_FILEPATH
-
-// script
-
-#define NO_PARM_FILEPATH
-#define PARM_NODE_TYPE CustomExpression
-#define PARM_NODE_NAME custom_expression
 #include EXE_FILEPATH

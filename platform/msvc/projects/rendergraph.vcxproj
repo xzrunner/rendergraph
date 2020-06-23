@@ -37,7 +37,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Translate.parm.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomData.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Vector1.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Vector2.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Vector3.parm.h" />
@@ -57,8 +57,8 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\BlendFunc.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Cull.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\ExpressionParser.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\FunctionParser.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomFunction.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Draw.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.h" />
@@ -74,7 +74,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\UserScript.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\CustomData.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\value_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\VertexArray.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Viewport.h" />
@@ -101,8 +101,8 @@
     <ClCompile Include="..\..\..\source\node\BlendFunc.cpp" />
     <ClCompile Include="..\..\..\source\node\Clear.cpp" />
     <ClCompile Include="..\..\..\source\node\Cull.cpp" />
-    <ClCompile Include="..\..\..\source\node\CustomExpression.cpp" />
-    <ClCompile Include="..\..\..\source\node\ExpressionParser.cpp" />
+    <ClCompile Include="..\..\..\source\node\CustomFunction.cpp" />
+    <ClCompile Include="..\..\..\source\node\FunctionParser.cpp" />
     <ClCompile Include="..\..\..\source\node\Draw.cpp" />
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp" />
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
@@ -117,7 +117,7 @@
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />
     <ClCompile Include="..\..\..\source\node\TextureCube.cpp" />
     <ClCompile Include="..\..\..\source\node\Unbind.cpp" />
-    <ClCompile Include="..\..\..\source\node\UserScript.cpp" />
+    <ClCompile Include="..\..\..\source\node\CustomData.cpp" />
     <ClCompile Include="..\..\..\source\node\value_nodes.cpp" />
     <ClCompile Include="..\..\..\source\node\VertexArray.cpp" />
     <ClCompile Include="..\..\..\source\node\Viewport.cpp" />

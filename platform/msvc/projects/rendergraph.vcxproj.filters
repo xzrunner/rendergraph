@@ -83,9 +83,6 @@
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp">
       <Filter>nodes\others\control flow</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Group.cpp">
-      <Filter>nodes\others</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\Utility.cpp">
       <Filter>tools</Filter>
     </ClCompile>
@@ -109,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\FunctionParser.cpp">
       <Filter>nodes\others\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\SubGraph.cpp">
+      <Filter>nodes\others\subgraph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,9 +213,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h">
       <Filter>nodes\others\control flow</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Group.h">
-      <Filter>nodes\others</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\Utility.h">
       <Filter>tools</Filter>
     </ClInclude>
@@ -239,9 +236,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.parm.h">
       <Filter>nodes\op</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.parm.h">
-      <Filter>nodes\others\script</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.parm.h">
       <Filter>nodes\resource</Filter>
@@ -345,6 +339,15 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\FunctionParser.h">
       <Filter>nodes\others\script</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Input.h">
+      <Filter>nodes\others\subgraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Output.h">
+      <Filter>nodes\others\subgraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\SubGraph.h">
+      <Filter>nodes\others\subgraph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">
@@ -389,5 +392,16 @@
     <Filter Include="nodes\others\value">
       <UniqueIdentifier>{81dcdb18-60f7-46b2-9b78-6cc6cadbbaac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="nodes\others\subgraph">
+      <UniqueIdentifier>{2eeaae4b-f411-4c59-9ad7-dc8630802d8b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\include\rendergraph\node\Input.parm.h">
+      <Filter>nodes\others\subgraph</Filter>
+    </None>
+    <None Include="..\..\..\include\rendergraph\node\Output.parm.h">
+      <Filter>nodes\others\subgraph</Filter>
+    </None>
   </ItemGroup>
 </Project>

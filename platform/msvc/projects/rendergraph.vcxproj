@@ -18,15 +18,16 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Bool.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Clear.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Cull.parm.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\CustomExpression.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Input.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Int.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\LookAtMat.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Matrix2.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Matrix3.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Matrix4.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\OrthoMat.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Output.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\PerspectiveMat.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.parm.h" />
@@ -62,7 +63,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Draw.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\Group.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\SubGraph.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\input_nodes.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\math_nodes.h" />
@@ -106,7 +107,7 @@
     <ClCompile Include="..\..\..\source\node\Draw.cpp" />
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp" />
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
-    <ClCompile Include="..\..\..\source\node\Group.cpp" />
+    <ClCompile Include="..\..\..\source\node\SubGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\Heightfield.cpp" />
     <ClCompile Include="..\..\..\source\node\Model.cpp" />
     <ClCompile Include="..\..\..\source\node\PrimitiveShape.cpp" />
@@ -132,6 +133,10 @@
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp" />
     <ClCompile Include="..\..\..\source\ShaderVariant.cpp" />
     <ClCompile Include="..\..\..\source\Utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\include\rendergraph\node\Input.parm.h" />
+    <None Include="..\..\..\include\rendergraph\node\Output.parm.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>rendergraph</ProjectName>

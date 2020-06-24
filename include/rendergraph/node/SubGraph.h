@@ -3,6 +3,8 @@
 #include "rendergraph/Node.h"
 #include "rendergraph/typedef.h"
 
+#include <dag/Graph.h>
+
 namespace rendergraph
 {
 
@@ -11,11 +13,11 @@ class DrawList;
 namespace node
 {
 
-class Group : public Node
+class SubGraph : public Node
 {
 public:
-    Group();
-    virtual ~Group();
+    SubGraph();
+    virtual ~SubGraph();
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
     virtual void Eval(const RenderContext& rc, size_t port_idx,
@@ -24,7 +26,13 @@ public:
     void SetChildren(const std::vector<NodePtr>& children,
         const std::vector<std::pair<NodePtr, int>>& outputs);
 
+	void Setup(const std::shared_ptr<dag::Graph<Variable>>& graph,
+		const std::vector<dag::Node<Variable>::Port>& inputs, 
+		const std::vector<dag::Node<Variable>::Port>& outputs);
+
 private:
+	std::shared_ptr<dag::Graph<Variable>> m_graph = nullptr;
+
     std::vector<NodePtr>                 m_children;
     std::vector<std::pair<NodePtr, int>> m_outputs;
 
@@ -32,7 +40,7 @@ private:
 
     RTTR_ENABLE(Node)
 
-}; // Group
+}; // SubGraph
 
 }
 }

@@ -225,3 +225,18 @@
 #define PARM_NODE_TYPE ForEachLoop
 #define PARM_NODE_NAME for_each_loop
 #include EXE_FILEPATH
+
+// subgraph
+
+#define PARM_NODE_TYPE Input
+#define PARM_NODE_NAME input
+#include EXE_FILEPATH
+
+#define PARM_NODE_TYPE Output
+#define PARM_NODE_NAME output
+#include EXE_FILEPATH
+
+#define NO_PARM_FILEPATH
+#define PARM_NODE_TYPE SubGraph
+#define PARM_NODE_NAME sub_graph
+#include EXE_FILEPATH

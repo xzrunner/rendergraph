@@ -7,11 +7,14 @@
 #include <boost/noncopyable.hpp>
 
 #include <memory>
+#include <vector>
 
 namespace ur { class Context; class Device; }
 
 namespace rendergraph
 {
+
+namespace node { class SubGraph; }
 
 class ScriptEnv;
 class RenderContext : public dag::Context
@@ -34,6 +37,8 @@ public:
     sm::vec3 light_position;
 
     std::shared_ptr<ScriptEnv> script_env = nullptr;
+
+    std::vector<node::SubGraph*> sub_graph_stack;
 
 }; // RenderContext
 

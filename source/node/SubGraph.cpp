@@ -1,5 +1,7 @@
 #include "rendergraph/node/SubGraph.h"
 #include "rendergraph/DrawList.h"
+#include "rendergraph/RenderContext.h"
+#include "rendergraph/node/Output.h"
 
 namespace rendergraph
 {
@@ -16,44 +18,20 @@ SubGraph::~SubGraph()
 
 void SubGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
-    if (m_dlist) {
+    if (m_dlist) 
+	{
+		auto rc = std::static_pointer_cast<RenderContext>(ctx);
+		rc->sub_graph_stack.push_back(this);
         m_dlist->Draw(ctx);
+		rc->sub_graph_stack.pop_back();
     }
 }
 
 void SubGraph::Eval(const RenderContext& rc, size_t port_idx,
                     ShaderVariant& var, uint32_t& flags) const
 {
-    m_outputs[port_idx].first->Eval(rc, m_outputs[port_idx].second, var, flags);
-}
-
-void SubGraph::SetChildren(const std::vector<NodePtr>& children,
-                           const std::vector<std::pair<NodePtr, int>>& outputs)
-{
-    m_children = children;
-    m_outputs  = outputs;
-
-    //if (outputs.empty())
-    //{
-        m_dlist = std::make_unique<DrawList>(children);
-    //}
-    //else
-    //{
-    //    std::set<std::shared_ptr<Node>> path_nodes_set;
-
-    //    for (auto& o : outputs)
-    //    {
-    //        std::vector<NodePtr> nodes;
-    //        DrawList::GetAntecedentNodes(o.first, nodes);
-    //        for (auto& n : nodes) {
-    //            path_nodes_set.insert(n);
-    //        }
-    //    }
-
-    //    std::vector<NodePtr> path_nodes;
-    //    std::copy(path_nodes_set.begin(), path_nodes_set.end(), std::back_inserter(path_nodes));
-    //    m_dlist = std::make_unique<DrawList>(path_nodes);
-    //}
+	assert(port_idx >= 0 && port_idx < m_outputs.size());
+    m_outputs[port_idx]->Eval(rc, 0, var, flags);
 }
 
 void SubGraph::Setup(const std::shared_ptr<dag::Graph<Variable>>& graph,
@@ -64,6 +42,25 @@ void SubGraph::Setup(const std::shared_ptr<dag::Graph<Variable>>& graph,
 
 	m_imports = inputs;
 	m_exports = outputs;
+
+	auto& nodes_map = graph->GetAllNodes();
+	std::vector<NodePtr> nodes;
+	nodes.reserve(nodes_map.size());
+	for (auto& itr : nodes_map) {
+		nodes.push_back(std::static_pointer_cast<Node>(itr.second));
+	}
+	m_dlist = std::make_unique<DrawList>(nodes);
+
+	m_outputs.resize(outputs.size());
+	for (int i = 0, n = outputs.size(); i < n; ++i) {
+		for (auto& node : nodes) {
+			if (node->get_type() == rttr::type::get<node::Output>() &&
+				std::static_pointer_cast<node::Output>(node)->GetVarName() == outputs[i].var.type.name) {
+				m_outputs[i] = node;
+				break;
+			}
+		}
+	}
 }
 
 }

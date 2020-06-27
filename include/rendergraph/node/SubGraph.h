@@ -23,9 +23,6 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;
 
-    void SetChildren(const std::vector<NodePtr>& children,
-        const std::vector<std::pair<NodePtr, int>>& outputs);
-
 	void Setup(const std::shared_ptr<dag::Graph<Variable>>& graph,
 		const std::vector<dag::Node<Variable>::Port>& inputs, 
 		const std::vector<dag::Node<Variable>::Port>& outputs);
@@ -33,8 +30,7 @@ public:
 private:
 	std::shared_ptr<dag::Graph<Variable>> m_graph = nullptr;
 
-    std::vector<NodePtr>                 m_children;
-    std::vector<std::pair<NodePtr, int>> m_outputs;
+    std::vector<NodePtr> m_outputs;
 
     std::unique_ptr<DrawList> m_dlist;
 

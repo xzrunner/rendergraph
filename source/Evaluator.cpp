@@ -1,4 +1,8 @@
 #include "rendergraph/Evaluator.h"
+#include "rendergraph/RenderContext.h"
+#include "rendergraph/node/Input.h"
+#include "rendergraph/node/Output.h"
+#include "rendergraph/node/SubGraph.h"
 
 namespace rendergraph
 {
@@ -13,15 +17,35 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port
                               const ShaderVariant& expect, uint32_t& flags)
 {
     auto& conns = in_port.conns;
-    if (!conns.empty()) {
-        auto node = conns[0].node.lock();
-        if (node) {
-            auto ret = expect;
-            std::static_pointer_cast<Node>(node)->Eval(rc, conns[0].idx, ret, flags);
-            return ret;
+    if (conns.empty()) {
+        return expect;
+    }
+
+    auto node = conns[0].node.lock();
+    if (!node) {
+        return expect;
+    }
+
+    if (node->get_type() == rttr::type::get<node::Input>() && 
+        !rc.sub_graph_stack.empty())
+    {
+        auto input = std::static_pointer_cast<node::Input>(node);
+        auto sub_graph = rc.sub_graph_stack.back();
+        for (auto& in : sub_graph->GetImports()) {
+            if (in.var.type.name == input->GetVarName()) {
+                return Calc(rc, in, expect, flags);
+            }
         }
     }
-    return expect;
+    else if (node->get_type() == rttr::type::get<node::Output>() &&
+        !rc.sub_graph_stack.empty())
+    {
+        int zz = 0;
+    }
+
+    auto ret = expect;
+    std::static_pointer_cast<Node>(node)->Eval(rc, conns[0].idx, ret, flags);
+    return ret;
 }
 
 ShaderVariant Evaluator::DefaultValue(VariableType type, int count)

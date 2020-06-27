@@ -1,5 +1,7 @@
 #include "rendergraph/node/RenderTarget.h"
 #include "rendergraph/node/Texture.h"
+#include "rendergraph/node/Input.h"
+#include "rendergraph/node/SubGraph.h"
 #include "rendergraph/RenderContext.h"
 
 #include <unirender/Device.h>
@@ -65,7 +67,26 @@ void RenderTarget::InitTexture(int input_idx, const RenderContext& rc)
         return;
     }
     auto tex_node = conns[0].node.lock();
-    if (!tex_node || tex_node->get_type() != rttr::type::get<node::Texture>()) {
+    if (!tex_node) {
+        return;
+    }
+
+    if (tex_node->get_type() == rttr::type::get<node::Input>()) {
+        if (!rc.sub_graph_stack.empty()) {
+            auto input = std::static_pointer_cast<node::Input>(tex_node);
+            auto sub_graph = rc.sub_graph_stack.back();
+            for (auto& in : sub_graph->GetImports()) {
+                if (in.var.type.name == input->GetVarName()) {
+                    if (!in.conns.empty()) {
+                        tex_node = in.conns[0].node.lock();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    if (tex_node->get_type() != rttr::type::get<node::Texture>()) {
         return;
     }
 

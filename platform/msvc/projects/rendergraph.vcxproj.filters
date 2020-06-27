@@ -110,6 +110,9 @@
     <ClCompile Include="..\..\..\source\node\SubGraph.cpp">
       <Filter>nodes\others\subgraph</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Output.cpp">
+      <Filter>nodes\others\subgraph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">

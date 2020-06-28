@@ -66,6 +66,7 @@ void ForEachLoop::Execute(const std::shared_ptr<dag::Context>& ctx)
 
         uint32_t flags;
         auto rc = std::static_pointer_cast<RenderContext>(ctx);
+		assert(array_node->get_type().is_derived_from<Node>());
         std::static_pointer_cast<Node>(array_node)->Eval(*rc, CustomData::O_OUT, m_array_var, flags);
         switch (m_array_var.type)
         {

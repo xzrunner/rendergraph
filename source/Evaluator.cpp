@@ -83,12 +83,10 @@ ShaderVariant Evaluator::DefaultValue(VariableType type, int count)
         case VariableType::Matrix4:
             ret = ShaderVariant(sm::mat4());
             break;
+		case VariableType::Texture:
         case VariableType::Sampler2D:
-        case VariableType::Texture:
-            ret = ShaderVariant(VariableType::Sampler2D, 0);
-            break;
         case VariableType::SamplerCube:
-            ret = ShaderVariant(VariableType::SamplerCube, 0);
+            ret = ShaderVariant(type, 0);
             break;
         default:
             assert(0);

@@ -19,7 +19,7 @@ void Output::Eval(const RenderContext& rc, size_t port_idx,
 
 	auto node = conns[0].node.lock();
 	assert(node->get_type().is_derived_from<Node>());
-	std::static_pointer_cast<Node>(node)->Eval(rc, 0, var, flags);
+	std::static_pointer_cast<Node>(node)->Eval(rc, conns[0].idx, var, flags);
 }
 
 }

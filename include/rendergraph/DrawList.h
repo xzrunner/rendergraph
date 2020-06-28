@@ -22,10 +22,11 @@ public:
     static void GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& nodes);
 
 private:
+	//void PrepareNodes(const NodePtr& end_node);
+
     std::vector<NodePtr> CalcRealPath(const std::vector<NodePtr>& nodes);
 
-    //void PrepareNodes(const NodePtr& end_node);
-    void TopologicalSorting();
+	void Sort();
 
 private:
     std::vector<NodePtr> m_nodes;

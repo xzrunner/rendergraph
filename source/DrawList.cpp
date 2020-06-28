@@ -1,6 +1,8 @@
 #include "rendergraph/DrawList.h"
 #include "rendergraph/Node.h"
 
+#include <dag/Graph.h>
+
 #include <assert.h>
 
 #include <stack>
@@ -13,7 +15,8 @@ DrawList::DrawList(const std::vector<NodePtr>& all_nodes)
     : m_nodes(all_nodes)
 {
 //    CalcRealPath(all_nodes);
-    TopologicalSorting();
+
+	Sort();
 }
 
 void DrawList::GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& nodes)
@@ -181,58 +184,17 @@ DrawList::CalcRealPath(const std::vector<NodePtr>& nodes)
     return main_path;
 }
 
-void DrawList::TopologicalSorting()
+void DrawList::Sort()
 {
-    // prepare
-    std::vector<int> in_deg(m_nodes.size(), 0);
-    std::vector<std::vector<int>> out_nodes(m_nodes.size());
-    for (int i = 0, n = m_nodes.size(); i < n; ++i)
-    {
-        auto& node = m_nodes[i];
-        auto& imports = node->GetImports();
-        for (auto& input_port : imports)
-        {
-            if (input_port.var.type.type != VariableType::Port ||
-                input_port.conns.empty()) {
-                continue;
-            }
-
-            assert(input_port.conns.size() == 1);
-            auto from = input_port.conns[0].node.lock();
-            assert(from);
-            for (int j = 0, m = m_nodes.size(); j < m; ++j) {
-                if (from == m_nodes[j]) {
-                    in_deg[i]++;
-                    out_nodes[j].push_back(i);
-                    break;
-                }
-            }
-        }
+    std::vector<std::shared_ptr<dag::Node<Variable>>> nodes(m_nodes.size());
+    for (size_t i = 0, n = m_nodes.size(); i < n; ++i) {
+        nodes[i] = m_nodes[i];
     }
-
-    // sort
-    std::stack<int> st;
-    std::vector<NodePtr> sorted;
-    for (int i = 0, n = in_deg.size(); i < n; ++i) {
-        if (in_deg[i] == 0) {
-            st.push(i);
-        }
+    auto orders = dag::Graph<Variable>::TopologicalSorting(nodes);
+	m_nodes.resize(orders.size());
+    for (size_t i = 0, n = orders.size(); i < n; ++i) {
+		m_nodes[i] = std::static_pointer_cast<Node>(nodes[orders[i]]);
     }
-    while (!st.empty())
-    {
-        int v = st.top();
-        st.pop();
-        sorted.push_back(m_nodes[v]);
-        for (auto& i : out_nodes[v]) {
-            assert(in_deg[i] > 0);
-            in_deg[i]--;
-            if (in_deg[i] == 0) {
-                st.push(i);
-            }
-        }
-    }
-
-    m_nodes = sorted;
 }
 
 }

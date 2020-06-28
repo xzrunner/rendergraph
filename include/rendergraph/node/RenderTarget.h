@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rendergraph/Node.h"
+#include "rendergraph/typedef.h"
 
 namespace ur { class Framebuffer; }
 
@@ -55,12 +56,14 @@ public:
     void SetSize(uint32_t width, uint32_t height);
 
 private:
-    void Init(const RenderContext& rc);
+    void Setup(const RenderContext& rc);
 
-    void InitTexture(int input_idx, const RenderContext& rc);
+    void SetupTexture(int input_idx, const RenderContext& rc);
 
 private:
     std::shared_ptr<ur::Framebuffer> m_frame_buffer = nullptr;
+
+	std::array<NodePtr, I_DEPTH_TEX - I_COLOR_TEX0 + 1> m_binded_textures;
 
     RTTR_ENABLE(Node)
 

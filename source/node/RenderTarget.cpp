@@ -38,9 +38,7 @@ void RenderTarget::Eval(const RenderContext& rc, size_t port_idx,
 
 void RenderTarget::Bind(const RenderContext& rc)
 {
-    if (!m_frame_buffer) {
-        Init(rc);
-    }
+	Setup(rc);
 
     rc.ur_ctx->SetViewport(0, 0, m_width, m_height);
     rc.ur_ctx->SetFramebuffer(m_frame_buffer);
@@ -56,17 +54,18 @@ void RenderTarget::SetSize(uint32_t width, uint32_t height)
     m_height = height;
 }
 
-void RenderTarget::Init(const RenderContext& rc)
+void RenderTarget::Setup(const RenderContext& rc)
 {
-    assert(!m_frame_buffer);
-    m_frame_buffer = rc.ur_dev->CreateFramebuffer();
+	if (!m_frame_buffer) {
+		m_frame_buffer = rc.ur_dev->CreateFramebuffer();
+	}
 
     // init texture
-    InitTexture(I_COLOR_TEX0, rc);
-    InitTexture(I_COLOR_TEX1, rc);
-    InitTexture(I_COLOR_TEX2, rc);
-    InitTexture(I_COLOR_TEX3, rc);
-    InitTexture(I_DEPTH_TEX, rc);
+    SetupTexture(I_COLOR_TEX0, rc);
+    SetupTexture(I_COLOR_TEX1, rc);
+    SetupTexture(I_COLOR_TEX2, rc);
+    SetupTexture(I_COLOR_TEX3, rc);
+    SetupTexture(I_DEPTH_TEX, rc);
 
     // init rbo
     if (m_enable_rbo_depth && m_width != 0 && m_height != 0)
@@ -83,14 +82,14 @@ void RenderTarget::Init(const RenderContext& rc)
     }
 }
 
-void RenderTarget::InitTexture(int input_idx, const RenderContext& rc)
+void RenderTarget::SetupTexture(int input_idx, const RenderContext& rc)
 {
     auto& conns = GetImports()[input_idx].conns;
     if (conns.empty()) {
         return;
     }
     auto tex_node = conns[0].node.lock();
-    if (!tex_node) {
+    if (!tex_node || m_binded_textures[input_idx - I_COLOR_TEX0] == tex_node) {
         return;
     }
 
@@ -112,6 +111,8 @@ void RenderTarget::InitTexture(int input_idx, const RenderContext& rc)
     if (tex_node->get_type() != rttr::type::get<node::Texture>()) {
         return;
     }
+
+	m_binded_textures[input_idx - I_COLOR_TEX0] = std::static_pointer_cast<Node>(tex_node);
 
     auto tex = std::static_pointer_cast<node::Texture>(tex_node);
     tex->Init(rc);

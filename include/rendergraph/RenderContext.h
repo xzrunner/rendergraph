@@ -38,7 +38,7 @@ public:
 
     std::shared_ptr<ScriptEnv> script_env = nullptr;
 
-    std::vector<node::SubGraph*> sub_graph_stack;
+    mutable std::vector<const node::SubGraph*> sub_graph_stack;
 
 }; // RenderContext
 

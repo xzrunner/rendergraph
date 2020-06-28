@@ -30,8 +30,12 @@ void SubGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 void SubGraph::Eval(const RenderContext& rc, size_t port_idx,
                     ShaderVariant& var, uint32_t& flags) const
 {
+	rc.sub_graph_stack.push_back(this);
+
 	assert(port_idx >= 0 && port_idx < m_outputs.size());
     m_outputs[port_idx]->Eval(rc, 0, var, flags);
+
+	rc.sub_graph_stack.pop_back();
 }
 
 void SubGraph::Setup(const std::shared_ptr<dag::Graph<Variable>>& graph,

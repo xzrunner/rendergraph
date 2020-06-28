@@ -13,6 +13,29 @@ namespace rendergraph
 namespace node
 {
 
+void RenderTarget::Eval(const RenderContext& rc, size_t port_idx,
+	                    ShaderVariant& var, uint32_t& flags) const
+{
+	switch (port_idx)
+	{
+	case O_RT:
+		var.type = VariableType::RenderTarget;
+		var.p = this;
+		break;
+
+	case O_COLOR_TEX0:
+	{
+		auto& conns = m_imports[I_COLOR_TEX0].conns;
+		if (!conns.empty()) {
+			assert(conns.size() == 1);
+			auto prev_node = conns[0].node.lock();
+			std::static_pointer_cast<Node>(prev_node)->Eval(rc, conns[0].idx, var, flags);
+		}
+	}
+		break;
+	}
+}
+
 void RenderTarget::Bind(const RenderContext& rc)
 {
     if (!m_frame_buffer) {

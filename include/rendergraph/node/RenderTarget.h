@@ -25,7 +25,9 @@ public:
 
     enum OutputID
     {
-        O_OUT = 0,
+        O_RT = 0,
+
+		O_COLOR_TEX0,
 
         O_MAX_NUM
     };
@@ -41,8 +43,12 @@ public:
         m_imports[I_DEPTH_TEX]  = {{ VariableType::Texture, "depth"  }};
 
         m_exports.resize(O_MAX_NUM);
-        m_exports[O_OUT] = {{ VariableType::RenderTarget, "out" }};
+        m_exports[O_RT] = {{ VariableType::RenderTarget, "out" }};
+		m_exports[O_COLOR_TEX0] = { { VariableType::Texture, "col0" } };
     }
+
+	virtual void Eval(const RenderContext& rc, size_t port_idx,
+		ShaderVariant& var, uint32_t& flags) const override;
 
     void Bind(const RenderContext& rc);
 

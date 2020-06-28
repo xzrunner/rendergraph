@@ -17,6 +17,9 @@ public:
         };
     }
 
+	virtual void Eval(const RenderContext& rc, size_t port_idx,
+		ShaderVariant& var, uint32_t& flags) const override;
+
     void SetVarType(const VariableType& type) { m_var_type = type; }
     const VariableType& GetVarType() const { return m_var_type; }
 

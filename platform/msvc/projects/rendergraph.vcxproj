@@ -107,6 +107,7 @@
     <ClCompile Include="..\..\..\source\node\Draw.cpp" />
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp" />
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
+    <ClCompile Include="..\..\..\source\node\Input.cpp" />
     <ClCompile Include="..\..\..\source\node\Output.cpp" />
     <ClCompile Include="..\..\..\source\node\SubGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\Heightfield.cpp" />

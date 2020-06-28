@@ -1,6 +1,7 @@
 #include "rendergraph/node/TextureCube.h"
 #include "rendergraph/ValueImpl.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/Evaluator.h"
 #include "rendergraph/node/Texture.h"
 
 #include <unirender/Device.h>
@@ -19,13 +20,15 @@ void TextureCube::Execute(const std::shared_ptr<dag::Context>& ctx)
 		if (m_imports[i].conns.empty()) {
 			return;
 		}
-		assert(m_imports[i].conns.size() == 1);
-		auto conn = m_imports[i].conns[0];
-		auto prev_node = conn.node.lock();
-		if (!prev_node || prev_node->get_type() != rttr::type::get<node::Texture>()) {
+
+		auto rc = std::static_pointer_cast<RenderContext>(ctx);
+		uint32_t flags;
+		auto var = Evaluator::Calc(*rc, m_imports[i], Evaluator::DefaultValue(rendergraph::VariableType::Texture), flags);
+		if (var.type != rendergraph::VariableType::Texture) {
 			return;
 		}
-		textures[i] = std::static_pointer_cast<node::Texture>(prev_node)->GetTexture();
+
+		textures[i] = reinterpret_cast<const TextureVal*>(var.p)->texture;
 	}
 
 	auto rc = std::static_pointer_cast<RenderContext>(ctx);

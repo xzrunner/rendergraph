@@ -56,6 +56,8 @@ public:
         RGBA4,
         RGB,
         RGB565,
+		RGB16F,
+		RG16F,
         A8,
         RED,
         Depth,

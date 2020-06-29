@@ -112,6 +112,8 @@ rttr::registration::enumeration<rendergraph::node::Texture::Format>("rg_texture_
     REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::RGBA4,  "rgba4",  "RGBA4"),
     REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::RGB,    "rgb",    "RGB"),
     REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::RGB565, "rgb565", "RGB565"),
+	REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::RGB16F, "rgb16f", "RGB16F"),
+	REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::RG16F,  "rg16f",  "RG16F"),
     REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::A8,     "a8",     "A8"),
     REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::RED,    "red",    "RED"),
     REGIST_ENUM_ITEM(rendergraph::node::Texture::Format::Depth,  "depth",  "Depth")

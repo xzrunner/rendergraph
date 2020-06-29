@@ -68,6 +68,12 @@ void Texture::Init(const RenderContext& rc) const
     case Format::RGB565:
         desc.format = ur::TextureFormat::RGB565;
         break;
+	case Format::RGB16F:
+		desc.format = ur::TextureFormat::RGB16F;
+		break;
+	case Format::RG16F:
+		desc.format = ur::TextureFormat::RG16F;
+		break;
     case Format::A8:
         desc.format = ur::TextureFormat::A8;
         break;

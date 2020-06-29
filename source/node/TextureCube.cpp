@@ -15,7 +15,7 @@ namespace node
 void TextureCube::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
 	std::array<ur::TexturePtr, 6> textures;
-	for (int i = 0; i < 6; ++i) 
+	for (int i = 0; i < 6; ++i)
 	{
 		if (m_imports[i].conns.empty()) {
 			return;
@@ -28,7 +28,7 @@ void TextureCube::Execute(const std::shared_ptr<dag::Context>& ctx)
 			return;
 		}
 
-		textures[i] = reinterpret_cast<const TextureVal*>(var.p)->texture;
+		textures[i] = var.p ? reinterpret_cast<const TextureVal*>(var.p)->texture : nullptr;
 	}
 
 	auto rc = std::static_pointer_cast<RenderContext>(ctx);

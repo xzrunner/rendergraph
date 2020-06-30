@@ -247,7 +247,9 @@ void Shader::SetUniformValue(const std::string& base_name, const std::string& na
 	    case VariableType::SamplerCube:
 		    break;
 	    case VariableType::Vec1Array:
-		    uniform->SetValue(v.vec1_array.data(), v.vec1_array.size());
+            if (!v.vec1_array.empty()) {
+                uniform->SetValue(v.vec1_array.data(), v.vec1_array.size());
+            }
 		    break;
 	    case VariableType::Vec2Array:
 		    if (!v.vec2_array.empty()) {

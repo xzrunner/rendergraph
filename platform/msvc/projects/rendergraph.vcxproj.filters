@@ -116,6 +116,9 @@
     <ClCompile Include="..\..\..\source\node\Input.cpp">
       <Filter>nodes\others\subgraph</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\AttachRT.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -353,6 +356,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\SubGraph.h">
       <Filter>nodes\others\subgraph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\AttachRT.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\AttachRT.parm.h">
+      <Filter>nodes\op</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

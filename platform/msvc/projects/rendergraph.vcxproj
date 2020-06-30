@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\node\AlphaTest.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\AttachRT.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\AttachRT.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Bind.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\BlendEq.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\BlendFunc.parm.h" />
@@ -97,6 +99,7 @@
     <ClCompile Include="..\..\..\source\Evaluator.cpp" />
     <ClCompile Include="..\..\..\source\Node.cpp" />
     <ClCompile Include="..\..\..\source\node\AlphaTest.cpp" />
+    <ClCompile Include="..\..\..\source\node\AttachRT.cpp" />
     <ClCompile Include="..\..\..\source\node\Bind.cpp" />
     <ClCompile Include="..\..\..\source\node\BlendEq.cpp" />
     <ClCompile Include="..\..\..\source\node\BlendFunc.cpp" />

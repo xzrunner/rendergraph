@@ -3,6 +3,7 @@
 #include "rendergraph/node/value_nodes.h"
 #include "rendergraph/node/ShaderParser.h"
 #include "rendergraph/node/Clear.h"
+#include "rendergraph/node/AttachRT.h"
 
 #define EXE_FILEPATH "rendergraph/node_include_gen.h"
 #include "rendergraph/node_regist_cfg.h"
@@ -189,6 +190,42 @@ rttr::registration::enumeration<rendergraph::node::ZTest::Func>("rg_ztest_func")
     REGIST_ENUM_ITEM(rendergraph::node::ZTest::Func::NotEqual, "not_equal", "NotEqual"),
     REGIST_ENUM_ITEM(rendergraph::node::ZTest::Func::GEqual,   "gequal",    "GEqual"),
     REGIST_ENUM_ITEM(rendergraph::node::ZTest::Func::Always,   "always",    "Always")
+);
+
+rttr::registration::enumeration<rendergraph::node::AttachRT::AttachmentType>("rg_attachrt_attachment")
+(
+    REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color0,  "color0",  "Color0"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color1,  "color1",  "Color1"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color2,  "color2",  "Color2"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color3,  "color3",  "Color3"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color4,  "color4",  "Color4"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color5,  "color5",  "Color5"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color6,  "color6",  "Color6"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color7,  "color7",  "Color7"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color8,  "color8",  "Color8"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color9,  "color9",  "Color9"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color10, "color10", "Color10"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color11, "color11", "Color11"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color12, "color12", "Color12"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color13, "color13", "Color13"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color14, "color14", "Color14"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Color15, "color15", "Color15"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Depth,   "depth",   "Depth"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::AttachmentType::Stencil, "stencil", "Stencil")
+);
+
+rttr::registration::enumeration<rendergraph::node::AttachRT::TextureTarget>("rg_attachrt_textarget")
+(
+    REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::Texture1D,       "tex1d",       "Texture1D"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::Texture2D,       "tex2d",       "Texture2D"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::Texture3D,       "tex3d",       "Texture3D"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap,  "texcubemap",  "TextureCubeMap"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap0, "texcubemap0", "TextureCubeMap0"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap1, "texcubemap1", "TextureCubeMap1"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap2, "texcubemap2", "TextureCubeMap2"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap3, "texcubemap3", "TextureCubeMap3"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap4, "texcubemap4", "TextureCubeMap4"),
+	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap5, "texcubemap5", "TextureCubeMap5")
 );
 
 }

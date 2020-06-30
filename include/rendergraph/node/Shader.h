@@ -46,7 +46,8 @@ private:
     void Init(const ur::Device& dev);
 
     void SetUniformValue(const Variable& key, const ShaderVariant& val);
-    void SetUniformValue(const std::string& name, const ShaderVariant& val);
+    void SetUniformValue(const std::string& base_name, const std::string& name, 
+        const ShaderVariant& val);
 
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;

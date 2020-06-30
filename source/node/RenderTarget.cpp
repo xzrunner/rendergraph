@@ -20,7 +20,7 @@ void RenderTarget::Eval(const RenderContext& rc, size_t port_idx,
 	{
 	case O_RT:
 		var.type = VariableType::RenderTarget;
-		var.p = this;
+		var.p = m_frame_buffer.get();
 		break;
 
 	case O_COLOR_TEX0:

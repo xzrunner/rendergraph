@@ -2,6 +2,10 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/ValueImpl.h"
+
+#include <unirender/Context.h>
+#include <unirender/ShaderProgram.h>
 
 namespace rendergraph
 {
@@ -30,7 +34,23 @@ void SetUniform::Execute(const std::shared_ptr<dag::Context>& ctx)
     auto expected = Evaluator::DefaultValue(m_var_type);
     auto rc = std::static_pointer_cast<RenderContext>(ctx);
     auto val = Evaluator::Calc(*rc, m_imports[I_VALUE], expected, flags);
-    shader->SetUniformValue(rc->ur_dev, m_var_name, val);
+
+	if (val.type == VariableType::Texture && val.p)
+	{
+		const int slot = shader->GetShader(*rc)->QueryTexSlot(m_var_name);
+		shader->SetUniformValue(rc->ur_dev, m_var_name, ShaderVariant(slot));
+		auto tex = reinterpret_cast<const TextureVal*>(val.p);
+		if (tex->texture) {
+			rc->ur_ctx->SetTexture(slot, tex->texture);
+		}
+		if (tex->sampler) {
+			rc->ur_ctx->SetTextureSampler(slot, tex->sampler);
+		}
+	}
+	else
+	{
+		shader->SetUniformValue(rc->ur_dev, m_var_name, val);
+	}
 }
 
 }

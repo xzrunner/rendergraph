@@ -30,7 +30,6 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
     m_frag = frag;
 
     m_prog.reset();
-    m_textures.clear();
 
     m_imports.clear();
     std::vector<Variable> uniforms;
@@ -42,11 +41,6 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
         dag::Node<rendergraph::Variable>::Port port;
         port.var.type = u;
         m_imports.push_back(port);
-
-        if (u.type == VariableType::Sampler2D ||
-            u.type == VariableType::SamplerCube) {
-            m_textures.push_back(u.name);
-        }
     }
 }
 
@@ -209,7 +203,7 @@ void Shader::SetUniformValue(const std::string& base_name, const std::string& na
     u_name += name;
 
     auto uniform = m_prog->QueryUniform(name);
-    if (uniform) 
+    if (uniform)
     {
 	    switch (v.type)
 	    {
@@ -270,7 +264,7 @@ void Shader::SetUniformValue(const std::string& base_name, const std::string& na
     }
     else
     {
-        auto get_unif_name = [&](int idx) -> std::string 
+        auto get_unif_name = [&](int idx) -> std::string
         {
             if (!base_name.empty()) {
                 return base_name + "[" + std::to_string(idx) + "]." + name;
@@ -282,7 +276,7 @@ void Shader::SetUniformValue(const std::string& base_name, const std::string& na
         switch (v.type)
         {
         case VariableType::Vec1Array:
-            for (int i = 0, n = v.vec1_array.size(); i < n; ++i) 
+            for (int i = 0, n = v.vec1_array.size(); i < n; ++i)
             {
                 auto uniform = m_prog->QueryUniform(get_unif_name(i));
                 assert(uniform);
@@ -290,7 +284,7 @@ void Shader::SetUniformValue(const std::string& base_name, const std::string& na
             }
             break;
         case VariableType::Vec2Array:
-            for (int i = 0, n = v.vec2_array.size(); i < n; ++i) 
+            for (int i = 0, n = v.vec2_array.size(); i < n; ++i)
             {
                 auto uniform = m_prog->QueryUniform(get_unif_name(i));
                 assert(uniform);

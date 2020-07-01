@@ -26,15 +26,20 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port
         return expect;
     }
 
-    if (node->get_type() == rttr::type::get<node::Input>() && 
+    if (node->get_type() == rttr::type::get<node::Input>() &&
         !rc.sub_graph_stack.empty())
     {
         auto input = std::static_pointer_cast<node::Input>(node);
         auto sub_graph = rc.sub_graph_stack.back();
-        for (auto& in : sub_graph->GetImports()) {
-            if (in.var.type.name == input->GetVarName()) {
-                return Calc(rc, in, expect, flags);
-            }
+        for (auto& in : sub_graph->GetImports())
+		{
+			if (in.var.type.name != input->GetVarName()) {
+				continue;
+			}
+			rc.sub_graph_stack.pop_back();
+            auto ret = Calc(rc, in, expect, flags);
+			rc.sub_graph_stack.push_back(sub_graph);
+			return ret;
         }
     }
     else if (node->get_type() == rttr::type::get<node::Output>() &&

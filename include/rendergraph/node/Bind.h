@@ -23,6 +23,9 @@ public:
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
 
+private:
+	void BindNode(const std::shared_ptr<dag::Node<Variable>>& node, RenderContext& rc);
+
     RTTR_ENABLE(Node)
 
 #define PARM_FILEPATH "rendergraph/node/Bind.parm.h"

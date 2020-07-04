@@ -56,7 +56,10 @@ public:
         ShaderVariant& var, uint32_t& flags) const override;
 
 private:
-    ur::TexturePtr m_tex = nullptr;
+	void BuildTexture(const RenderContext& rc) const;
+
+private:
+    mutable ur::TexturePtr m_tex = nullptr;
 
     RTTR_ENABLE(Node)
 

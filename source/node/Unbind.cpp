@@ -26,8 +26,6 @@ void Unbind::Execute(const std::shared_ptr<dag::Context>& ctx)
     }
 
 	auto rc = std::static_pointer_cast<RenderContext>(ctx);
-
-	auto type = node->get_type();
 	if (node->get_type() == rttr::type::get<node::Input>())
 	{
 		auto rc = std::static_pointer_cast<RenderContext>(ctx);
@@ -38,7 +36,7 @@ void Unbind::Execute(const std::shared_ptr<dag::Context>& ctx)
 			for (auto& in : sub_graph->GetImports()) {
 				if (in.var.type.name == input->GetVarName()) {
 					if (!in.conns.empty()) {
-						rc->ur_ctx->SetFramebuffer(nullptr);
+						UnbindNode(in.conns[0].node.lock(), *rc);
 						break;
 					}
 				}
@@ -47,7 +45,15 @@ void Unbind::Execute(const std::shared_ptr<dag::Context>& ctx)
 	}
 	else
 	{
-		rc->ur_ctx->SetFramebuffer(nullptr);
+		UnbindNode(node, *rc);
+	}
+}
+
+void Unbind::UnbindNode(const std::shared_ptr<dag::Node<Variable>>& node, RenderContext& rc)
+{
+	auto type = node->get_type();
+	if (type == rttr::type::get<node::RenderTarget>()) {
+		std::static_pointer_cast<node::RenderTarget>(node)->Unbind(rc);
 	}
 }
 

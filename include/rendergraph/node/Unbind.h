@@ -23,6 +23,9 @@ public:
 
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
 
+private:
+    void UnbindNode(const std::shared_ptr<dag::Node<Variable>>& node, RenderContext& rc);
+
     RTTR_ENABLE(Node)
 
 }; // Unbind

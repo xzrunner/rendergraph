@@ -3,6 +3,7 @@
 #include "rendergraph/RenderContext.h"
 #include "rendergraph/RenderSystem.h"
 #include "rendergraph/ValueImpl.h"
+#include "rendergraph/Evaluator.h"
 
 #include <unirender/TextureTarget.h>
 #include <unirender/TextureDescription.h>
@@ -17,9 +18,42 @@ namespace rendergraph
 namespace node
 {
 
+void Texture::Execute(const std::shared_ptr<dag::Context>& ctx)
+{
+    if (!m_imports[I_SIZE].conns.empty())
+    {
+        auto rc = std::static_pointer_cast<RenderContext>(ctx);
+
+        ShaderVariant var;
+        uint32_t flags = 0;
+        auto v_sz = Evaluator::Calc(*rc, m_imports[I_SIZE], var, flags);
+        if (v_sz.type != VariableType::Any) {
+            assert(v_sz.type == VariableType::Vector2);
+            m_width = v_sz.vec2.x;
+            m_height = v_sz.vec2.y;
+        }
+    }
+}
+
 void Texture::Eval(const RenderContext& rc, size_t port_idx,
                    ShaderVariant& var, uint32_t& flags) const
 {
+    if (!m_imports[I_SIZE].conns.empty())
+    {
+        ShaderVariant var;
+        uint32_t flags = 0;
+        auto v_sz = Evaluator::Calc(rc, m_imports[I_SIZE], var, flags);
+        if (v_sz.type != VariableType::Any) {
+            assert(v_sz.type == VariableType::Vector2);
+            const_cast<Texture*>(this)->m_width = v_sz.vec2.x;
+            const_cast<Texture*>(this)->m_height = v_sz.vec2.y;
+        }
+    }
+
+    if (!m_tex) {
+        Init(rc);
+    }
+
     if (port_idx == O_OUT)
     {
         var.type = VariableType::Texture;

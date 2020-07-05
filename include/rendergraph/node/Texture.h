@@ -14,19 +14,28 @@ namespace node
 class Texture : public Node
 {
 public:
+    enum InputID
+    {
+        I_SIZE = 0,
+    };
+
     enum OutputID
     {
         O_OUT = 0,
-
-        O_MAX_NUM
     };
 
 public:
     Texture()
     {
-        m_exports.resize(O_MAX_NUM);
-        m_exports[O_OUT] = {{ VariableType::Texture, "out" }};
+        m_imports = {
+            {{ VariableType::Vector2, "size" }},
+        };
+        m_exports = {
+            {{ VariableType::Texture, "out" }}
+        };
     }
+
+    virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
 
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override;

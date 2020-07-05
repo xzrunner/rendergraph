@@ -66,5 +66,18 @@ public:
     RTTR_ENABLE(Node)
 }; // LightPosition
 
+class ScreenSize : public Node
+{
+public:
+    ScreenSize() { m_exports = { {{ VariableType::Vector2, "out" }} }; }
+    virtual void Eval(const RenderContext& rc, size_t port_idx,
+        ShaderVariant& var, uint32_t& flags) const override {
+        var.type = VariableType::Vector2;
+        var.vec2 = rc.screen_size;
+    }
+    RTTR_ENABLE(Node)
+}; // ScreenSize
+
+
 }
 }

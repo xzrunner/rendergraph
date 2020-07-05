@@ -36,6 +36,8 @@ public:
     sm::vec3 cam_position;
     sm::vec3 light_position;
 
+    sm::vec2 screen_size;
+
     std::shared_ptr<ScriptEnv> script_env = nullptr;
 
     mutable std::vector<const node::SubGraph*> sub_graph_stack;

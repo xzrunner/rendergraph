@@ -10,10 +10,17 @@ namespace node
 class Viewport : public Node
 {
 public:
+    enum InputID
+    {
+        I_SIZE = 1,
+    };
+
+public:
     Viewport()
     {
         m_imports = {
-            {{ VariableType::Port, "prev" }}
+            {{ VariableType::Port,    "prev" }},
+            {{ VariableType::Vector2, "size" }},
         };
         m_exports = {
             {{ VariableType::Port, "next" }}

@@ -40,8 +40,17 @@ void RenderTarget::Bind(const RenderContext& rc)
 {
 	Setup(rc);
 
+    rc.ur_ctx->GetViewport(m_prev_vp_x, m_prev_vp_y, m_prev_vp_w, m_prev_vp_h);
+    m_prev_fbo = rc.ur_ctx->GetFramebuffer();
+
     rc.ur_ctx->SetViewport(0, 0, m_width, m_height);
     rc.ur_ctx->SetFramebuffer(m_frame_buffer);
+}
+
+void RenderTarget::Unbind(const RenderContext& rc)
+{
+    rc.ur_ctx->SetViewport(m_prev_vp_x, m_prev_vp_y, m_prev_vp_w, m_prev_vp_h);
+    rc.ur_ctx->SetFramebuffer(m_prev_fbo);
 }
 
 void RenderTarget::SetSize(uint32_t width, uint32_t height)

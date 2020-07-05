@@ -52,6 +52,7 @@ public:
 		ShaderVariant& var, uint32_t& flags) const override;
 
     void Bind(const RenderContext& rc);
+    void Unbind(const RenderContext& rc);
 
     void SetSize(uint32_t width, uint32_t height);
 
@@ -64,6 +65,9 @@ private:
     std::shared_ptr<ur::Framebuffer> m_frame_buffer = nullptr;
 
 	std::array<NodePtr, I_DEPTH_TEX - I_COLOR_TEX0 + 1> m_binded_textures;
+
+    int m_prev_vp_x = 0, m_prev_vp_y = 0, m_prev_vp_w = 0, m_prev_vp_h = 0;
+    std::shared_ptr<ur::Framebuffer> m_prev_fbo = nullptr;
 
     RTTR_ENABLE(Node)
 

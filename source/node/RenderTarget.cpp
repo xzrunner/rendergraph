@@ -1,12 +1,14 @@
 #include "rendergraph/node/RenderTarget.h"
 #include "rendergraph/node/Texture.h"
-#include "rendergraph/node/Input.h"
 #include "rendergraph/node/SubGraph.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/Evaluator.h"
+#include "rendergraph/ValueImpl.h"
 
 #include <unirender/Device.h>
 #include <unirender/Context.h>
 #include <unirender/Framebuffer.h>
+#include <unirender/Texture.h>
 
 namespace rendergraph
 {
@@ -93,49 +95,29 @@ void RenderTarget::Setup(const RenderContext& rc)
 
 void RenderTarget::SetupTexture(int input_idx, const RenderContext& rc)
 {
-    auto& conns = GetImports()[input_idx].conns;
-    if (conns.empty()) {
-        return;
-    }
-    auto tex_node = conns[0].node.lock();
-    if (!tex_node || m_binded_textures[input_idx - I_COLOR_TEX0] == tex_node) {
-        return;
+    const TextureVal* tex = nullptr;
+
+    ShaderVariant var;
+    uint32_t flags = 0;
+    auto val = Evaluator::Calc(rc, m_imports[input_idx], var, flags);
+    if (val.type == VariableType::Texture && val.p) {
+        tex = reinterpret_cast<const TextureVal*>(val.p);
     }
 
-    if (tex_node->get_type() == rttr::type::get<node::Input>()) {
-        if (!rc.sub_graph_stack.empty()) {
-            auto input = std::static_pointer_cast<node::Input>(tex_node);
-            auto sub_graph = rc.sub_graph_stack.back();
-            for (auto& in : sub_graph->GetImports()) {
-                if (in.var.type.name == input->GetVarName()) {
-                    if (!in.conns.empty()) {
-                        tex_node = in.conns[0].node.lock();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    if (tex_node->get_type() != rttr::type::get<node::Texture>()) {
+    if (!tex) {
         return;
     }
 
-	m_binded_textures[input_idx - I_COLOR_TEX0] = std::static_pointer_cast<Node>(tex_node);
-
-    auto tex = std::static_pointer_cast<node::Texture>(tex_node);
-    tex->Init(rc);
-
-    uint32_t width  = tex->GetWidth();
-    uint32_t height = tex->GetHeight();
+    uint32_t width  = tex->texture->GetWidth();
+    uint32_t height = tex->texture->GetHeight();
     if (width != 0 && height != 0)
     {
-        if (m_width != 0) {
-            assert(width == m_width && height == m_height);
-        } else {
+        //if (m_width != 0) {
+        //    assert(width == m_width && height == m_height);
+        //} else {
             m_width  = width;
             m_height = height;
-        }
+        //}
     }
 
     ur::AttachmentType atta_type;
@@ -145,7 +127,7 @@ void RenderTarget::SetupTexture(int input_idx, const RenderContext& rc)
         assert(input_idx == I_DEPTH_TEX);
         atta_type = ur::AttachmentType::Depth;
     }
-    m_frame_buffer->SetAttachment(atta_type, ur::TextureTarget::Texture2D, tex->GetTexture(), nullptr);
+    m_frame_buffer->SetAttachment(atta_type, ur::TextureTarget::Texture2D, tex->texture, nullptr);
 }
 
 }

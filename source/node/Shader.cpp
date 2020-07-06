@@ -4,7 +4,6 @@
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/Variable.h"
 #include "rendergraph/RenderContext.h"
-#include "rendergraph/Utility.h"
 #include "rendergraph/ValueImpl.h"
 
 #include <unirender/Device.h>
@@ -119,8 +118,7 @@ void Shader::SetUniformValue(const ur::Device* dev, const std::string& key,
 void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms,
                              std::set<std::string>& unique_names)
 {
-    auto formated = Utility::FormatCode(code);
-    ShaderParser parser(formated);
+    ShaderParser parser(code);
     parser.Parse();
 
     auto& unifs = parser.GetUniforms();
@@ -134,11 +132,8 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
 
 void Shader::Init(const ur::Device& dev)
 {
-    if (!m_prog && !m_vert.empty() && !m_frag.empty())
-    {
-        auto vert = Utility::FormatCode(m_vert);
-        auto frag = Utility::FormatCode(m_frag);
-        m_prog = dev.CreateShaderProgram(vert, frag);
+    if (!m_prog && !m_vert.empty() && !m_frag.empty()) {
+        m_prog = dev.CreateShaderProgram(m_vert, m_frag);
     }
 }
 

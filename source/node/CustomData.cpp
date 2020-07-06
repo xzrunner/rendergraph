@@ -1,6 +1,5 @@
 #include "rendergraph/node/CustomData.h"
 #include "rendergraph/ScriptEnv.h"
-#include "rendergraph/Utility.h"
 #include "rendergraph/RenderContext.h"
 
 #include <chaiscript/chaiscript.hpp>
@@ -39,33 +38,32 @@ ShaderVariant CustomData::Run(const RenderContext& rc, const std::string& code, 
 
     auto& chai = rc.script_env->GetChai();
 
-    auto formated = Utility::FormatCode(code);
     switch (type)
     {
     case VariableType::Vec1Array:
         try {
-            ret.vec1_array = chai->eval<std::vector<float>>(formated);
+            ret.vec1_array = chai->eval<std::vector<float>>(code);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
         }
         break;
     case VariableType::Vec2Array:
         try {
-            ret.vec2_array = chai->eval<std::vector<sm::vec2>>(formated);
+            ret.vec2_array = chai->eval<std::vector<sm::vec2>>(code);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
         }
         break;
     case VariableType::Vec3Array:
         try {
-            ret.vec3_array = chai->eval<std::vector<sm::vec3>>(formated);
+            ret.vec3_array = chai->eval<std::vector<sm::vec3>>(code);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
         }
         break;
     case VariableType::Vec4Array:
         try {
-            ret.vec4_array = chai->eval<std::vector<sm::vec4>>(formated);
+            ret.vec4_array = chai->eval<std::vector<sm::vec4>>(code);
         } catch (const chaiscript::exception::eval_error &e) {
             std::cout << "ChaiScript Error\n" << e.pretty_print() << '\n';
         }

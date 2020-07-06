@@ -90,7 +90,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\ShaderVariant.h" />
     <ClInclude Include="..\..\..\include\rendergraph\ValueImpl.h" />
     <ClInclude Include="..\..\..\include\rendergraph\typedef.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\Utility.h" />
     <ClInclude Include="..\..\..\include\rendergraph\Variable.h" />
     <ClInclude Include="..\..\..\include\rendergraph\VariableType.h" />
   </ItemGroup>
@@ -137,7 +136,6 @@
     <ClCompile Include="..\..\..\source\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp" />
     <ClCompile Include="..\..\..\source\ShaderVariant.cpp" />
-    <ClCompile Include="..\..\..\source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\rendergraph\node\Input.parm.h" />

@@ -3,7 +3,6 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/CustomData.h"
 #include "rendergraph/ScriptEnv.h"
-#include "rendergraph/Utility.h"
 #include "rendergraph/RenderContext.h"
 
 #include <chaiscript/chaiscript.hpp>
@@ -85,8 +84,7 @@ void CustomFunction::SetCode(const std::string& code)
         return;
     }
 
-    auto code_str = Utility::FormatCode(code);
-    FunctionParser parser(code_str);
+    FunctionParser parser(code);
     parser.Parse();
 
     m_body = parser.GetBody();

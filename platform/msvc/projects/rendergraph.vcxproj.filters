@@ -83,9 +83,6 @@
     <ClCompile Include="..\..\..\source\node\ForEachLoop.cpp">
       <Filter>nodes\others\control flow</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\Utility.cpp">
-      <Filter>tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\node\Heightfield.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
@@ -221,9 +218,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ForEachLoop.h">
       <Filter>nodes\others\control flow</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\Utility.h">
-      <Filter>tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.h">
       <Filter>nodes\resource</Filter>

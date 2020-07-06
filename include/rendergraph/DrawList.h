@@ -18,8 +18,10 @@ public:
     bool Draw(const std::shared_ptr<dag::Context>& ctx,
         const Node* end = nullptr) const;
 
-    static void GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& nodes);
-    static void GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& nodes);
+    static void GetAntecedentNodes(const NodePtr& src, 
+        std::vector<NodePtr>& nodes, bool only_ports = true);
+    static void GetSubsequentNodes(const Node::Port& src, 
+        std::vector<NodePtr>& nodes, bool only_ports = true);
 
 private:
 	void Sort();

@@ -17,7 +17,7 @@ DrawList::DrawList(const std::vector<NodePtr>& all_nodes)
 	Sort();
 }
 
-void DrawList::GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& nodes)
+void DrawList::GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& nodes, bool only_ports)
 {
     std::queue<NodePtr> buf;
     buf.push(src);
@@ -26,8 +26,9 @@ void DrawList::GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& node
     {
         auto n = buf.front(); buf.pop();
         nodes.push_back(n);
-        for (auto& port : n->GetImports()) {
-            if (port.var.type.type == VariableType::Port) {
+        for (auto& port : n->GetImports()) 
+        {
+            if (!only_ports || port.var.type.type == VariableType::Port) {
                 for (auto& conn : port.conns) {
                     buf.push(std::static_pointer_cast<Node>(conn.node.lock()));
                 }
@@ -36,7 +37,7 @@ void DrawList::GetAntecedentNodes(const NodePtr& src, std::vector<NodePtr>& node
     }
 }
 
-void DrawList::GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& nodes)
+void DrawList::GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& nodes, bool only_ports)
 {
     std::queue<NodePtr> buf;
     for (auto& conn : src.conns) {
@@ -47,8 +48,9 @@ void DrawList::GetSubsequentNodes(const Node::Port& src, std::vector<NodePtr>& n
     {
         auto n = buf.front(); buf.pop();
         nodes.push_back(n);
-        for (auto& port : n->GetExports()) {
-            if (port.var.type.type == VariableType::Port) {
+        for (auto& port : n->GetExports()) 
+        {
+            if (!only_ports || port.var.type.type == VariableType::Port) {
                 for (auto& conn : port.conns) {
                     buf.push(std::static_pointer_cast<Node>(conn.node.lock()));
                 }

@@ -30,17 +30,30 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
     m_prog.reset();
 
-    m_imports.clear();
     std::vector<Variable> uniforms;
     std::set<std::string> names;
     GetCodeUniforms(m_vert, uniforms, names);
     GetCodeUniforms(m_frag, uniforms, names);
+
+    std::vector<Port> imports;
+    imports.reserve(uniforms.size());
     for (auto& u : uniforms)
     {
         dag::Node<rendergraph::Variable>::Port port;
+
         port.var.type = u;
-        m_imports.push_back(port);
+
+        for (auto& p : m_imports) {
+            if (p.var.type.type == u.type &&
+                p.var.type.name == u.name) {
+                port.conns = p.conns;
+                break;
+            }
+        }
+
+        imports.push_back(port);
     }
+    m_imports = imports;
 }
 
 void Shader::Bind(RenderContext& rc)

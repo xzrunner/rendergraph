@@ -287,32 +287,36 @@ void Shader::SetUniformValue(const std::string& base_name, const std::string& na
             for (int i = 0, n = v.vec1_array.size(); i < n; ++i)
             {
                 auto uniform = m_prog->QueryUniform(get_unif_name(i));
-                assert(uniform);
-                uniform->SetValue(&v.vec1_array[i], 1);
+                if (uniform) {
+                    uniform->SetValue(&v.vec1_array[i], 1);
+                }
             }
             break;
         case VariableType::Vec2Array:
             for (int i = 0, n = v.vec2_array.size(); i < n; ++i)
             {
                 auto uniform = m_prog->QueryUniform(get_unif_name(i));
-                assert(uniform);
-                uniform->SetValue(v.vec2_array[i].xy, 2);
+                if (uniform) {
+                    uniform->SetValue(v.vec2_array[i].xy, 2);
+                }
             }
             break;
         case VariableType::Vec3Array:
             for (int i = 0, n = v.vec3_array.size(); i < n; ++i)
             {
                 auto uniform = m_prog->QueryUniform(get_unif_name(i));
-                assert(uniform);
-                uniform->SetValue(v.vec3_array[i].xyz, 3);
+                if (uniform) {
+                    uniform->SetValue(v.vec3_array[i].xyz, 3);
+                }
             }
             break;
         case VariableType::Vec4Array:
             for (int i = 0, n = v.vec4_array.size(); i < n; ++i)
             {
                 auto uniform = m_prog->QueryUniform(get_unif_name(i));
-                assert(uniform);
-                uniform->SetValue(v.vec4_array[i].xyzw, 4);
+                if (uniform) {
+                    uniform->SetValue(v.vec4_array[i].xyzw, 4);
+                }
             }
             break;
         }

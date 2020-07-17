@@ -10,6 +10,7 @@
 #include <unirender/Context.h>
 #include <unirender/ShaderProgram.h>
 #include <unirender/Uniform.h>
+#include <shadertrans/ShaderTrans.h>
 #include <painting0/ModelMatUpdater.h>
 #include <painting0/CamPosUpdater.h>
 #include <cpputil/StringHelper.h>
@@ -145,8 +146,12 @@ void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uni
 
 void Shader::Init(const ur::Device& dev)
 {
-    if (!m_prog && !m_vert.empty() && !m_frag.empty()) {
-        m_prog = dev.CreateShaderProgram(m_vert, m_frag);
+    if (!m_prog && !m_vert.empty() && !m_frag.empty()) 
+    {
+        std::vector<unsigned int> vs, fs;
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, m_vert, vs);
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, fs);
+        m_prog = dev.CreateShaderProgram(vs, fs);
     }
 }
 

@@ -4,6 +4,7 @@
 #include <unirender/Context.h>
 #include <unirender/DrawState.h>
 #include <unirender/Device.h>
+#include <shadertrans/ShaderTrans.h>
 
 #include <string>
 
@@ -56,8 +57,12 @@ RenderSystem::RenderSystem()
 void RenderSystem::DrawTextureToScreen(const RenderContext& rc,
                                        const ur::Texture& tex) const
 {
-    if (!m_prog) {
-        m_prog = rc.ur_dev->CreateShaderProgram(vert, frag);
+    if (!m_prog) 
+    {
+        std::vector<unsigned int> vs, fs;
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs);
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs);
+        m_prog = rc.ur_dev->CreateShaderProgram(vs, fs);
         assert(m_prog);
     }
 

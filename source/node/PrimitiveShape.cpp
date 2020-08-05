@@ -4,7 +4,7 @@
 #include <unirender/Device.h>
 #include <unirender/Context.h>
 #include <unirender/DrawState.h>
-#include <unirender/VertexBufferAttribute.h>
+#include <unirender/VertexInputAttribute.h>
 #include <unirender/IndexBuffer.h>
 #include <unirender/VertexBuffer.h>
 #include <unirender/VertexArray.h>
@@ -137,23 +137,23 @@ PrimitiveShape::BuildVertexArray(const ur::Device& dev, const model::ParametricS
     vbuf->ReadFromMemory(vertices.data(), vbuf_sz, 0);
     va->SetVertexBuffer(vbuf);
 
-    std::vector<std::shared_ptr<ur::VertexBufferAttribute>> vbuf_attrs;
+    std::vector<std::shared_ptr<ur::VertexInputAttribute>> vbuf_attrs;
     int ptr = 0;
     const int size = stride * 4;
-    vbuf_attrs.push_back(std::make_shared<ur::VertexBufferAttribute>(
+    vbuf_attrs.push_back(std::make_shared<ur::VertexInputAttribute>(
         0, ur::ComponentDataType::Float, 3, ptr, size
     ));
     ptr += 3 * 4;
     if (vertex_type & model::VERTEX_FLAG_NORMALS) 
     {
-        vbuf_attrs.push_back(std::make_shared<ur::VertexBufferAttribute>(
+        vbuf_attrs.push_back(std::make_shared<ur::VertexInputAttribute>(
             vbuf_attrs.size(), ur::ComponentDataType::Float, 3, ptr, size
         ));
         ptr += 3 * 4;
     }
     if (vertex_type & model::VERTEX_FLAG_TEXCOORDS)
     {
-        vbuf_attrs.push_back(std::make_shared<ur::VertexBufferAttribute>(
+        vbuf_attrs.push_back(std::make_shared<ur::VertexInputAttribute>(
             vbuf_attrs.size(), ur::ComponentDataType::Float, 2, ptr, size
         ));
         ptr += 2 * 4;

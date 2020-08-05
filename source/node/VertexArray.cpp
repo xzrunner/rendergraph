@@ -6,7 +6,7 @@
 #include <unirender/VertexArray.h>
 #include <unirender/VertexBuffer.h>
 #include <unirender/IndexBuffer.h>
-#include <unirender/VertexBufferAttribute.h>
+#include <unirender/VertexInputAttribute.h>
 #include <unirender/DrawState.h>
 
 namespace rendergraph
@@ -58,7 +58,7 @@ void VertexArray::Rebuild(const RenderContext& rc) const
     vbuf->ReadFromMemory(m_vertex_buf.data(), vbuf_sz, 0);
     m_vertex_array->SetVertexBuffer(vbuf);
 
-    std::vector<std::shared_ptr<ur::VertexBufferAttribute>> vbuf_attrs;
+    std::vector<std::shared_ptr<ur::VertexInputAttribute>> vbuf_attrs;
     vbuf_attrs.resize(m_va_list.size());
 
     int stride_in_bytes = 0;
@@ -91,7 +91,7 @@ void VertexArray::Rebuild(const RenderContext& rc) const
             assert(0);
         }
 
-        vbuf_attrs[i] = std::make_shared<ur::VertexBufferAttribute>(
+        vbuf_attrs[i] = std::make_shared<ur::VertexInputAttribute>(
             i, type, attr.num, offset_in_bytes, stride_in_bytes
         );
         offset_in_bytes += attr.num * attr.size;

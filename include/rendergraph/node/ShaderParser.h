@@ -87,7 +87,7 @@ private:
     void ParseStruct();
     void ParseUniform();
 
-    void ParseVariable(Variable& var);
+    ShaderTokenizer::Token ParseVariables(std::vector<Variable>& vars) const;
 
     virtual std::map<ShaderToken::Type, std::string> TokenNames() const override;
 
@@ -99,7 +99,7 @@ private:
     };
 
 private:
-    ShaderTokenizer    m_tokenizer;
+    mutable ShaderTokenizer m_tokenizer;
     ShaderFormat::Type m_format;
 
     std::vector<Struct>   m_structs;

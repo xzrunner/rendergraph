@@ -11,12 +11,6 @@
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Texture.cpp">
-      <Filter>nodes\resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\Shader.cpp">
-      <Filter>nodes\resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\Evaluator.cpp">
       <Filter>system</Filter>
     </ClCompile>
@@ -68,9 +62,6 @@
     <ClCompile Include="..\..\..\source\node\PrimitiveShape.cpp">
       <Filter>nodes\resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\ShaderParser.cpp">
-      <Filter>nodes\resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\ScriptEnv.cpp">
       <Filter>tools</Filter>
     </ClCompile>
@@ -88,9 +79,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\RegistRTTR.cpp">
       <Filter>tools\rtti</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\node\TextureCube.cpp">
-      <Filter>nodes\resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\node\value_nodes.cpp">
       <Filter>nodes\others</Filter>
@@ -116,6 +104,21 @@
     <ClCompile Include="..\..\..\source\node\AttachRT.cpp">
       <Filter>nodes\op</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Shader.cpp">
+      <Filter>nodes\resource\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ShaderParser.cpp">
+      <Filter>nodes\resource\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Texture.cpp">
+      <Filter>nodes\resource\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\TextureCube.cpp">
+      <Filter>nodes\resource\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ShaderInfo.cpp">
+      <Filter>nodes\resource\shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -127,12 +130,6 @@
       <Filter>dataset</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h">
-      <Filter>nodes\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h">
-      <Filter>nodes\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h">
       <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\Evaluator.h">
@@ -203,9 +200,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\RenderSystem.h">
       <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h">
-      <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\ScriptEnv.h">
       <Filter>tools</Filter>
@@ -294,12 +288,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.parm.h">
       <Filter>nodes\resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h">
-      <Filter>nodes\resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h">
-      <Filter>nodes\resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\AlphaTest.parm.h">
       <Filter>nodes\state</Filter>
     </ClInclude>
@@ -323,9 +311,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ZWrite.parm.h">
       <Filter>nodes\state</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h">
-      <Filter>nodes\resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\ValueImpl.h">
       <Filter>dataset\var</Filter>
@@ -356,6 +341,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\AttachRT.parm.h">
       <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h">
+      <Filter>nodes\resource\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h">
+      <Filter>nodes\resource\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h">
+      <Filter>nodes\resource\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h">
+      <Filter>nodes\resource\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h">
+      <Filter>nodes\resource\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h">
+      <Filter>nodes\resource\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ShaderInfo.h">
+      <Filter>nodes\resource\shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +409,12 @@
     </Filter>
     <Filter Include="nodes\others\subgraph">
       <UniqueIdentifier>{2eeaae4b-f411-4c59-9ad7-dc8630802d8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\resource\shader">
+      <UniqueIdentifier>{3dadcc9a-f3b8-489f-b380-45bbfb2cbcc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nodes\resource\texture">
+      <UniqueIdentifier>{6bfa16cb-4e74-442f-96e1-71b40ed12ba8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

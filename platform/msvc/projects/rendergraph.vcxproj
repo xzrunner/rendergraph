@@ -37,6 +37,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Scale.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\ShaderInfo.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Translate.parm.h" />
@@ -111,6 +112,7 @@
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
     <ClCompile Include="..\..\..\source\node\Input.cpp" />
     <ClCompile Include="..\..\..\source\node\Output.cpp" />
+    <ClCompile Include="..\..\..\source\node\ShaderInfo.cpp" />
     <ClCompile Include="..\..\..\source\node\SubGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\Heightfield.cpp" />
     <ClCompile Include="..\..\..\source\node\Model.cpp" />
@@ -184,7 +186,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..;..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\dag\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\cslang\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\renderpipeline\include;..\..\..\..\shaderweaver\include;..\..\..\..\lexer\include;..\..\..\..\shadertrans\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;..\..\..\..\external\chaiscript\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\dag\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\cslang\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\renderpipeline\include;..\..\..\..\shaderweaver\include;..\..\..\..\lexer\include;..\..\..\..\shadertrans\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;..\..\..\..\external\chaiscript\include;..\..\..\..\external\spirv-cross\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;EASY_EDITOR;__STDC_LIMIT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -198,7 +200,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..;..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\dag\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\cslang\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\renderpipeline\include;..\..\..\..\shaderweaver\include;..\..\..\..\lexer\include;..\..\..\..\shadertrans\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;..\..\..\..\external\chaiscript\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\include;..\..\..\include\rendergraph;..\..\..\..\ds\src\ds;..\..\..\..\unirender\include;..\..\..\..\memmgr\include;..\..\..\..\cooking\include;..\..\..\..\cu\src;..\..\..\..\sm\src\sm;..\..\..\..\guard\include;..\..\..\..\dag\include;..\..\..\..\cpputil\include;..\..\..\..\tessellation\include;..\..\..\..\cslang\include;..\..\..\..\model\include;..\..\..\..\painting0\include;..\..\..\..\painting2\include;..\..\..\..\painting3\include;..\..\..\..\renderpipeline\include;..\..\..\..\shaderweaver\include;..\..\..\..\lexer\include;..\..\..\..\shadertrans\include;..\..\..\..\external\c99;..\..\..\..\external\boost\include;..\..\..\..\external\rttr\include;..\..\..\..\external\chaiscript\include;..\..\..\..\external\spirv-cross\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;EASY_EDITOR;__STDC_LIMIT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

@@ -2,6 +2,40 @@
 
 #include <lexer/Exception.h>
 
+namespace
+{
+
+rendergraph::VariableType parser_type(const std::string& type)
+{
+    if (type == "int") {
+        return rendergraph::VariableType::Int;
+    } else if (type == "bool") {
+        return rendergraph::VariableType::Bool;
+    } else if (type == "float") {
+        return rendergraph::VariableType::Vector1;
+    } else if (type == "vec2") {
+        return rendergraph::VariableType::Vector2;
+    } else if (type == "vec3") {
+        return rendergraph::VariableType::Vector3;
+    } else if (type == "vec4") {
+        return rendergraph::VariableType::Vector4;
+    } else if (type == "mat2") {
+        return rendergraph::VariableType::Matrix2;
+    } else if (type == "mat3") {
+        return rendergraph::VariableType::Matrix3;
+    } else if (type == "mat4") {
+        return rendergraph::VariableType::Matrix4;
+    } else if (type == "sampler2D") {
+        return rendergraph::VariableType::Sampler2D;
+    } else if (type == "samplerCube") {
+        return rendergraph::VariableType::SamplerCube;
+    } else {
+        return rendergraph::VariableType::UserType;
+    }
+}
+
+}
+
 namespace rendergraph
 {
 namespace node
@@ -208,11 +242,9 @@ void ShaderParser::ParseStruct()
     token = m_tokenizer.PeekToken();
     while (token.GetType() != ShaderToken::CBrace)
     {
-        Variable var;
-        ParseVariable(var);
-        s.vars.push_back(var);
-
-        token = m_tokenizer.PeekToken();
+        std::vector<Variable> vars;
+        token = ParseVariables(vars);
+        std::copy(vars.begin(), vars.end(), std::back_inserter(s.vars));
     }
 
     m_structs.push_back(s);
@@ -220,83 +252,98 @@ void ShaderParser::ParseStruct()
 
 void ShaderParser::ParseUniform()
 {
-    // uniform
     Token token;
     Expect(ShaderToken::String, token = m_tokenizer.NextToken());
     assert(token.Data() == "uniform");
 
-    Variable var;
-    ParseVariable(var);
-    if (var.type == VariableType::UserType)
-    {
-        Struct* find = nullptr;
-        for (auto& s : m_structs) {
-            if (s.name == var.user_type) {
-                find = &s;
-                break;
-            }
-        }
-        if (find)
-        {
-            for (auto& m : find->vars)
-            {
-                Variable cvar = m;
-                cvar.user_type = var.name;
-                cvar.count     = var.count;
-                m_uniforms.push_back(cvar);
-            }
-        }
-    }
-    else
-    {
-        m_uniforms.push_back(var);
-    }
+    std::vector<Variable> vars;
+    ParseVariables(vars);
+    std::copy(vars.begin(), vars.end(), std::back_inserter(m_uniforms));
 }
 
-void ShaderParser::ParseVariable(Variable& var)
+ShaderTokenizer::Token 
+ShaderParser::ParseVariables(std::vector<Variable>& vars) const
 {
     Token token;
     Expect(ShaderToken::String, token = m_tokenizer.NextToken());
-    auto type = token.Data();
-    if (type == "int") {
-        var.type = VariableType::Int;
-    } else if (type == "bool") {
-        var.type = VariableType::Bool;
-    } else if (type == "float") {
-        var.type = VariableType::Vector1;
-    } else if (type == "vec2") {
-        var.type = VariableType::Vector2;
-    } else if (type == "vec3") {
-        var.type = VariableType::Vector3;
-    } else if (type == "vec4") {
-        var.type = VariableType::Vector4;
-    } else if (type == "mat2") {
-        var.type = VariableType::Matrix2;
-    } else if (type == "mat3") {
-        var.type = VariableType::Matrix3;
-    } else if (type == "mat4") {
-        var.type = VariableType::Matrix4;
-    } else if (type == "sampler2D") {
-        var.type = VariableType::Sampler2D;
-    } else if (type == "samplerCube") {
-        var.type = VariableType::SamplerCube;
-    } else {
-        var.type = VariableType::UserType;
-        var.user_type = type;
-    }
+    auto type_str = token.Data();
+    auto type = parser_type(type_str);
 
-    Expect(ShaderToken::String, token = m_tokenizer.NextToken());
-    var.name = token.Data();
-
-    // array
-    token = m_tokenizer.PeekToken();
-    if (token.GetType() == ShaderToken::OBracket)
+    token = m_tokenizer.NextToken();
+    switch (token.GetType())
     {
-        m_tokenizer.NextToken();    // skip open bracket
+    case ShaderToken::String:
+    {
+        auto name = token.Data();
+        if (type == VariableType::UserType)
+        {
+            const Struct* find = nullptr;
+            for (auto& s : m_structs) {
+                if (s.name == type_str) {
+                    find = &s;
+                    break;
+                }
+            }
+            if (find)
+            {
+                for (auto& m : find->vars)
+                {
+                    Variable cvar = m;
+                    cvar.user_type = type_str;
+                    vars.push_back(cvar);
+                }
+            }
+        }
+        else
+        {
+            Variable var;
+            var.type = type;
+            var.name = name;
+            vars.push_back(var);
+        }
+    }
+        break;
+    case ShaderToken::OBrace:
+    {
+        std::vector<Variable> sub_vars;
+        while (m_tokenizer.PeekToken().GetType() != ShaderToken::CBrace)
+        {
+            std::vector<Variable> _vars;
+            ParseVariables(_vars);
+            std::copy(_vars.begin(), _vars.end(), std::back_inserter(sub_vars));
+        }
+        token = m_tokenizer.NextToken();    // skip CBrace
+        token = m_tokenizer.PeekToken();
+        if (token.GetType() == ShaderToken::String) 
+        {
+            auto name = token.Data();
+            for (auto& var : sub_vars) {
+                var.user_type = name;
+            }
+            std::copy(sub_vars.begin(), sub_vars.end(), std::back_inserter(vars));
+        } 
+        else 
+        {
+            Struct s;
+            s.name = type_str;
+            s.vars = sub_vars;
+        }
+    }
+        break;
+    case ShaderToken::OBracket:
+    {
+        Variable var;
         Expect(ShaderToken::Integer, token = m_tokenizer.NextToken());
         var.count = token.ToInteger<int>();
         Expect(ShaderToken::CBracket, token = m_tokenizer.NextToken());
+        vars.push_back(var);
     }
+        break;
+    default:
+        assert(0);
+    }
+
+    return token;
 }
 
 std::map<ShaderToken::Type, std::string> ShaderParser::TokenNames() const

@@ -1,6 +1,7 @@
 #include "rendergraph/node/Shader.h"
 #include "rendergraph/node/ShaderParser.h"
 #include "rendergraph/node/Texture.h"
+#include "rendergraph/node/ShaderInfo.h"
 #include "rendergraph/Evaluator.h"
 #include "rendergraph/Variable.h"
 #include "rendergraph/RenderContext.h"
@@ -10,10 +11,10 @@
 #include <unirender/Context.h>
 #include <unirender/ShaderProgram.h>
 #include <unirender/Uniform.h>
-#include <shadertrans/ShaderTrans.h>
 #include <painting0/ModelMatUpdater.h>
 #include <painting0/CamPosUpdater.h>
 #include <cpputil/StringHelper.h>
+#include <shadertrans/ShaderTrans.h>
 
 namespace rendergraph
 {
@@ -33,8 +34,8 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
     std::vector<Variable> uniforms;
     std::set<std::string> names;
-    GetCodeUniforms(m_vert, uniforms, names);
-    GetCodeUniforms(m_frag, uniforms, names);
+    ShaderInfo::GetCodeUniforms(ur::ShaderType::VertexShader, m_vert, uniforms, names);
+    ShaderInfo::GetCodeUniforms(ur::ShaderType::FragmentShader, m_frag, uniforms, names);
 
     std::vector<Port> imports;
     imports.reserve(uniforms.size());
@@ -129,21 +130,6 @@ void Shader::SetUniformValue(const ur::Device* dev, const std::string& key,
     SetUniformValue(m_imports[key_idx].var.type, val);
 }
 
-void Shader::GetCodeUniforms(const std::string& code, std::vector<Variable>& uniforms,
-                             std::set<std::string>& unique_names)
-{
-    ShaderParser parser(code);
-    parser.Parse();
-
-    auto& unifs = parser.GetUniforms();
-    for (auto& u : unifs) {
-        if (unique_names.find(u.name) == unique_names.end()) {
-            uniforms.push_back(u);
-            unique_names.insert(u.name);
-        }
-    }
-}
-
 void Shader::Init(const ur::Device& dev)
 {
     if (!m_prog && !m_vert.empty() && !m_frag.empty()) 
@@ -215,7 +201,7 @@ void Shader::SetUniformValue(const std::string& base_name, const std::string& na
     }
     u_name += name;
 
-    auto uniform = m_prog->QueryUniform(name);
+    auto uniform = m_prog->QueryUniform(u_name);
     if (uniform)
     {
 	    switch (v.type)

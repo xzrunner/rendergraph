@@ -39,9 +39,6 @@ public:
     void SetUniformValue(const ur::Device* dev, const std::string& key,
         const ShaderVariant& val);
 
-    static void GetCodeUniforms(const std::string& code,
-        std::vector<Variable>& uniforms, std::set<std::string>& unique_names);
-
 private:
     void Init(const ur::Device& dev);
 

@@ -34,8 +34,8 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
     std::vector<Variable> uniforms;
     std::set<std::string> names;
-    ShaderInfo::GetCodeUniforms(ur::ShaderType::VertexShader, m_vert, uniforms, names);
-    ShaderInfo::GetCodeUniforms(ur::ShaderType::FragmentShader, m_frag, uniforms, names);
+    ShaderInfo::GetCodeUniforms(ur::ShaderType::VertexShader, m_vert, m_lang, uniforms, names);
+    ShaderInfo::GetCodeUniforms(ur::ShaderType::FragmentShader, m_frag, m_lang, uniforms, names);
 
     std::vector<Port> imports;
     imports.reserve(uniforms.size());
@@ -132,13 +132,25 @@ void Shader::SetUniformValue(const ur::Device* dev, const std::string& key,
 
 void Shader::Init(const ur::Device& dev)
 {
-    if (!m_prog && !m_vert.empty() && !m_frag.empty()) 
+    if (m_prog || m_vert.empty() || m_frag.empty()) {
+        return;
+    }
+
+    std::vector<unsigned int> vs, fs;
+    switch (m_lang)
     {
-        std::vector<unsigned int> vs, fs;
+    case Language::GLSL:
         shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, m_vert, vs);
         shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, fs);
-        m_prog = dev.CreateShaderProgram(vs, fs);
+        break;
+    case Language::HLSL:
+        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::VertexShader, m_vert, vs);
+        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, fs);
+        break;
+    default:
+        assert(0);
     }
+    m_prog = dev.CreateShaderProgram(vs, fs);
 }
 
 void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)

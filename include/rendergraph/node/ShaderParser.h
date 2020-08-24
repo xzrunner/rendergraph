@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rendergraph/Variable.h"
+#include "rendergraph/node/Shader.h"
 
 #include <lexer/Tokenizer.h>
 #include <lexer/Parser.h>
@@ -77,7 +78,7 @@ private:
 class ShaderParser : public lexer::Parser<ShaderToken::Type>
 {
 public:
-    ShaderParser(const std::string& str);
+    ShaderParser(const std::string& str, node::Shader::Language lang);
 
     void Parse();
 
@@ -99,6 +100,8 @@ private:
     };
 
 private:
+    node::Shader::Language m_lang;
+
     mutable ShaderTokenizer m_tokenizer;
     ShaderFormat::Type m_format;
 

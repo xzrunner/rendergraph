@@ -21,6 +21,12 @@ public:
         O_MAX_NUM
     };
 
+    enum class Language
+    {
+        GLSL,
+        HLSL
+    };
+
 public:
     Shader()
     {

@@ -228,6 +228,12 @@ rttr::registration::enumeration<rendergraph::node::AttachRT::TextureTarget>("rg_
 	REGIST_ENUM_ITEM(rendergraph::node::AttachRT::TextureTarget::TextureCubeMap5, "texcubemap5", "TextureCubeMap5")
 );
 
+rttr::registration::enumeration<rendergraph::node::Shader::Language>("rg_shader_lang")
+(
+    REGIST_ENUM_ITEM(rendergraph::node::Shader::Language::GLSL, "glsl", "GLSL"),
+    REGIST_ENUM_ITEM(rendergraph::node::Shader::Language::HLSL, "hlsl", "HLSL")
+);
+
 }
 
 namespace rendergraph

@@ -142,11 +142,10 @@ namespace node
 //    }
 //}
 
-void ShaderInfo::GetCodeUniforms(ur::ShaderType type, const std::string& glsl,
-	                             std::vector<rendergraph::Variable>& uniforms, 
-	                             std::set<std::string>& unique_names)
+void ShaderInfo::GetCodeUniforms(ur::ShaderType stage, const std::string& code, node::Shader::Language lang,
+	                             std::vector<rendergraph::Variable>& uniforms, std::set<std::string>& unique_names)
 {
-    ShaderParser parser(glsl);
+    ShaderParser parser(code, lang);
     parser.Parse();
 
     auto& unifs = parser.GetUniforms();

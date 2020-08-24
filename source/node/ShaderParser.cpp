@@ -5,32 +5,71 @@
 namespace
 {
 
-rendergraph::VariableType parser_type(const std::string& type)
+rendergraph::VariableType parser_type(const std::string& type, rendergraph::node::Shader::Language lang)
 {
-    if (type == "int") {
-        return rendergraph::VariableType::Int;
-    } else if (type == "bool") {
-        return rendergraph::VariableType::Bool;
-    } else if (type == "float") {
-        return rendergraph::VariableType::Vector1;
-    } else if (type == "vec2") {
-        return rendergraph::VariableType::Vector2;
-    } else if (type == "vec3") {
-        return rendergraph::VariableType::Vector3;
-    } else if (type == "vec4") {
-        return rendergraph::VariableType::Vector4;
-    } else if (type == "mat2") {
-        return rendergraph::VariableType::Matrix2;
-    } else if (type == "mat3") {
-        return rendergraph::VariableType::Matrix3;
-    } else if (type == "mat4") {
-        return rendergraph::VariableType::Matrix4;
-    } else if (type == "sampler2D") {
-        return rendergraph::VariableType::Sampler2D;
-    } else if (type == "samplerCube") {
-        return rendergraph::VariableType::SamplerCube;
-    } else {
-        return rendergraph::VariableType::UserType;
+    switch (lang)
+    {
+    case rendergraph::node::Shader::Language::GLSL:
+    {
+        if (type == "int") {
+            return rendergraph::VariableType::Int;
+        } else if (type == "bool") {
+            return rendergraph::VariableType::Bool;
+        } else if (type == "float") {
+            return rendergraph::VariableType::Vector1;
+        } else if (type == "vec2") {
+            return rendergraph::VariableType::Vector2;
+        } else if (type == "vec3") {
+            return rendergraph::VariableType::Vector3;
+        } else if (type == "vec4") {
+            return rendergraph::VariableType::Vector4;
+        } else if (type == "mat2") {
+            return rendergraph::VariableType::Matrix2;
+        } else if (type == "mat3") {
+            return rendergraph::VariableType::Matrix3;
+        } else if (type == "mat4") {
+            return rendergraph::VariableType::Matrix4;
+        } else if (type == "sampler2D") {
+            return rendergraph::VariableType::Sampler2D;
+        } else if (type == "samplerCube") {
+            return rendergraph::VariableType::SamplerCube;
+        } else {
+            return rendergraph::VariableType::UserType;
+        }
+    }
+        break;
+    case rendergraph::node::Shader::Language::HLSL:
+    {
+        if (type == "int") {
+            return rendergraph::VariableType::Int;
+        } else if (type == "bool") {
+            return rendergraph::VariableType::Bool;
+        } else if (type == "float") {
+            return rendergraph::VariableType::Vector1;
+        } else if (type == "float2") {
+            return rendergraph::VariableType::Vector2;
+        } else if (type == "float3") {
+            return rendergraph::VariableType::Vector3;
+        } else if (type == "float4") {
+            return rendergraph::VariableType::Vector4;
+        } else if (type == "matrix2") {
+            return rendergraph::VariableType::Matrix2;
+        } else if (type == "matrix3") {
+            return rendergraph::VariableType::Matrix3;
+        } else if (type == "matrix4") {
+            return rendergraph::VariableType::Matrix4;
+        } else if (type == "sampler2D") {
+            return rendergraph::VariableType::Sampler2D;
+        } else if (type == "samplerCube") {
+            return rendergraph::VariableType::SamplerCube;
+        } else {
+            return rendergraph::VariableType::UserType;
+        }
+    }
+        break;
+    default:
+        assert(0);
+        return rendergraph::VariableType::Any;
     }
 }
 
@@ -176,8 +215,9 @@ const std::string& ShaderTokenizer::NumberDelim()
 // class ShaderParser
 //////////////////////////////////////////////////////////////////////////
 
-ShaderParser::ShaderParser(const std::string& str)
-    : m_tokenizer(ShaderTokenizer(str))
+ShaderParser::ShaderParser(const std::string& str, node::Shader::Language lang)
+    : m_lang(lang)
+    , m_tokenizer(ShaderTokenizer(str))
     , m_format(ShaderFormat::GLSL)
 {
 }
@@ -239,13 +279,13 @@ void ShaderParser::ParseStruct()
 
     // members
     Expect(ShaderToken::OBrace, token = m_tokenizer.NextToken());
-    token = m_tokenizer.PeekToken();
-    while (token.GetType() != ShaderToken::CBrace)
+    while (m_tokenizer.PeekToken().GetType() != ShaderToken::CBrace)
     {
         std::vector<Variable> vars;
         token = ParseVariables(vars);
         std::copy(vars.begin(), vars.end(), std::back_inserter(s.vars));
     }
+    token = m_tokenizer.NextToken();    // skip CBrace
 
     m_structs.push_back(s);
 }
@@ -267,7 +307,7 @@ ShaderParser::ParseVariables(std::vector<Variable>& vars) const
     Token token;
     Expect(ShaderToken::String, token = m_tokenizer.NextToken());
     auto type_str = token.Data();
-    auto type = parser_type(type_str);
+    auto type = parser_type(type_str, m_lang);
 
     token = m_tokenizer.NextToken();
     switch (token.GetType())
@@ -300,6 +340,16 @@ ShaderParser::ParseVariables(std::vector<Variable>& vars) const
             var.type = type;
             var.name = name;
             vars.push_back(var);
+
+            // semantics
+            if (m_lang == Shader::Language::HLSL)
+            {
+                auto token = m_tokenizer.PeekToken();
+                if (token.GetType() == ShaderToken::Colon) {
+                    m_tokenizer.NextToken();
+                    Expect(ShaderToken::String, token = m_tokenizer.NextToken());
+                }
+            }
         }
     }
         break;

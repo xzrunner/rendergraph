@@ -10,3 +10,5 @@ PARAM_INFO(Frag, std::string, frag, m_frag, ())
 
 #undef NOT_GEN_SETTER_GETTER_FUNC
 #undef PROP_EDIT_CODE
+
+PARAM_INFO(Language, rendergraph::node::Shader::Language, lang, m_lang, (rendergraph::node::Shader::Language::GLSL))

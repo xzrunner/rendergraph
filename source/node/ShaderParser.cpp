@@ -58,11 +58,19 @@ rendergraph::VariableType parser_type(const std::string& type, rendergraph::node
             return rendergraph::VariableType::Matrix3;
         } else if (type == "matrix4") {
             return rendergraph::VariableType::Matrix4;
-        } else if (type == "sampler2D") {
+        } 
+
+        else if (type == "sampler") {
             return rendergraph::VariableType::Sampler2D;
-        } else if (type == "samplerCube") {
-            return rendergraph::VariableType::SamplerCube;
-        } else {
+        }
+
+        //else if (type == "Texture2D") {
+        //    return rendergraph::VariableType::Sampler2D;
+        //} else if (type == "TextureCube") {
+        //    return rendergraph::VariableType::SamplerCube;
+        //} 
+        
+        else {
             return rendergraph::VariableType::UserType;
         }
     }

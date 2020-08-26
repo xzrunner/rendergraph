@@ -15,19 +15,21 @@ struct Variable
     int count = 1; // for array
     std::string user_type;
 
+    std::string base_name;
+
     //Variable() {}
     //Variable(VariableType type, const std::string& name)
     //    : type(type), name(name) {}
 
     std::string GetDisplayName()
     {
-        if (user_type.empty() && count == 1) {
+        if (base_name.empty() && count == 1) {
             return name;
         }
 
         std::string ret = name;
-        if (!user_type.empty()) {
-            ret = user_type + "." + name;
+        if (!base_name.empty()) {
+            ret = base_name + "." + name;
         }
         if (count != 1) {
             ret += "[" + std::to_string(count) + "]";

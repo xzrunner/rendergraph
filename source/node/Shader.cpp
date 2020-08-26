@@ -168,7 +168,7 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
 			ShaderVariant var;
 			var.type = VariableType::Vec1Array;
 			var.vec1_array = v.vec1_array;
-			SetUniformValue(k.user_type, k.name, var);
+			SetUniformValue(k.base_name, k.name, var);
 		}
             break;
         case VariableType::Vec2Array:
@@ -176,7 +176,7 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
 			ShaderVariant var;
 			var.type = VariableType::Vec2Array;
 			var.vec2_array = v.vec2_array;
-			SetUniformValue(k.user_type, k.name, var);
+			SetUniformValue(k.base_name, k.name, var);
 		}
             break;
         case VariableType::Vec3Array:
@@ -184,7 +184,7 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
 			ShaderVariant var;
 			var.type = VariableType::Vec3Array;
 			var.vec3_array = v.vec3_array;
-			SetUniformValue(k.user_type, k.name, var);
+			SetUniformValue(k.base_name, k.name, var);
 		}
             break;
         case VariableType::Vec4Array:
@@ -192,7 +192,7 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
 			ShaderVariant var;
 			var.type = VariableType::Vec4Array;
 			var.vec4_array = v.vec4_array;
-			SetUniformValue(k.user_type, k.name, var);
+			SetUniformValue(k.base_name, k.name, var);
 		}
             break;
         default:
@@ -201,7 +201,7 @@ void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)
     }
     else
     {
-        SetUniformValue(k.user_type, k.name, v);
+        SetUniformValue(k.base_name, k.name, v);
     }
 }
 

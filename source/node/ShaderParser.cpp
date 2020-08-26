@@ -338,6 +338,7 @@ ShaderParser::ParseVariables(std::vector<Variable>& vars) const
                 {
                     Variable cvar = m;
                     cvar.user_type = type_str;
+                    cvar.base_name = name;
                     vars.push_back(cvar);
                 }
             }
@@ -376,7 +377,7 @@ ShaderParser::ParseVariables(std::vector<Variable>& vars) const
         {
             auto name = token.Data();
             for (auto& var : sub_vars) {
-                var.user_type = name;
+                var.base_name = name;
             }
             std::copy(sub_vars.begin(), sub_vars.end(), std::back_inserter(vars));
         } 

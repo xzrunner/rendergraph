@@ -1,6 +1,7 @@
 #include "rendergraph/node/ShaderParser.h"
 
 #include <lexer/Exception.h>
+#include <shadertrans/ShaderTrans.h>
 
 namespace
 {
@@ -223,11 +224,20 @@ const std::string& ShaderTokenizer::NumberDelim()
 // class ShaderParser
 //////////////////////////////////////////////////////////////////////////
 
-ShaderParser::ShaderParser(const std::string& str, node::Shader::Language lang)
+ShaderParser::ShaderParser(shadertrans::ShaderStage stage, const std::string& code, 
+                           node::Shader::Language lang)
     : m_lang(lang)
-    , m_tokenizer(ShaderTokenizer(str))
-    , m_format(ShaderFormat::GLSL)
+    , m_tokenizer(code)
 {
+    switch (lang)
+    {
+    case node::Shader::Language::GLSL:
+        m_format |= ShaderFormat::GLSL;
+        break;
+    case node::Shader::Language::HLSL:
+        m_format |= ShaderFormat::HLSL;
+        break;
+    }
 }
 
 void ShaderParser::Parse()

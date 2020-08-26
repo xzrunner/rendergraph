@@ -34,8 +34,8 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
     std::vector<Variable> uniforms;
     std::set<std::string> names;
-    ShaderInfo::GetCodeUniforms(ur::ShaderType::VertexShader, m_vert, m_lang, uniforms, names);
-    ShaderInfo::GetCodeUniforms(ur::ShaderType::FragmentShader, m_frag, m_lang, uniforms, names);
+    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::VertexShader, m_vert, m_lang, uniforms, names);
+    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, uniforms, names);
 
     std::vector<Port> imports;
     imports.reserve(uniforms.size());

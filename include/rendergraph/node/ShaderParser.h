@@ -5,6 +5,7 @@
 
 #include <lexer/Tokenizer.h>
 #include <lexer/Parser.h>
+#include <shadertrans/ShaderStage.h>
 
 namespace rendergraph
 {
@@ -54,6 +55,7 @@ namespace ShaderFormat
 	typedef size_t Type;
 	static const Type Unknown  = 1 << 0;
 	static const Type GLSL     = 1 << 1;
+	static const Type HLSL     = 1 << 2;
 }
 
 class ShaderTokenizer : public lexer::Tokenizer<ShaderToken::Type>
@@ -78,7 +80,8 @@ private:
 class ShaderParser : public lexer::Parser<ShaderToken::Type>
 {
 public:
-    ShaderParser(const std::string& str, node::Shader::Language lang);
+    ShaderParser(shadertrans::ShaderStage stage, const std::string& code, 
+        node::Shader::Language lang);
 
     void Parse();
 

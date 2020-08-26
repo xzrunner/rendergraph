@@ -142,10 +142,21 @@ namespace node
 //    }
 //}
 
-void ShaderInfo::GetCodeUniforms(ur::ShaderType stage, const std::string& code, node::Shader::Language lang,
+void ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage stage, const std::string& code, node::Shader::Language lang,
 	                             std::vector<rendergraph::Variable>& uniforms, std::set<std::string>& unique_names)
 {
-    ShaderParser parser(code, lang);
+	auto glsl_code = code;
+	if (lang == node::Shader::Language::HLSL) 
+	{
+		std::vector<unsigned int> spirv;
+		shadertrans::ShaderTrans::HLSL2SpirV(stage, code, spirv);
+
+		shadertrans::ShaderTrans::SpirV2GLSL(stage, spirv, glsl_code);
+
+		lang = node::Shader::Language::GLSL;
+	}
+
+    ShaderParser parser(stage, glsl_code, lang);
     parser.Parse();
 
     auto& unifs = parser.GetUniforms();

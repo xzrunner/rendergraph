@@ -21,7 +21,7 @@ namespace rendergraph
 namespace node
 {
 
-void Shader::SetCodes(const std::string& vert, const std::string& frag)
+void Shader::SetCodes(const std::string& vert, const std::string& frag, std::ostream& out)
 {
     if (m_vert == vert && m_frag == frag) {
         return;
@@ -34,8 +34,8 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag)
 
     std::vector<Variable> uniforms;
     std::set<std::string> names;
-    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::VertexShader, m_vert, m_lang, uniforms, names);
-    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, uniforms, names);
+    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::VertexShader, m_vert, m_lang, uniforms, names, out);
+    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, uniforms, names, out);
 
     std::vector<Port> imports;
     imports.reserve(uniforms.size());

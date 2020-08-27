@@ -18,7 +18,7 @@ class ShaderInfo
 {
 public:
 	static void GetCodeUniforms(shadertrans::ShaderStage stage, const std::string& code, node::Shader::Language lang,
-		std::vector<rendergraph::Variable>& uniforms, std::set<std::string>& unique_names);
+		std::vector<rendergraph::Variable>& uniforms, std::set<std::string>& unique_names, std::ostream& out);
 
 }; // ShaderInfo
 

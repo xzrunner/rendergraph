@@ -19,6 +19,7 @@ public:
 	~ShaderVariant();
 
     explicit ShaderVariant(VariableType type, int id) : type(type), i(id) {}
+    explicit ShaderVariant(const std::string& str) : type(VariableType::String), p(_strdup(str.c_str())) {}
     explicit ShaderVariant(int v) : type(VariableType::Int), i(v) {}
     explicit ShaderVariant(bool v) : type(VariableType::Bool), b(v) {}
     explicit ShaderVariant(float v) : type(VariableType::Vector1), vec1(v) {}

@@ -363,6 +363,9 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderInfo.h">
       <Filter>nodes\resource\shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\String.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">

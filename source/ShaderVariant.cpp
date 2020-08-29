@@ -11,6 +11,7 @@ ShaderVariant::ShaderVariant()
 
 ShaderVariant::ShaderVariant(const ShaderVariant& var)
 {
+    p = nullptr;
     this->operator=(var);
 }
 
@@ -29,6 +30,15 @@ ShaderVariant& ShaderVariant::operator = (const ShaderVariant& var)
     case VariableType::SamplerCube:
     case VariableType::Texture:
         p = var.p ?  new TextureVal(*(TextureVal*)(var.p)) : nullptr;
+        break;
+    case VariableType::String:
+        if (p) {
+            delete (char*)(p);
+            p = nullptr;
+        }
+        if (var.p) {
+            p = _strdup(static_cast<const char*>(var.p));
+        }
         break;
     case VariableType::Int:
         i = var.i;
@@ -82,6 +92,9 @@ ShaderVariant::~ShaderVariant()
 	case VariableType::Texture:
 		delete (TextureVal*)(p);
 		break;
+    case VariableType::String:
+        delete (char*)(p);
+        break;
 	}
 }
 

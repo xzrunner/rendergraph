@@ -38,7 +38,7 @@ void SetUniform::Execute(const std::shared_ptr<dag::Context>& ctx)
 	if (val.type == VariableType::Texture && val.p)
 	{
 		const int slot = shader->GetShader(*rc)->QueryTexSlot(m_var_name);
-		shader->SetUniformValue(rc->ur_dev, m_var_name, ShaderVariant(slot));
+		shader->SetUniformValue(*rc, m_var_name, ShaderVariant(slot));
 		auto tex = reinterpret_cast<const TextureVal*>(val.p);
 		if (tex->texture) {
 			rc->ur_ctx->SetTexture(slot, tex->texture);
@@ -49,7 +49,7 @@ void SetUniform::Execute(const std::shared_ptr<dag::Context>& ctx)
 	}
 	else
 	{
-		shader->SetUniformValue(rc->ur_dev, m_var_name, val);
+		shader->SetUniformValue(*rc, m_var_name, val);
 	}
 }
 

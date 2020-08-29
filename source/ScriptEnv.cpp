@@ -56,21 +56,21 @@ ScriptEnv::ScriptEnv()
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::mat4& val) {
             if (m_rc) {
-                shader->SetUniformValue(m_rc->ur_dev, key, ShaderVariant(val));
+                shader->SetUniformValue(*m_rc, key, ShaderVariant(val));
             }
         }), "set_uniform");
     m_chai->add(
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, float val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, float val) {
             if (m_rc) {
-                shader->SetUniformValue(m_rc->ur_dev, key, ShaderVariant(val));
+                shader->SetUniformValue(*m_rc, key, ShaderVariant(val));
             }
         }), "set_uniform");
     m_chai->add(
       chaiscript::fun<std::function<void(std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val)>>(
         [&](std::shared_ptr<node::Shader>& shader, const std::string& key, const sm::vec3& val) {
             if (m_rc) {
-                shader->SetUniformValue(m_rc->ur_dev, key, ShaderVariant(val));
+                shader->SetUniformValue(*m_rc, key, ShaderVariant(val));
             }
         }), "set_uniform");
 

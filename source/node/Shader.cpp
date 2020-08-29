@@ -61,7 +61,7 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag, std::ost
 void Shader::Bind(RenderContext& rc)
 {
     if (!m_prog && rc.ur_dev) {
-        Init(*rc.ur_dev);
+        Init(rc);
     }
     if (!m_prog || !m_prog->CheckStatus()) {
         return;
@@ -85,7 +85,7 @@ void Shader::Bind(RenderContext& rc)
         if (val.type == VariableType::Texture && val.p)
         {
             const int slot = m_prog->QueryTexSlot(ip.var.type.name);
-            SetUniformValue(rc.ur_dev, ip.var.type.name, ShaderVariant(slot));
+            SetUniformValue(rc, ip.var.type.name, ShaderVariant(slot));
             auto tex = reinterpret_cast<const TextureVal*>(val.p);
 			if (tex->texture) {
 				rc.ur_ctx->SetTexture(slot, tex->texture);
@@ -100,16 +100,16 @@ void Shader::Bind(RenderContext& rc)
 std::shared_ptr<ur::ShaderProgram> Shader::GetShader(const RenderContext& rc)
 {
     if (!m_prog && rc.ur_dev) {
-        Init(*rc.ur_dev);
+        Init(rc);
     }
     return m_prog;
 }
 
-void Shader::SetUniformValue(const ur::Device* dev, const std::string& key,
+void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
                              const ShaderVariant& val)
 {
-    if (!m_prog && dev) {
-        Init(*dev);
+    if (!m_prog) {
+        Init(rc);
     }
     if (!m_prog || !m_prog->CheckStatus()) {
         return;
@@ -130,9 +130,23 @@ void Shader::SetUniformValue(const ur::Device* dev, const std::string& key,
     SetUniformValue(m_imports[key_idx].var.type, val);
 }
 
-void Shader::Init(const ur::Device& dev)
+void Shader::Init(const RenderContext& rc)
 {
-    if (m_prog || m_vert.empty() || m_frag.empty()) {
+    std::string vert = m_vert;
+    std::string frag = m_frag;
+
+    auto expect = ShaderVariant(std::string(""));
+    uint32_t flags = 0;
+    auto prev_vert = Evaluator::Calc(rc, m_imports[I_VS], expect, flags);
+    if (prev_vert.type == VariableType::String) {
+        vert = static_cast<const char*>(prev_vert.p) + vert;
+    }
+    auto prev_frag = Evaluator::Calc(rc, m_imports[I_FS], expect, flags);
+    if (prev_frag.type == VariableType::String) {
+        frag = static_cast<const char*>(prev_frag.p) + frag;
+    }
+
+    if (m_prog || vert.empty() || frag.empty()) {
         return;
     }
 
@@ -140,17 +154,17 @@ void Shader::Init(const ur::Device& dev)
     switch (m_lang)
     {
     case Language::GLSL:
-        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, m_vert, vs);
-        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, fs);
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs);
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs);
         break;
     case Language::HLSL:
-        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::VertexShader, m_vert, vs);
-        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, fs);
+        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs);
+        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs);
         break;
     default:
         assert(0);
     }
-    m_prog = dev.CreateShaderProgram(vs, fs);
+    m_prog = rc.ur_dev->CreateShaderProgram(vs, fs);
 }
 
 void Shader::SetUniformValue(const Variable& k, const ShaderVariant& v)

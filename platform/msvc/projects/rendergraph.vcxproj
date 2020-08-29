@@ -38,6 +38,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderInfo.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\String.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Translate.parm.h" />

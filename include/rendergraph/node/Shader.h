@@ -14,6 +14,14 @@ namespace node
 class Shader : public Node
 {
 public:
+    enum InputID
+    {
+        I_VS = 0,
+        I_FS,
+
+        I_MAX_NUM
+    };
+
     enum OutputID
     {
         O_OUT = 0,
@@ -30,6 +38,10 @@ public:
 public:
     Shader()
     {
+        m_imports.resize(I_MAX_NUM);
+        m_imports[I_VS] = { { VariableType::String, "vs" } };
+        m_imports[I_FS] = { { VariableType::String, "fs" } };
+
         m_exports.resize(O_MAX_NUM);
         m_exports[O_OUT] = {{ VariableType::Shader, "out" }};
     }
@@ -43,11 +55,11 @@ public:
 
 //    auto& GetUniformNames() const { return m_unif_names; }
 
-    void SetUniformValue(const ur::Device* dev, const std::string& key,
+    void SetUniformValue(const RenderContext& rc, const std::string& key,
         const ShaderVariant& val);
 
 private:
-    void Init(const ur::Device& dev);
+    void Init(const RenderContext& rc);
 
     void SetUniformValue(const Variable& key, const ShaderVariant& val);
     void SetUniformValue(const std::string& base_name, const std::string& name,

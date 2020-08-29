@@ -105,6 +105,10 @@
 
 #define NO_FILEPATH_INCLUDE
 
+#define PARM_NODE_TYPE String
+#define PARM_NODE_NAME string
+#include EXE_FILEPATH
+
 #define PARM_NODE_TYPE Int
 #define PARM_NODE_NAME int
 #include EXE_FILEPATH

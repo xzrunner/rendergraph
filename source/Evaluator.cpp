@@ -61,6 +61,9 @@ ShaderVariant Evaluator::DefaultValue(VariableType type, int count)
     {
         switch (type)
         {
+        case VariableType::String:
+            ret = ShaderVariant(std::string(""));
+            break;
         case VariableType::Int:
             ret = ShaderVariant(0);
             break;

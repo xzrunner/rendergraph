@@ -15,6 +15,8 @@ enum class VariableType
 
     Model,
 
+    String,
+
     // shader
     Int,
     Bool,

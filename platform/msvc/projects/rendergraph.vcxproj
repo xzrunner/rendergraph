@@ -38,6 +38,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderInfo.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\String.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\String.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="..\..\..\source\node\Input.cpp" />
     <ClCompile Include="..\..\..\source\node\Output.cpp" />
     <ClCompile Include="..\..\..\source\node\ShaderInfo.cpp" />
+    <ClCompile Include="..\..\..\source\node\String.cpp" />
     <ClCompile Include="..\..\..\source\node\SubGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\Heightfield.cpp" />
     <ClCompile Include="..\..\..\source\node\Model.cpp" />

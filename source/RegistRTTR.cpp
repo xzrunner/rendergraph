@@ -4,6 +4,7 @@
 #include "rendergraph/node/ShaderParser.h"
 #include "rendergraph/node/Clear.h"
 #include "rendergraph/node/AttachRT.h"
+#include "rendergraph/node/String.h"
 
 #define EXE_FILEPATH "rendergraph/node_include_gen.h"
 #include "rendergraph/node_regist_cfg.h"
@@ -232,6 +233,12 @@ rttr::registration::enumeration<rendergraph::node::Shader::Language>("rg_shader_
 (
     REGIST_ENUM_ITEM(rendergraph::node::Shader::Language::GLSL, "glsl", "GLSL"),
     REGIST_ENUM_ITEM(rendergraph::node::Shader::Language::HLSL, "hlsl", "HLSL")
+);
+
+rttr::registration::enumeration<rendergraph::node::String::Type>("rg_string_type")
+(
+    REGIST_ENUM_ITEM(rendergraph::node::String::Type::Data, "data", "Data"),
+    REGIST_ENUM_ITEM(rendergraph::node::String::Type::Code, "code", "Code")
 );
 
 }

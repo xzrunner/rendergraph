@@ -119,6 +119,9 @@
     <ClCompile Include="..\..\..\source\node\ShaderInfo.cpp">
       <Filter>nodes\resource\shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\String.cpp">
+      <Filter>nodes\others\value</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -364,6 +367,9 @@
       <Filter>nodes\resource\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\String.parm.h">
+      <Filter>nodes\others\value</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\String.h">
       <Filter>nodes\others\value</Filter>
     </ClInclude>
   </ItemGroup>

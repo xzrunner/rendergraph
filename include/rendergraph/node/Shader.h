@@ -4,7 +4,7 @@
 
 #include <painting0/UniformNames.h>
 
-namespace ur { class Device; class ShaderProgram; }
+namespace ur { class ShaderProgram; }
 
 namespace rendergraph
 {

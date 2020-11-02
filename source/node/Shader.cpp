@@ -37,8 +37,7 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag, std::ost
     ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::VertexShader, m_vert, m_lang, uniforms, names, out);
     ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, uniforms, names, out);
 
-    std::vector<Port> imports;
-    imports.reserve(uniforms.size());
+    m_imports.reserve(m_imports.size() + uniforms.size());
     for (auto& u : uniforms)
     {
         dag::Node<rendergraph::Variable>::Port port;
@@ -53,9 +52,8 @@ void Shader::SetCodes(const std::string& vert, const std::string& frag, std::ost
             }
         }
 
-        imports.push_back(port);
+        m_imports.push_back(port);
     }
-    m_imports = imports;
 }
 
 void Shader::Bind(RenderContext& rc)

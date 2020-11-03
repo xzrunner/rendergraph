@@ -122,6 +122,9 @@
     <ClCompile Include="..\..\..\source\node\String.cpp">
       <Filter>nodes\others\value</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\ShaderGraph.cpp">
+      <Filter>nodes\resource\shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">

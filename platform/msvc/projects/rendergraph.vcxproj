@@ -116,6 +116,7 @@
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
     <ClCompile Include="..\..\..\source\node\Input.cpp" />
     <ClCompile Include="..\..\..\source\node\Output.cpp" />
+    <ClCompile Include="..\..\..\source\node\ShaderGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\ShaderInfo.cpp" />
     <ClCompile Include="..\..\..\source\node\String.cpp" />
     <ClCompile Include="..\..\..\source\node\SubGraph.cpp" />

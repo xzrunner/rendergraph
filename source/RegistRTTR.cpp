@@ -241,6 +241,12 @@ rttr::registration::enumeration<rendergraph::node::String::Type>("rg_string_type
     REGIST_ENUM_ITEM(rendergraph::node::String::Type::Code, "code", "Code")
 );
 
+rttr::registration::enumeration<rendergraph::node::ShaderGraph::VertexShader>("rg_shadergraph_vs")
+(
+    REGIST_ENUM_ITEM(rendergraph::node::ShaderGraph::VertexShader::Image, "image", "Image"),
+    REGIST_ENUM_ITEM(rendergraph::node::ShaderGraph::VertexShader::Model, "model", "Model")
+);
+
 }
 
 namespace rendergraph

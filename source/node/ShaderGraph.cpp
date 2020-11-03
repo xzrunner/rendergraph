@@ -21,12 +21,13 @@ void ShaderGraph::Init(const ur::Device& dev, const std::string& fs,
 	if (fs.empty()) {
 		return;
 	}
+
+	m_frag = fs;
 	
-	std::string vs;
 	switch (m_vert_shader)
 	{
 	case VertexShader::Image:
-		vs = R"(
+		m_vert = R"(
 #version 330 core
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoord;
@@ -41,7 +42,7 @@ void main()
 )";
 		break;
 	case VertexShader::Model:
-		vs = R"(
+		m_vert = R"(
 #version 330 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texcoord;
@@ -68,8 +69,8 @@ void main()
 	}
 
 	std::vector<unsigned int> _vs, _fs;
-	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, vs, _vs);
-	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, fs, _fs);
+	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, m_vert, _vs);
+	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, _fs);
 
 	m_prog = dev.CreateShaderProgram(_vs, _fs);	
 }

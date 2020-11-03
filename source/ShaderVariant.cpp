@@ -7,6 +7,7 @@ namespace rendergraph
 ShaderVariant::ShaderVariant()
     : type(VariableType::Any)
 {
+    p = nullptr;
 }
 
 ShaderVariant::ShaderVariant(const ShaderVariant& var)

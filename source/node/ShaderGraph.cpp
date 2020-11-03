@@ -2,6 +2,8 @@
 #include "rendergraph/RenderContext.h"
 
 #include <unirender/Device.h>
+#include <unirender/Context.h>
+#include <unirender/ShaderProgram.h>
 #include <shadertrans/ShaderTrans.h>
 
 namespace rendergraph
@@ -13,10 +15,14 @@ void ShaderGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
 	auto rc = std::static_pointer_cast<RenderContext>(ctx);
 	rc->ur_ds.program = m_prog;
+
+	for (auto& t : m_textures) {
+		rc->ur_ctx->SetTexture(t.first, t.second);
+	}
 }
 
 void ShaderGraph::Init(const ur::Device& dev, const std::string& fs,
-	                   const std::vector<std::pair<size_t, ur::TexturePtr>>& textures)
+	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures)
 {
 	if (fs.empty()) {
 		return;
@@ -73,6 +79,15 @@ void main()
 	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, _fs);
 
 	m_prog = dev.CreateShaderProgram(_vs, _fs);	
+
+	m_textures.clear();
+	for (auto& tex : textures)
+	{
+		auto slot = m_prog->QueryTexSlot(tex.first);
+		if (slot >= 0) {
+			m_textures.push_back({ slot, tex.second });
+		}
+	}
 }
 
 }

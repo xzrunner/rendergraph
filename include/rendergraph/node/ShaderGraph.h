@@ -31,7 +31,7 @@ public:
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
 
     void Init(const ur::Device& dev, const std::string& fs,
-        const std::vector<std::pair<size_t, ur::TexturePtr>>& textures);
+        const std::vector<std::pair<std::string, ur::TexturePtr>>& textures);
 
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;

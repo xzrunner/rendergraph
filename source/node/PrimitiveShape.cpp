@@ -8,6 +8,7 @@
 #include <unirender/IndexBuffer.h>
 #include <unirender/VertexBuffer.h>
 #include <unirender/VertexArray.h>
+#include <painting3/WindowContext.h>
 #include <model/ParametricSurface.h>
 #include <model/typedef.h>
 #include <model/ParametricEquations.h>
@@ -24,10 +25,17 @@ void PrimitiveShape::Draw(const RenderContext& rc) const
         m_dirty = false;
     }
 
-    if (m_va) {
+    if (m_va) 
+    {
         ur::DrawState ds = rc.ur_ds;
         ds.vertex_array = m_va;
-        rc.ur_ctx->Draw(m_prim_type, ds, nullptr);
+
+        pt3::WindowContext wnd_ctx;
+        wnd_ctx.SetProjection(rc.cam_proj_mat);
+        wnd_ctx.SetView(rc.cam_view_mat);
+        wnd_ctx.SetScreen(rc.screen_size.x, rc.screen_size.y);
+
+        rc.ur_ctx->Draw(m_prim_type, ds, &wnd_ctx);
     }
 }
 

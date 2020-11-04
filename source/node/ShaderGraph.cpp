@@ -20,6 +20,11 @@ namespace node
 
 void ShaderGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
+	auto model_updater = m_prog->QueryUniformUpdater(ur::GetUpdaterTypeID<pt0::ModelMatUpdater>());
+	if (model_updater) {
+		std::static_pointer_cast<pt0::ModelMatUpdater>(model_updater)->Update(sm::mat4());
+	}
+
 	auto rc = std::static_pointer_cast<RenderContext>(ctx);
 	rc->ur_ds.program = m_prog;
 

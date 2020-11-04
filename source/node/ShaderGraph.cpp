@@ -5,6 +5,13 @@
 #include <unirender/Context.h>
 #include <unirender/ShaderProgram.h>
 #include <shadertrans/ShaderTrans.h>
+#include <painting0/TimeUpdater.h>
+#include <painting0/ModelMatUpdater.h>
+#include <painting3/ProjectMatUpdater.h>
+#include <painting3/ViewMatUpdater.h>
+#include <shadergraph/VarNames.h>
+#include <shadergraph/block/Time.h>
+#include <cpputil/StringHelper.h>
 
 namespace rendergraph
 {
@@ -22,7 +29,8 @@ void ShaderGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 }
 
 void ShaderGraph::Init(const ur::Device& dev, const std::string& fs,
-	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures)
+	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures,
+	                   bool time_updater)
 {
 	if (fs.empty()) {
 		return;
@@ -71,6 +79,7 @@ void main()
 	gl_Position = ubo_vs.projection * ubo_vs.view * ubo_vs.model * #frag_pos#;
 }
 )";
+		cpputil::StringHelper::ReplaceAll(m_vert, "#frag_pos#", shadergraph::VarNames::FragInputs::frag_pos);
 		break;
 	}
 
@@ -79,6 +88,23 @@ void main()
 	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, _fs);
 
 	m_prog = dev.CreateShaderProgram(_vs, _fs);	
+
+	if (time_updater)
+	{
+		auto up = std::make_shared<pt0::TimeUpdater>(*m_prog,
+			shadergraph::block::Time::TIME_STR,
+			shadergraph::block::Time::SIN_TIME_STR,
+			shadergraph::block::Time::COS_TIME_STR,
+			shadergraph::block::Time::DELTA_TIME_STR);
+		m_prog->AddUniformUpdater(up);
+	}
+
+	if (m_vert_shader == VertexShader::Model)
+	{
+		m_prog->AddUniformUpdater(std::make_shared<pt0::ModelMatUpdater>(*m_prog, "ubo_vs.model"));
+		m_prog->AddUniformUpdater(std::make_shared<pt3::ViewMatUpdater>(*m_prog, "ubo_vs.view"));
+		m_prog->AddUniformUpdater(std::make_shared<pt3::ProjectMatUpdater>(*m_prog, "ubo_vs.projection"));
+	}
 
 	m_textures.clear();
 	for (auto& tex : textures)

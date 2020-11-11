@@ -29,8 +29,8 @@ void Texture::Execute(const std::shared_ptr<dag::Context>& ctx)
         auto v_sz = Evaluator::Calc(*rc, m_imports[I_SIZE], var, flags);
         if (v_sz.type != VariableType::Any) {
             assert(v_sz.type == VariableType::Vector2);
-            m_width = v_sz.vec2.x;
-            m_height = v_sz.vec2.y;
+            m_width  = static_cast<int>(v_sz.vec2.x);
+            m_height = static_cast<int>(v_sz.vec2.y);
         }
     }
 }
@@ -45,11 +45,11 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
         auto v_sz = Evaluator::Calc(rc, m_imports[I_SIZE], var, flags);
         if (v_sz.type != VariableType::Any) {
             assert(v_sz.type == VariableType::Vector2);
-            const_cast<Texture*>(this)->m_width = v_sz.vec2.x;
-            const_cast<Texture*>(this)->m_height = v_sz.vec2.y;
+            const_cast<Texture*>(this)->m_width  = static_cast<int>(v_sz.vec2.x);
+            const_cast<Texture*>(this)->m_height = static_cast<int>(v_sz.vec2.y);
         }
     }
-
+    
     if (!m_tex) {
         Init(rc);
     }

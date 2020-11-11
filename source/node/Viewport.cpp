@@ -15,7 +15,7 @@ void Viewport::Execute(const std::shared_ptr<dag::Context>& ctx)
     {
         auto rc = std::static_pointer_cast<RenderContext>(ctx);
 
-        sm::vec2 sz(m_w, m_h);
+        sm::vec2 sz(static_cast<float>(m_w), static_cast<float>(m_h));
         uint32_t flags = 0;
         auto v_sz = Evaluator::Calc(*rc, m_imports[I_SIZE], ShaderVariant(sz), flags);
         if (v_sz.type != VariableType::Any) {

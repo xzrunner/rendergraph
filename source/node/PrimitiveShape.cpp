@@ -13,6 +13,38 @@
 #include <model/typedef.h>
 #include <model/ParametricEquations.h>
 
+namespace
+{
+
+struct Vertex
+{
+    Vertex() {}
+    Vertex(size_t ix, size_t iz, size_t size_x, size_t size_z)
+    {
+        //position = sm::vec3(
+        //    ix / static_cast<float>(size_x),
+        //    0,
+        //    iz / static_cast<float>(size_z)
+        //);
+        position = sm::vec3(
+            ix / static_cast<float>(size_x),
+            iz / static_cast<float>(size_z),
+            0
+        );
+        texcoords = sm::vec2(
+            ix / static_cast<float>(size_x),
+            iz / static_cast<float>(size_z)
+        );
+    }
+
+    sm::vec3 position;
+    sm::vec2 texcoords;
+};
+
+const int HEIGHT_FIELD_SIZE = 512;
+
+}
+
 namespace rendergraph
 {
 namespace node
@@ -96,6 +128,12 @@ void PrimitiveShape::SetupVertices(const RenderContext& rc) const
         m_va = BuildVertexArray(*rc.ur_dev, *sphere, m_vert_layout);
     }
         break;
+    case Type::Grids:
+        m_prim_type = ur::PrimitiveType::Triangles;
+        m_va = BuildGridsVA(*rc.ur_dev, m_vert_layout);
+        break;
+    default:
+        assert(0);
     }
 }
 
@@ -167,6 +205,63 @@ PrimitiveShape::BuildVertexArray(const ur::Device& dev, const model::ParametricS
         ptr += 2 * 4;
     }
     va->SetVertexBufferAttrs(vbuf_attrs);
+
+    return va;
+}
+
+std::shared_ptr<ur::VertexArray> 
+PrimitiveShape::BuildGridsVA(const ur::Device& dev, VertLayout layout)
+{
+   auto va = dev.CreateVertexArray();
+
+    auto usage = ur::BufferUsageHint::StaticDraw;
+
+    const size_t num_vert = HEIGHT_FIELD_SIZE * HEIGHT_FIELD_SIZE;
+    Vertex* vertices = new Vertex[num_vert];
+    auto vert_ptr = vertices;
+    for (size_t y = 0; y < HEIGHT_FIELD_SIZE; ++y) {
+        for (size_t x = 0; x < HEIGHT_FIELD_SIZE; ++x) {
+            *vert_ptr++ = Vertex(x, y, HEIGHT_FIELD_SIZE, HEIGHT_FIELD_SIZE);
+        }
+    }
+
+    auto vbuf = dev.CreateVertexBuffer(usage, 0);
+    auto vbuf_sz = sizeof(Vertex) * num_vert;
+    vbuf->Reset(vbuf_sz);
+    vbuf->ReadFromMemory(vertices, vbuf_sz, 0);
+    va->SetVertexBuffer(vbuf);
+
+    const size_t num_idx = (HEIGHT_FIELD_SIZE - 1) * (HEIGHT_FIELD_SIZE - 1) * 6;
+    unsigned int* indices = new unsigned int[num_idx];
+    auto index_ptr = indices;
+    for (size_t y = 0; y < HEIGHT_FIELD_SIZE - 1; ++y) {
+        for (size_t x = 0; x < HEIGHT_FIELD_SIZE - 1; ++x) {
+            size_t ll = y * HEIGHT_FIELD_SIZE + x;
+            size_t rl = ll + 1;
+            size_t lh = ll + HEIGHT_FIELD_SIZE;
+            size_t rh = lh + 1;
+            *index_ptr++ = ll;
+            *index_ptr++ = lh;
+            *index_ptr++ = rh;
+            *index_ptr++ = ll;
+            *index_ptr++ = rh;
+            *index_ptr++ = rl;
+        }
+    }
+
+    auto ibuf = dev.CreateIndexBuffer(usage, 0);
+    auto ibuf_sz = sizeof(unsigned int) * num_idx;
+    ibuf->Reset(ibuf_sz);
+    ibuf->ReadFromMemory(indices, ibuf_sz, 0);
+    ibuf->SetDataType(ur::IndexBufferDataType::UnsignedInt);
+    va->SetIndexBuffer(ibuf);
+
+    va->SetVertexBufferAttrs({
+        // pos
+        std::make_shared<ur::VertexInputAttribute>(0, ur::ComponentDataType::Float, 3, 0, 20),
+        // uv
+        std::make_shared<ur::VertexInputAttribute>(1, ur::ComponentDataType::Float, 2, 12, 20)
+    });
 
     return va;
 }

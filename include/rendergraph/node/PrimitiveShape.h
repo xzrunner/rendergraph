@@ -20,6 +20,7 @@ public:
         Quad = 0,
         Cube,
         Sphere,
+        Grids,
     };
 
     enum class VertLayout
@@ -52,6 +53,9 @@ private:
 
     static std::shared_ptr<ur::VertexArray> BuildVertexArray(
         const ur::Device& dev, const model::ParametricSurface& surface, VertLayout layout
+    );
+    static std::shared_ptr<ur::VertexArray> BuildGridsVA(
+        const ur::Device& dev, VertLayout layout
     );
 
 private:

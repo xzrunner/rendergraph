@@ -89,7 +89,8 @@ rttr::registration::enumeration<rendergraph::node::PrimitiveShape::Type>("rg_pri
 (
     REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Quad,   "quad",   "Quad"),
     REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Cube,   "cube",   "Cube"),
-    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Sphere, "sphere", "Sphere")
+    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Sphere, "sphere", "Sphere"),
+    REGIST_ENUM_ITEM(rendergraph::node::PrimitiveShape::Type::Grids,  "grids",  "Grids")
 );
 
 rttr::registration::enumeration<rendergraph::node::PrimitiveShape::VertLayout>("rg_prim_shape_layout")

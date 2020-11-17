@@ -5,13 +5,10 @@
 #include <unirender/Context.h>
 #include <unirender/ShaderProgram.h>
 #include <shadertrans/ShaderTrans.h>
-#include <painting0/TimeUpdater.h>
-#include <painting0/ModelMatUpdater.h>
-#include <painting3/ProjectMatUpdater.h>
-#include <painting3/ViewMatUpdater.h>
 #include <shadergraph/VarNames.h>
 #include <shadergraph/block/Time.h>
 #include <cpputil/StringHelper.h>
+#include <painting0/ModelMatUpdater.h>
 
 namespace rendergraph
 {
@@ -20,6 +17,10 @@ namespace node
 
 void ShaderGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
+	if (!m_prog) {
+		return;
+	}
+
 	auto model_updater = m_prog->QueryUniformUpdater(ur::GetUpdaterTypeID<pt0::ModelMatUpdater>());
 	if (model_updater) {
 		std::static_pointer_cast<pt0::ModelMatUpdater>(model_updater)->Update(sm::mat4());
@@ -33,59 +34,61 @@ void ShaderGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 	}
 }
 
-void ShaderGraph::Init(const ur::Device& dev, const std::string& fs,
-	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures,
-	                   bool time_updater)
+void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::string& fs,
+	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures)
 {
 	if (fs.empty()) {
 		return;
 	}
 
 	m_frag = fs;
-	
-	switch (m_vert_shader)
+	m_vert = vs;
+	if (m_vert.empty())
 	{
-	case VertexShader::Image:
-		m_vert = R"(
-#version 330 core
-layout (location = 0) in vec2 aPos;
-layout (location = 1) in vec2 aTexCoord;
+		switch (m_vert_shader)
+		{
+		case VertexShader::Image:
+			m_vert = R"(
+	#version 330 core
+	layout (location = 0) in vec2 aPos;
+	layout (location = 1) in vec2 aTexCoord;
 
-out vec2 TexCoord;
+	out vec2 TexCoord;
 
-void main()
-{
-	gl_Position = vec4(aPos, 0.0, 1.0);
-	TexCoord = vec2(aTexCoord.x, aTexCoord.y);
-}
-)";
-		break;
-	case VertexShader::Model:
-		m_vert = R"(
-#version 330 core
-layout (location = 0) in vec3 position;
-layout (location = 1) in vec2 texcoord;
+	void main()
+	{
+		gl_Position = vec4(aPos, 0.0, 1.0);
+		TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+	}
+	)";
+			break;
+		case VertexShader::Model:
+			m_vert = R"(
+	#version 330 core
+	layout (location = 0) in vec3 position;
+	layout (location = 1) in vec2 texcoord;
 
-out vec2 TexCoord;
-out vec4 #frag_pos#;
+	out vec2 TexCoord;
+	out vec4 #frag_pos#;
 
-layout(std140) uniform UBO_VS
-{
-    mat4 projection;
-    mat4 view;
-    mat4 model;
-} ubo_vs;
+	layout(std140) uniform UBO_VS
+	{
+		mat4 projection;
+		mat4 view;
+		mat4 model;
+	} ubo_vs;
 
-void main()
-{
-    TexCoord = vec2(texcoord.x, texcoord.y);
+	void main()
+	{
+		TexCoord = vec2(texcoord.x, texcoord.y);
 
-	#frag_pos# = vec4(position, 1.0);
-	gl_Position = ubo_vs.projection * ubo_vs.view * ubo_vs.model * #frag_pos#;
-}
-)";
-		cpputil::StringHelper::ReplaceAll(m_vert, "#frag_pos#", shadergraph::VarNames::FragInputs::frag_pos);
-		break;
+		#frag_pos# = vec4(position, 1.0);
+		gl_Position = ubo_vs.projection * ubo_vs.view * ubo_vs.model * #frag_pos#;
+	}
+	)";
+			cpputil::StringHelper::ReplaceAll(m_vert, "#frag_pos#", shadergraph::VarNames::FragInputs::frag_pos);
+			break;
+		}
 	}
 
 	std::vector<unsigned int> _vs, _fs;
@@ -93,23 +96,6 @@ void main()
 	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, _fs);
 
 	m_prog = dev.CreateShaderProgram(_vs, _fs);	
-
-	if (time_updater)
-	{
-		auto up = std::make_shared<pt0::TimeUpdater>(*m_prog,
-			shadergraph::block::Time::TIME_STR,
-			shadergraph::block::Time::SIN_TIME_STR,
-			shadergraph::block::Time::COS_TIME_STR,
-			shadergraph::block::Time::DELTA_TIME_STR);
-		m_prog->AddUniformUpdater(up);
-	}
-
-	if (m_vert_shader == VertexShader::Model)
-	{
-		m_prog->AddUniformUpdater(std::make_shared<pt0::ModelMatUpdater>(*m_prog, "ubo_vs.model"));
-		m_prog->AddUniformUpdater(std::make_shared<pt3::ViewMatUpdater>(*m_prog, "ubo_vs.view"));
-		m_prog->AddUniformUpdater(std::make_shared<pt3::ProjectMatUpdater>(*m_prog, "ubo_vs.projection"));
-	}
 
 	m_textures.clear();
 	for (auto& tex : textures)

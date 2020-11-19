@@ -45,6 +45,7 @@ rttr::registration::enumeration<rendergraph::VariableType>("rg_var_type")
     REGIST_ENUM_ITEM(rendergraph::VariableType::RenderTarget, "render_target", "RenderTarget"),
     REGIST_ENUM_ITEM(rendergraph::VariableType::Shader,       "shader",        "Shader"),
     REGIST_ENUM_ITEM(rendergraph::VariableType::Model,        "model",         "Model"),
+    REGIST_ENUM_ITEM(rendergraph::VariableType::String,       "string",        "String"),
     REGIST_ENUM_ITEM(rendergraph::VariableType::Int,          "int",           "Int"),
     REGIST_ENUM_ITEM(rendergraph::VariableType::Bool,         "bool",          "Bool"),
     REGIST_ENUM_ITEM(rendergraph::VariableType::Vector1,      "vec1",          "Vector1"),

@@ -35,8 +35,59 @@ void ShaderGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 }
 
 void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::string& fs,
-	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures)
+	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures,
+	                   const std::vector<std::pair<shadergraph::VarType, std::string>>& input_vars)
 {
+	m_imports.clear();
+	m_imports.reserve(input_vars.size());
+	for (auto& v : input_vars)
+	{
+		VariableType type;
+		switch (v.first)
+		{
+		case shadergraph::VarType::Bool:
+			type = VariableType::Bool;
+			break;
+		case shadergraph::VarType::Int:
+			type = VariableType::Int;
+			break;
+		case shadergraph::VarType::Float:
+			type = VariableType::Vector1;
+			break;
+		case shadergraph::VarType::Float2:
+			type = VariableType::Vector2;
+			break;
+		case shadergraph::VarType::Float3:
+			type = VariableType::Vector3;
+			break;
+		case shadergraph::VarType::Float4:
+			type = VariableType::Vector4;
+			break;
+		case shadergraph::VarType::Matrix2:
+			type = VariableType::Matrix2;
+			break;
+		case shadergraph::VarType::Matrix3:
+			type = VariableType::Matrix3;
+			break;
+		case shadergraph::VarType::Matrix4:
+			type = VariableType::Matrix4;
+			break;
+		case shadergraph::VarType::Sampler2D:
+			type = VariableType::Sampler2D;
+			break;
+		case shadergraph::VarType::SamplerCube:
+			type = VariableType::SamplerCube;
+			break;
+		default:
+			assert(0);
+		}
+
+		dag::Node<Variable>::Port dst;
+		dst.var.type.type = type;
+		dst.var.type.name = v.second;
+		m_imports.push_back(dst);
+	}
+
 	if (fs.empty()) {
 		return;
 	}
@@ -104,6 +155,18 @@ void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::
 		if (slot >= 0) {
 			m_textures.push_back({ slot, tex.second });
 		}
+	}
+}
+
+void ShaderGraph::SetInputVar(const std::string& name, const ur::TexturePtr& tex)
+{
+	if (!m_prog) {
+		return;
+	}
+
+	int slot = m_prog->QueryTexSlot(name);
+	if (slot >= 0) {
+		m_textures.push_back({ slot, tex });
 	}
 }
 

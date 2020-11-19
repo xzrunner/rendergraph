@@ -3,6 +3,7 @@
 #include "rendergraph/Node.h"
 
 #include <unirender/typedef.h>
+#include <shadergraph/VarType.h>
 
 namespace ur { class ShaderProgram; class Device; }
 
@@ -31,9 +32,12 @@ public:
     virtual void Execute(const std::shared_ptr<dag::Context>& ctx = nullptr) override;
 
     void Init(const ur::Device& dev, const std::string& vs, const std::string& fs,
-        const std::vector<std::pair<std::string, ur::TexturePtr>>& textures);
+        const std::vector<std::pair<std::string, ur::TexturePtr>>& textures,
+        const std::vector<std::pair<shadergraph::VarType, std::string>>& input_vars);
 
     auto GetShader() const { return m_prog; }
+
+    void SetInputVar(const std::string& name, const ur::TexturePtr& tex);
 
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;

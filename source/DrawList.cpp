@@ -1,5 +1,7 @@
 #include "rendergraph/DrawList.h"
 #include "rendergraph/Node.h"
+#include "rendergraph/node/ShaderGraph.h"
+#include "rendergraph/node/Input.h"
 
 #include <dag/Graph.h>
 
@@ -73,6 +75,34 @@ bool DrawList::Draw(const std::shared_ptr<dag::Context>& ctx, const Node* end) c
         }
     }
     return finished;
+}
+
+void DrawList::SetInputVar(const std::string& name, const ur::TexturePtr& tex)
+{
+    for (auto& n : m_nodes)
+    {        
+        if (n->get_type() != rttr::type::get<node::Input>()) {
+            continue;
+        }
+
+        auto input = std::static_pointer_cast<node::Input>(n);
+        auto& conns = input->GetExports()[0].conns;
+        if (conns.empty()) {
+            continue;
+        }
+
+        for (auto& c : conns)
+        {
+            auto n = c.node.lock();
+            if (!n) {
+                continue;
+            }
+
+            if (n->get_type() == rttr::type::get<node::ShaderGraph>()) {
+                std::static_pointer_cast<node::ShaderGraph>(n)->SetInputVar(name, tex);
+            }
+        }
+    }
 }
 
 void DrawList::Sort()

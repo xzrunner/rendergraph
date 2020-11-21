@@ -11,6 +11,8 @@
 #include <shadergraph/block/Time.h>
 #include <cpputil/StringHelper.h>
 #include <painting0/ModelMatUpdater.h>
+#include <painting3/ViewMatUpdater.h>
+#include <painting3/ProjectMatUpdater.h>
 
 namespace rendergraph
 {
@@ -109,6 +111,8 @@ void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::
 		return;
 	}
 
+	bool mvp_updater = false;
+
 	m_frag = fs;
 	m_vert = vs;
 	if (m_vert.empty())
@@ -155,6 +159,7 @@ void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::
 	}
 	)";
 			cpputil::StringHelper::ReplaceAll(m_vert, "#frag_pos#", shadergraph::VarNames::FragInputs::frag_pos);
+			mvp_updater = true;
 			break;
 		}
 	}
@@ -164,6 +169,13 @@ void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::
 	shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, m_frag, _fs);
 
 	m_prog = dev.CreateShaderProgram(_vs, _fs);	
+
+	if (mvp_updater)
+	{
+		m_prog->AddUniformUpdater(std::make_shared<pt0::ModelMatUpdater>(*m_prog, "ubo_vs.model"));
+		m_prog->AddUniformUpdater(std::make_shared<pt3::ViewMatUpdater>(*m_prog, "ubo_vs.view"));
+		m_prog->AddUniformUpdater(std::make_shared<pt3::ProjectMatUpdater>(*m_prog, "ubo_vs.projection"));
+	}
 
 	m_textures.clear();
 	for (auto& tex : textures)

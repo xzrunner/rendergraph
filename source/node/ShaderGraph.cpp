@@ -1,5 +1,7 @@
 #include "rendergraph/node/ShaderGraph.h"
 #include "rendergraph/RenderContext.h"
+#include "rendergraph/Evaluator.h"
+#include "rendergraph/ShaderHelper.h"
 
 #include <unirender/Device.h>
 #include <unirender/Context.h>
@@ -29,21 +31,36 @@ void ShaderGraph::Execute(const std::shared_ptr<dag::Context>& ctx)
 	auto rc = std::static_pointer_cast<RenderContext>(ctx);
 	rc->ur_ds.program = m_prog;
 
+	// update uniforms
 	for (auto& t : m_textures) {
 		rc->ur_ctx->SetTexture(t.first, t.second);
+	}
+
+	//ShaderVariant var;
+	//uint32_t flags = 0;
+	for (size_t i = 0, n = m_imports.size(); i < n; ++i)
+	{
+		ShaderVariant var;
+		var.type = m_imports[i].var.type.type;
+
+		uint32_t flags = 0;
+		auto val = Evaluator::Calc(*rc, m_imports[i], var, flags);
+
+		ShaderHelper::SetUniformValue(m_prog, m_imports[i].var.type, val);
 	}
 }
 
 void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::string& fs,
 	                   const std::vector<std::pair<std::string, ur::TexturePtr>>& textures,
-	                   const std::vector<std::pair<shadergraph::VarType, std::string>>& input_vars)
+	                   const std::vector<shadergraph::Variant>& input_vars)
 {
 	m_imports.clear();
 	m_imports.reserve(input_vars.size());
 	for (auto& v : input_vars)
 	{
 		VariableType type;
-		switch (v.first)
+		std::string name = v.name;
+		switch (v.type)
 		{
 		case shadergraph::VarType::Bool:
 			type = VariableType::Bool;
@@ -84,7 +101,7 @@ void ShaderGraph::Init(const ur::Device& dev, const std::string& vs, const std::
 
 		dag::Node<Variable>::Port dst;
 		dst.var.type.type = type;
-		dst.var.type.name = v.second;
+		dst.var.type.name = name;
 		m_imports.push_back(dst);
 	}
 

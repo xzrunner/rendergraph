@@ -6,6 +6,7 @@
 #include <shadergraph/VarType.h>
 
 namespace ur { class ShaderProgram; class Device; }
+namespace shadergraph { struct Variant; }
 
 namespace rendergraph
 {
@@ -33,7 +34,7 @@ public:
 
     void Init(const ur::Device& dev, const std::string& vs, const std::string& fs,
         const std::vector<std::pair<std::string, ur::TexturePtr>>& textures,
-        const std::vector<std::pair<shadergraph::VarType, std::string>>& input_vars);
+        const std::vector<shadergraph::Variant>& input_vars);
 
     auto GetShader() const { return m_prog; }
 

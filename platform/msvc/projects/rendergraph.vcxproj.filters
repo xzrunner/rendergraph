@@ -125,6 +125,9 @@
     <ClCompile Include="..\..\..\source\node\ShaderGraph.cpp">
       <Filter>nodes\resource\shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\ShaderHelper.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -380,6 +383,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderGraph.parm.h">
       <Filter>nodes\resource\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\ShaderHelper.h">
+      <Filter>tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

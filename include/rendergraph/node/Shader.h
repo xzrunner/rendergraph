@@ -61,10 +61,6 @@ public:
 private:
     void Init(const RenderContext& rc);
 
-    void SetUniformValue(const Variable& key, const ShaderVariant& val);
-    void SetUniformValue(const std::string& base_name, const std::string& name,
-        const ShaderVariant& val);
-
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;
 

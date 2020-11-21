@@ -21,6 +21,7 @@ ShaderVariant Evaluator::Calc(const RenderContext& rc, const Node::Port& in_port
         return expect;
     }
 
+    assert(conns.size() == 1);
     auto node = conns[0].node.lock();
     if (!node) {
         return expect;

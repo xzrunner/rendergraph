@@ -7,12 +7,13 @@ namespace rendergraph
 ShaderVariant::ShaderVariant()
     : type(VariableType::Any)
 {
-    p = nullptr;
+    memset(&mat4, 0, sizeof(mat4));
 }
 
 ShaderVariant::ShaderVariant(const ShaderVariant& var)
 {
-    p = nullptr;
+    memset(&mat4, 0, sizeof(mat4));
+
     this->operator=(var);
 }
 

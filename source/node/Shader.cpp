@@ -22,14 +22,20 @@ namespace rendergraph
 namespace node
 {
 
-void Shader::SetCodes(const std::string& vert, const std::string& frag, std::ostream& out)
+void Shader::SetCodes(const std::string& vert, const std::string& frag, 
+                      const std::string& tess_ctrl, const std::string& tess_eval, std::ostream& out)
 {
-    if (m_vert == vert && m_frag == frag) {
+    if (m_vert == vert && 
+        m_frag == frag && 
+        m_tess_ctrl == tess_ctrl && 
+        m_tess_eval == tess_eval) {
         return;
     }
 
     m_vert = vert;
     m_frag = frag;
+    m_tess_ctrl = tess_ctrl;
+    m_tess_eval = tess_eval;
 
     m_prog.reset();
 

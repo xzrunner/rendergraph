@@ -47,7 +47,7 @@ public:
     }
 
     void SetCodes(const std::string& vert, const std::string& frag,
-        std::ostream& out);
+        const std::string& tess_ctrl, const std::string& tess_eval, std::ostream& out);
 
     void Bind(RenderContext& rc);
 

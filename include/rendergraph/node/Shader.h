@@ -46,8 +46,8 @@ public:
         m_exports[O_OUT] = {{ VariableType::Shader, "out" }};
     }
 
-    void SetCodes(const std::string& vert, const std::string& frag,
-        const std::string& tess_ctrl, const std::string& tess_eval, std::ostream& out);
+    void SetCodes(const std::string& vert, const std::string& tess_ctrl, 
+        const std::string& tess_eval, const std::string& frag, std::ostream& out);
 
     void Bind(RenderContext& rc);
 

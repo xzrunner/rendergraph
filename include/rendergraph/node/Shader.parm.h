@@ -4,10 +4,10 @@
 
 #define NOT_GEN_SETTER_GETTER_FUNC
 
-PARAM_INFO(Vert, std::string, vert, m_vert, ())
-PARAM_INFO(Frag, std::string, frag, m_frag, ())
+PARAM_INFO(Vert,     std::string, vert,      m_vert, ())
 PARAM_INFO(TessCtrl, std::string, tess_ctrl, m_tess_ctrl, ())
 PARAM_INFO(TessEval, std::string, tess_eval, m_tess_eval, ())
+PARAM_INFO(Frag,     std::string, frag,      m_frag, ())
 
 #undef NOT_GEN_SETTER_GETTER_FUNC
 

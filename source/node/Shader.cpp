@@ -22,44 +22,74 @@ namespace rendergraph
 namespace node
 {
 
-void Shader::SetCodes(const std::string& vert, const std::string& frag, 
-                      const std::string& tess_ctrl, const std::string& tess_eval, std::ostream& out)
+void Shader::SetCodes(const std::string& vert, const std::string& tess_ctrl, 
+                      const std::string& tess_eval, const std::string& frag, std::ostream& out)
 {
     if (m_vert == vert && 
-        m_frag == frag && 
         m_tess_ctrl == tess_ctrl && 
-        m_tess_eval == tess_eval) {
+        m_tess_eval == tess_eval &&
+        m_frag == frag) {
         return;
     }
 
     m_vert = vert;
-    m_frag = frag;
     m_tess_ctrl = tess_ctrl;
     m_tess_eval = tess_eval;
+    m_frag = frag;
 
     m_prog.reset();
 
     std::vector<Variable> uniforms;
     std::set<std::string> names;
     ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::VertexShader, m_vert, m_lang, uniforms, names, out);
+    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, m_lang, uniforms, names, out);
+    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, m_lang, uniforms, names, out);
     ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, uniforms, names, out);
 
-    m_imports.reserve(m_imports.size() + uniforms.size());
+    std::vector<Port> cache_old_pins = m_imports;
+    m_imports.erase(m_imports.begin() + I_MAX_NUM, m_imports.end());
     for (auto& u : uniforms)
     {
-        dag::Node<rendergraph::Variable>::Port port;
-
-        port.var.type = u;
-
-        for (auto& p : m_imports) {
-            if (p.var.type.type == u.type &&
-                p.var.type.name == u.name) {
-                port.conns = p.conns;
+        bool find = false;
+        for (auto& old : cache_old_pins)
+        {
+            if (old.var.type.type == u.type &&
+                old.var.type.name == u.name) 
+            {
+                find = true;
+                m_imports.push_back(old);
                 break;
             }
         }
 
-        m_imports.push_back(port);
+        if (!find)
+        {
+            dag::Node<rendergraph::Variable>::Port port;
+            port.var.full_name = u.name;
+            port.var.type = u;
+
+            m_imports.push_back(port);
+        }
+    }
+
+    // disconnect old pins
+//    for (auto& old : cache_old_pins) 
+    for (size_t i = 0, n = cache_old_pins.size(); i < n; ++i)
+    {
+        auto& old = cache_old_pins[i];
+
+        bool find = false;
+        for (auto& _new : m_imports) {
+            if (&_new == &old) {
+                find = true;
+                break;
+            }
+        }
+        if (!find) {
+            for (auto& conn : old.conns) {
+                dag::disconnect<Variable>(*conn.node.lock(), conn.idx, *this, i);
+            }
+        }
     }
 }
 
@@ -155,21 +185,33 @@ void Shader::Init(const RenderContext& rc)
         return;
     }
 
-    std::vector<unsigned int> vs, fs;
+    std::vector<unsigned int> vs, fs, tcs, tes;
     switch (m_lang)
     {
     case Language::GLSL:
         shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs);
         shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs);
+        if (!m_tess_ctrl.empty()) {
+            shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, tcs);
+        }
+        if (!m_tess_eval.empty()) {
+            shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, tes);
+        }
         break;
     case Language::HLSL:
         shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs);
         shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs);
+        if (!m_tess_ctrl.empty()) {
+            shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, tcs);
+        }
+        if (!m_tess_eval.empty()) {
+            shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, tes);
+        }
         break;
     default:
         assert(0);
     }
-    m_prog = rc.ur_dev->CreateShaderProgram(vs, fs);
+    m_prog = rc.ur_dev->CreateShaderProgram(vs, fs, tcs, tes);
 }
 
 }

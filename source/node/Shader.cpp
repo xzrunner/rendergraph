@@ -74,23 +74,23 @@ void Shader::SetCodes(const std::string& vert, const std::string& tess_ctrl,
 
     // disconnect old pins
 //    for (auto& old : cache_old_pins) 
-    for (size_t i = 0, n = cache_old_pins.size(); i < n; ++i)
-    {
-        auto& old = cache_old_pins[i];
+    //for (size_t i = 0, n = cache_old_pins.size(); i < n; ++i)
+    //{
+    //    auto& old = cache_old_pins[i];
 
-        bool find = false;
-        for (auto& _new : m_imports) {
-            if (&_new == &old) {
-                find = true;
-                break;
-            }
-        }
-        if (!find) {
-            for (auto& conn : old.conns) {
-                dag::disconnect<Variable>(*conn.node.lock(), conn.idx, *this, i);
-            }
-        }
-    }
+    //    bool find = false;
+    //    for (auto& _new : m_imports) {
+    //        if (&_new == &old) {
+    //            find = true;
+    //            break;
+    //        }
+    //    }
+    //    if (!find) {
+    //        for (auto& conn : old.conns) {
+    //            dag::disconnect<Variable>(*conn.node.lock(), conn.idx, *this, i);
+    //        }
+    //    }
+    //}
 }
 
 void Shader::Bind(RenderContext& rc)

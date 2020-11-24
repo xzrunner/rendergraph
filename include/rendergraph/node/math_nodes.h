@@ -101,11 +101,14 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
                       ShaderVariant& var, uint32_t& flags) const override
     {
-        auto fovy   = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_FOVY],   ShaderVariant(m_fovy),   flags);
-        auto aspect = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_ASPECT], ShaderVariant(m_aspect), flags);
-        auto znear  = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_NEAR],   ShaderVariant(m_znear),  flags);
-        auto zfar   = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_FAR],    ShaderVariant(m_zfar),   flags);
-        var.mat4 = sm::mat4::Perspective(fovy.vec1, aspect.vec1, znear.vec1, zfar.vec1);
+        if (var.type == VariableType::Matrix4)
+        {
+            auto fovy   = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_FOVY],   ShaderVariant(m_fovy),   flags);
+            auto aspect = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_ASPECT], ShaderVariant(m_aspect), flags);
+            auto znear  = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_NEAR],   ShaderVariant(m_znear),  flags);
+            auto zfar   = Evaluator::Calc(rc, m_imports[node::PerspectiveMat::ID_FAR],    ShaderVariant(m_zfar),   flags);
+            var.mat4 = sm::mat4::Perspective(fovy.vec1, aspect.vec1, znear.vec1, zfar.vec1);
+        }
     }
 
     enum InputID
@@ -145,13 +148,16 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
                       ShaderVariant& var, uint32_t& flags) const override
     {
-        auto left   = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_LEFT],   ShaderVariant(m_left),   flags);
-        auto right  = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_RIGHT],  ShaderVariant(m_right),  flags);
-        auto bottom = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_BOTTOM], ShaderVariant(m_bottom), flags);
-        auto top    = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_TOP],    ShaderVariant(m_top),    flags);
-        auto znear  = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_ZNEAR],  ShaderVariant(m_znear),  flags);
-        auto zfar   = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_ZFAR],   ShaderVariant(m_zfar),   flags);
-        var.mat4 = sm::mat4::Orthographic(left.vec1, right.vec1, bottom.vec1, top.vec1, znear.vec1, zfar.vec1);
+        if (var.type == VariableType::Matrix4)
+        {
+            auto left   = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_LEFT],   ShaderVariant(m_left),   flags);
+            auto right  = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_RIGHT],  ShaderVariant(m_right),  flags);
+            auto bottom = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_BOTTOM], ShaderVariant(m_bottom), flags);
+            auto top    = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_TOP],    ShaderVariant(m_top),    flags);
+            auto znear  = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_ZNEAR],  ShaderVariant(m_znear),  flags);
+            auto zfar   = Evaluator::Calc(rc, m_imports[node::OrthoMat::ID_ZFAR],   ShaderVariant(m_zfar),   flags);
+            var.mat4 = sm::mat4::Orthographic(left.vec1, right.vec1, bottom.vec1, top.vec1, znear.vec1, zfar.vec1);
+        }
     }
 
     enum InputID
@@ -190,10 +196,13 @@ public:
     virtual void Eval(const RenderContext& rc, size_t port_idx,
                       ShaderVariant& var, uint32_t& flags) const override
     {
-        auto eye    = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_EYE],    ShaderVariant(m_eye),    flags);
-        auto center = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_CENTER], ShaderVariant(m_center), flags);
-        auto up     = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_UP],     ShaderVariant(m_up),     flags);
-        var.mat4 = sm::mat4::LookAt(eye.vec3, center.vec3, up.vec3);
+        if (var.type == VariableType::Matrix4)
+        {
+            auto eye    = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_EYE],    ShaderVariant(m_eye),    flags);
+            auto center = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_CENTER], ShaderVariant(m_center), flags);
+            auto up     = Evaluator::Calc(rc, m_imports[node::LookAtMat::ID_UP],     ShaderVariant(m_up),     flags);
+            var.mat4 = sm::mat4::LookAt(eye.vec3, center.vec3, up.vec3);
+        }
     }
 
     enum InputID

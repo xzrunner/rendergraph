@@ -30,7 +30,7 @@ void VertexArray::Draw(RenderContext& rc) const
         wnd_ctx.SetProjection(rc.cam_proj_mat);
         wnd_ctx.SetView(rc.cam_view_mat);
         wnd_ctx.SetScreen(rc.screen_size.x, rc.screen_size.y);
-        if (rc.ur_ds.program->HasStage(ur::ShaderType::TessEvalShader)) {
+        if (rc.ur_ds.program && rc.ur_ds.program->HasStage(ur::ShaderType::TessEvalShader)) {
             rc.ur_ctx->Draw(ur::PrimitiveType::Patches, rc.ur_ds, &wnd_ctx);
         } else {
             rc.ur_ctx->Draw(ur::PrimitiveType::Triangles, rc.ur_ds, &wnd_ctx);

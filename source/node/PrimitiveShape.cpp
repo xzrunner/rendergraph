@@ -8,6 +8,7 @@
 #include <unirender/IndexBuffer.h>
 #include <unirender/VertexBuffer.h>
 #include <unirender/VertexArray.h>
+#include <unirender/ShaderProgram.h>
 #include <painting3/WindowContext.h>
 #include <model/ParametricSurface.h>
 #include <model/typedef.h>
@@ -66,8 +67,11 @@ void PrimitiveShape::Draw(const RenderContext& rc) const
         wnd_ctx.SetProjection(rc.cam_proj_mat);
         wnd_ctx.SetView(rc.cam_view_mat);
         wnd_ctx.SetScreen(rc.screen_size.x, rc.screen_size.y);
-
-        rc.ur_ctx->Draw(m_prim_type, ds, &wnd_ctx);
+        if (rc.ur_ds.program->HasStage(ur::ShaderType::TessEvalShader)) {
+            rc.ur_ctx->Draw(ur::PrimitiveType::Patches, ds, &wnd_ctx);
+        } else {
+            rc.ur_ctx->Draw(ur::PrimitiveType::Triangles, ds, &wnd_ctx);
+        }
     }
 }
 

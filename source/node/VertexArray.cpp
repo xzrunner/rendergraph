@@ -8,6 +8,8 @@
 #include <unirender/IndexBuffer.h>
 #include <unirender/VertexInputAttribute.h>
 #include <unirender/DrawState.h>
+#include <unirender/ShaderProgram.h>
+#include <painting3/WindowContext.h>
 
 namespace rendergraph
 {
@@ -23,7 +25,16 @@ void VertexArray::Draw(RenderContext& rc) const
     if (m_vertex_array)
     {
         rc.ur_ds.vertex_array = m_vertex_array;
-        rc.ur_ctx->Draw(ur::PrimitiveType::Triangles, rc.ur_ds, nullptr);
+
+        pt3::WindowContext wnd_ctx;
+        wnd_ctx.SetProjection(rc.cam_proj_mat);
+        wnd_ctx.SetView(rc.cam_view_mat);
+        wnd_ctx.SetScreen(rc.screen_size.x, rc.screen_size.y);
+        if (rc.ur_ds.program->HasStage(ur::ShaderType::TessEvalShader)) {
+            rc.ur_ctx->Draw(ur::PrimitiveType::Patches, rc.ur_ds, &wnd_ctx);
+        } else {
+            rc.ur_ctx->Draw(ur::PrimitiveType::Triangles, rc.ur_ds, &wnd_ctx);
+        }
     }
 }
 

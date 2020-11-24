@@ -14,6 +14,8 @@
 #include <unirender/Uniform.h>
 #include <painting0/ModelMatUpdater.h>
 #include <painting0/CamPosUpdater.h>
+#include <painting3/ViewMatUpdater.h>
+#include <painting3/ProjectMatUpdater.h>
 #include <cpputil/StringHelper.h>
 #include <shadertrans/ShaderTrans.h>
 
@@ -111,6 +113,14 @@ void Shader::Bind(RenderContext& rc)
 
         if (flags & Evaluator::FLAG_MODEL_MAT) {
             auto up = std::make_shared<pt0::ModelMatUpdater>(*m_prog, ip.var.type.name);
+            m_prog->AddUniformUpdater(up);
+        }
+        if (flags & Evaluator::FLAG_VIEW_MAT) {
+            auto up = std::make_shared<pt3::ViewMatUpdater>(*m_prog, ip.var.type.name);
+            m_prog->AddUniformUpdater(up);
+        }
+        if (flags & Evaluator::FLAG_PROJ_MAT) {
+            auto up = std::make_shared<pt3::ProjectMatUpdater>(*m_prog, ip.var.type.name);
             m_prog->AddUniformUpdater(up);
         }
         if (flags & Evaluator::FLAG_CAMERA_POS) {

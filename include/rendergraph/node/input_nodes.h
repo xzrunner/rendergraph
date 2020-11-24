@@ -15,6 +15,7 @@ public:
     ProjectMat() { m_exports = {{{ VariableType::Matrix4, "out" }}}; }
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override {
+        flags |= Evaluator::FLAG_PROJ_MAT;
         var.mat4 = rc.cam_proj_mat;
     }
     RTTR_ENABLE(Node)
@@ -26,6 +27,7 @@ public:
     ViewMat() { m_exports = {{{ VariableType::Matrix4, "out" }}}; }
     virtual void Eval(const RenderContext& rc, size_t port_idx,
         ShaderVariant& var, uint32_t& flags) const override {
+        flags |= Evaluator::FLAG_VIEW_MAT;
         var.mat4 = rc.cam_view_mat;
     }
     RTTR_ENABLE(Node)

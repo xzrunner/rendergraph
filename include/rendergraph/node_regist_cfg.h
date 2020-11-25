@@ -93,16 +93,20 @@
 #define PARM_NODE_NAME cull
 #include EXE_FILEPATH
 
+#define PARM_NODE_TYPE FrontFace
+#define PARM_NODE_NAME front_face
+#include EXE_FILEPATH
+
+#define PARM_NODE_TYPE Rasterization
+#define PARM_NODE_NAME rasterization
+#include EXE_FILEPATH
+
 #define PARM_NODE_TYPE ZTest
 #define PARM_NODE_NAME ztest
 #include EXE_FILEPATH
 
 #define PARM_NODE_TYPE ZWrite
 #define PARM_NODE_NAME zwrite
-#include EXE_FILEPATH
-
-#define PARM_NODE_TYPE FrontFace
-#define PARM_NODE_NAME front_face
 #include EXE_FILEPATH
 
 // value

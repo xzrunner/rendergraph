@@ -182,6 +182,13 @@ rttr::registration::enumeration<rendergraph::node::Cull::Mode>("rg_cull_mode")
     REGIST_ENUM_ITEM(rendergraph::node::Cull::Mode::FrontAndBack, "front_and_back", "FrontAndBack")
 );
 
+rttr::registration::enumeration<rendergraph::node::Rasterization::Mode>("rg_raster_mode")
+(
+    REGIST_ENUM_ITEM(rendergraph::node::Rasterization::Mode::Point, "point", "Point"),
+    REGIST_ENUM_ITEM(rendergraph::node::Rasterization::Mode::Line,  "line",  "Line"),
+    REGIST_ENUM_ITEM(rendergraph::node::Rasterization::Mode::Fill,  "fill",  "Fill")
+);
+
 rttr::registration::enumeration<rendergraph::node::ZTest::Func>("rg_ztest_func")
 (
     REGIST_ENUM_ITEM(rendergraph::node::ZTest::Func::Off,      "off",       "Off"),

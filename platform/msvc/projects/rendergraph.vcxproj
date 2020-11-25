@@ -32,6 +32,8 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Output.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\PerspectiveMat.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Rasterization.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\Rasterization.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Rotate.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Scale.parm.h" />
@@ -117,6 +119,7 @@
     <ClCompile Include="..\..\..\source\node\FrontFace.cpp" />
     <ClCompile Include="..\..\..\source\node\Input.cpp" />
     <ClCompile Include="..\..\..\source\node\Output.cpp" />
+    <ClCompile Include="..\..\..\source\node\Rasterization.cpp" />
     <ClCompile Include="..\..\..\source\node\ShaderGraph.cpp" />
     <ClCompile Include="..\..\..\source\node\ShaderInfo.cpp" />
     <ClCompile Include="..\..\..\source\node\String.cpp" />

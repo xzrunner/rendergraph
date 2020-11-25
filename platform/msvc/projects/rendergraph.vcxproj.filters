@@ -128,6 +128,9 @@
     <ClCompile Include="..\..\..\source\ShaderHelper.cpp">
       <Filter>tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Rasterization.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -386,6 +389,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\ShaderHelper.h">
       <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Rasterization.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Rasterization.parm.h">
+      <Filter>nodes\state</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Matrix4.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\OrthoMat.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Output.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\TessParams.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\PerspectiveMat.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\PrimitiveShape.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Rasterization.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\ShaderInfo.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\String.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\String.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\TessParams.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\TextureCube.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Translate.parm.h" />
@@ -131,6 +133,7 @@
     <ClCompile Include="..\..\..\source\node\SetUniform.cpp" />
     <ClCompile Include="..\..\..\source\node\Shader.cpp" />
     <ClCompile Include="..\..\..\source\node\ShaderParser.cpp" />
+    <ClCompile Include="..\..\..\source\node\TessParams.cpp" />
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />
     <ClCompile Include="..\..\..\source\node\TextureCube.cpp" />
     <ClCompile Include="..\..\..\source\node\Unbind.cpp" />

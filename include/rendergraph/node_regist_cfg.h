@@ -109,6 +109,10 @@
 #define PARM_NODE_NAME zwrite
 #include EXE_FILEPATH
 
+#define PARM_NODE_TYPE TessParams
+#define PARM_NODE_NAME tess_params
+#include EXE_FILEPATH
+
 // value
 
 #define NO_FILEPATH_INCLUDE

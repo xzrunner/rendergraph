@@ -131,6 +131,9 @@
     <ClCompile Include="..\..\..\source\node\Rasterization.cpp">
       <Filter>nodes\state</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\TessParams.cpp">
+      <Filter>nodes\state</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -394,6 +397,12 @@
       <Filter>nodes\state</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Rasterization.parm.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\TessParams.h">
+      <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\TessParams.parm.h">
       <Filter>nodes\state</Filter>
     </ClInclude>
   </ItemGroup>

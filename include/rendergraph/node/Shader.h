@@ -53,8 +53,6 @@ public:
 
     std::shared_ptr<ur::ShaderProgram> GetShader(const RenderContext& rc);
 
-//    auto& GetUniformNames() const { return m_unif_names; }
-
     void SetUniformValue(const RenderContext& rc, const std::string& key,
         const ShaderVariant& val);
 
@@ -66,9 +64,6 @@ private:
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;
 
-    //pt0::UniformNames m_unif_names;
-
-    std::string m_model_mat_name;
     std::string m_err_log;
 
     RTTR_ENABLE(Node)

@@ -197,38 +197,35 @@ void Shader::Init(const RenderContext& rc)
         return;
     }
 
-    std::string err_log;
-    std::stringstream err_out(err_log);
     std::vector<unsigned int> vs, fs, tcs, tes;
+    auto& logger = rc.ur_dev->GetLogger();
     switch (m_lang)
     {
     case Language::GLSL:
-        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs, err_out);
-        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs, err_out);
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs, logger);
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs, logger);
         if (!m_tess_ctrl.empty()) {
-            shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, tcs, err_out);
+            shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, tcs, logger);
         }
         if (!m_tess_eval.empty()) {
-            shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, tes, err_out);
+            shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, tes, logger);
         }
         break;
     case Language::HLSL:
-        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs, err_out);
-        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs, err_out);
+        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::VertexShader, vert, vs, logger);
+        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::PixelShader, frag, fs, logger);
         if (!m_tess_ctrl.empty()) {
-            shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, tcs, err_out);
+            shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, tcs, logger);
         }
         if (!m_tess_eval.empty()) {
-            shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, tes, err_out);
+            shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, tes, logger);
         }
         break;
     default:
         assert(0);
     }
 
-    m_prog = rc.ur_dev->CreateShaderProgram(vs, fs, tcs, tes, err_out);
-
-    m_err_log = err_out.str();
+    m_prog = rc.ur_dev->CreateShaderProgram(vs, fs, tcs, tes);
 }
 
 }

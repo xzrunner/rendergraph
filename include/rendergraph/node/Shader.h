@@ -58,6 +58,8 @@ public:
     void SetUniformValue(const RenderContext& rc, const std::string& key,
         const ShaderVariant& val);
 
+    auto& GetErrorLog() const { return m_err_log; }
+
 private:
     void Init(const RenderContext& rc);
 
@@ -67,6 +69,7 @@ private:
     //pt0::UniformNames m_unif_names;
 
     std::string m_model_mat_name;
+    std::string m_err_log;
 
     RTTR_ENABLE(Node)
 

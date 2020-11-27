@@ -48,6 +48,7 @@ public:
 
     void SetCodes(const std::string& vert, const std::string& tess_ctrl, 
         const std::string& tess_eval, const std::string& frag, std::ostream& out);
+    void SetCodes(const std::string& compute, std::ostream& out);
 
     void Bind(RenderContext& rc);
 
@@ -58,6 +59,11 @@ public:
 
 private:
     void Init(const RenderContext& rc);
+
+    void InitRenderShader(const RenderContext& rc);
+    void InitComputeShader(const RenderContext& rc);
+
+    void UpdateImports(const std::vector<Variable>& uniforms);
 
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;

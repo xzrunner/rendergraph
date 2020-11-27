@@ -50,31 +50,7 @@ void Shader::SetCodes(const std::string& vert, const std::string& tess_ctrl,
     ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, m_lang, uniforms, names, out);
     ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, uniforms, names, out);
 
-    std::vector<Port> cache_old_pins = m_imports;
-    m_imports.erase(m_imports.begin() + I_MAX_NUM, m_imports.end());
-    for (auto& u : uniforms)
-    {
-        bool find = false;
-        for (auto& old : cache_old_pins)
-        {
-            if (old.var.type.type == u.type &&
-                old.var.type.name == u.name) 
-            {
-                find = true;
-                m_imports.push_back(old);
-                break;
-            }
-        }
-
-        if (!find)
-        {
-            dag::Node<rendergraph::Variable>::Port port;
-            port.var.full_name = u.name;
-            port.var.type = u;
-
-            m_imports.push_back(port);
-        }
-    }
+    UpdateImports(uniforms);
 
     // disconnect old pins
 //    for (auto& old : cache_old_pins) 
@@ -95,6 +71,23 @@ void Shader::SetCodes(const std::string& vert, const std::string& tess_ctrl,
     //        }
     //    }
     //}
+}
+
+void Shader::SetCodes(const std::string& compute, std::ostream& out)
+{
+    if (m_compute == compute) {
+        return;
+    }
+
+    m_compute = compute;
+
+    m_prog.reset();
+
+    std::vector<Variable> uniforms;
+    std::set<std::string> names;
+    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::ComputeShader, m_compute, m_lang, uniforms, names, out);
+
+    UpdateImports(uniforms);
 }
 
 void Shader::Bind(RenderContext& rc)
@@ -179,6 +172,15 @@ void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
 
 void Shader::Init(const RenderContext& rc)
 {
+    if (!m_compute.empty()) {
+        InitComputeShader(rc);
+    } else {
+        InitRenderShader(rc);
+    }
+}
+
+void Shader::InitRenderShader(const RenderContext& rc)
+{
     std::string vert = m_vert;
     std::string frag = m_frag;
 
@@ -226,6 +228,59 @@ void Shader::Init(const RenderContext& rc)
     }
 
     m_prog = rc.ur_dev->CreateShaderProgram(vs, fs, tcs, tes);
+}
+
+void Shader::InitComputeShader(const RenderContext& rc)
+{
+    if (m_prog || m_compute.empty()) {
+        return;
+    }
+
+    
+    std::vector<unsigned int> cs;
+    auto& logger = rc.ur_dev->GetLogger();
+    switch (m_lang)
+    {
+    case Language::GLSL:
+        shadertrans::ShaderTrans::GLSL2SpirV(shadertrans::ShaderStage::ComputeShader, m_compute, cs, logger);
+        break;
+    case Language::HLSL:
+        shadertrans::ShaderTrans::HLSL2SpirV(shadertrans::ShaderStage::ComputeShader, m_compute, cs, logger);
+        break;
+    default:
+        assert(0);
+    }
+
+    m_prog = rc.ur_dev->CreateShaderProgram(cs);
+}
+
+void Shader::UpdateImports(const std::vector<Variable>& uniforms)
+{
+    std::vector<Port> cache_old_pins = m_imports;
+    m_imports.erase(m_imports.begin() + I_MAX_NUM, m_imports.end());
+    for (auto& u : uniforms)
+    {
+        bool find = false;
+        for (auto& old : cache_old_pins)
+        {
+            if (old.var.type.type == u.type &&
+                old.var.type.name == u.name) 
+            {
+                find = true;
+                m_imports.push_back(old);
+                break;
+            }
+        }
+
+        if (!find)
+        {
+            dag::Node<rendergraph::Variable>::Port port;
+            port.var.full_name = u.name;
+            port.var.type = u;
+
+            m_imports.push_back(port);
+        }
+    }
 }
 
 }

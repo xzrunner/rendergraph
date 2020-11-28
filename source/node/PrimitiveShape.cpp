@@ -66,7 +66,10 @@ void PrimitiveShape::Draw(const RenderContext& rc) const
         pt3::WindowContext wnd_ctx;
         wnd_ctx.SetProjection(rc.cam_proj_mat);
         wnd_ctx.SetView(rc.cam_view_mat);
-        wnd_ctx.SetScreen(rc.screen_size.x, rc.screen_size.y);
+        wnd_ctx.SetScreen(
+            static_cast<int>(rc.screen_size.x), 
+            static_cast<int>(rc.screen_size.y)
+        );
         if (rc.ur_ds.program->HasStage(ur::ShaderType::TessEvalShader)) {
             rc.ur_ctx->Draw(ur::PrimitiveType::Patches, ds, &wnd_ctx);
         } else {

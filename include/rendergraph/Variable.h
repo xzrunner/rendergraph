@@ -21,7 +21,7 @@ struct Variable
     //Variable(VariableType type, const std::string& name)
     //    : type(type), name(name) {}
 
-    std::string GetDisplayName()
+    std::string GetDisplayName() const
     {
         if (base_name.empty() && count == 1) {
             return name;

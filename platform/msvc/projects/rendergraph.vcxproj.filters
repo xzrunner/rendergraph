@@ -134,6 +134,9 @@
     <ClCompile Include="..\..\..\source\node\TessParams.cpp">
       <Filter>nodes\state</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Compute.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -404,6 +407,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\TessParams.parm.h">
       <Filter>nodes\state</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Compute.h">
+      <Filter>nodes\op</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

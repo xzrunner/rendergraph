@@ -22,6 +22,7 @@ public:
     enum OutputID
     {
         O_OUT = 0,
+        O_SIZE,
     };
 
 public:
@@ -31,7 +32,8 @@ public:
             {{ VariableType::Vector2, "size" }},
         };
         m_exports = {
-            {{ VariableType::Texture, "out" }}
+            {{ VariableType::Texture, "out" }},
+            {{ VariableType::Vector2, "size" }},
         };
     }
 

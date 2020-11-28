@@ -63,6 +63,18 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
 		tex->sampler = m_sampler;
         var.p = tex;
     }
+    else if (port_idx == O_SIZE)
+    {
+        var.type = VariableType::Vector2;
+        if (m_tex) {
+            var.vec2.Set(
+                static_cast<float>(m_tex->GetWidth()), 
+                static_cast<float>(m_tex->GetHeight())
+            );
+        } else {
+            var.vec2.Set(0, 0);
+        }
+    }
 }
 
 void Texture::Init(const RenderContext& rc) const

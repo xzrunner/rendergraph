@@ -78,6 +78,48 @@ namespace rendergraph
 namespace node
 {
 
+void ShaderInfo::Parse(shadertrans::ShaderStage stage, const std::string& code,
+	                   node::Shader::Language lang, std::ostream& out)
+{
+	auto glsl_code = code;
+	if (lang == node::Shader::Language::HLSL) 
+	{
+		std::vector<unsigned int> spirv;
+
+		shadertrans::ShaderTrans::HLSL2SpirV(stage, code, spirv, out);
+
+		shadertrans::ShaderTrans::SpirV2GLSL(stage, spirv, glsl_code, out);
+
+		lang = node::Shader::Language::GLSL;
+	}
+
+    ShaderParser parser(stage, glsl_code, lang);
+    parser.Parse();
+
+    for (auto& u : parser.GetUniforms())
+	{
+        if (m_unique_names.find(u.name) == m_unique_names.end()) {
+			m_uniforms.push_back(u);
+			m_unique_names.insert(u.name);
+        }
+    }
+
+	auto& symbols = parser.GetSymbols();
+	auto& props = parser.GetProps();
+	for (auto& prop : parser.GetProps())
+	{
+		if (prop.second.type == VariableType::String) {
+			auto itr = symbols.find(static_cast<const char*>(prop.second.p));
+			if (itr != symbols.end()) {
+				m_props.insert({ prop.first, itr->second });
+				continue;
+			}
+		}
+
+		m_props.insert(prop);
+	}
+}
+
 //void ShaderInfo::GetCodeUniforms(ur::ShaderType type, const std::string& glsl,
 //	                             std::vector<rendergraph::Variable>& uniforms, 
 //	                             std::set<std::string>& unique_names)
@@ -141,33 +183,6 @@ namespace node
 //        info->blockBuffers.push_back(ub);
 //    }
 //}
-
-void ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage stage, const std::string& code, node::Shader::Language lang,
-	                             std::vector<rendergraph::Variable>& uniforms, std::set<std::string>& unique_names, std::ostream& out)
-{
-	auto glsl_code = code;
-	if (lang == node::Shader::Language::HLSL) 
-	{
-		std::vector<unsigned int> spirv;
-
-		shadertrans::ShaderTrans::HLSL2SpirV(stage, code, spirv, out);
-
-		shadertrans::ShaderTrans::SpirV2GLSL(stage, spirv, glsl_code, out);
-
-		lang = node::Shader::Language::GLSL;
-	}
-
-    ShaderParser parser(stage, glsl_code, lang);
-    parser.Parse();
-
-    auto& unifs = parser.GetUniforms();
-    for (auto& u : unifs) {
-        if (unique_names.find(u.name) == unique_names.end()) {
-            uniforms.push_back(u);
-            unique_names.insert(u.name);
-        }
-    }
-}
 
 }
 }

@@ -17,8 +17,20 @@ namespace node
 class ShaderInfo
 {
 public:
-	static void GetCodeUniforms(shadertrans::ShaderStage stage, const std::string& code, node::Shader::Language lang,
-		std::vector<rendergraph::Variable>& uniforms, std::set<std::string>& unique_names, std::ostream& out);
+	ShaderInfo() {}
+
+	void Parse(shadertrans::ShaderStage stage, const std::string& code,
+		node::Shader::Language lang, std::ostream& out);
+
+	auto& GetUniforms() const { return m_uniforms; }
+
+	auto& GetProps() const { return m_props; }
+
+private:
+	std::vector<Variable> m_uniforms;
+	std::set<std::string> m_unique_names;
+
+	std::map<std::string, ShaderVariant> m_props;
 
 }; // ShaderInfo
 

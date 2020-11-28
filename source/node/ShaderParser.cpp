@@ -16,13 +16,13 @@ rendergraph::VariableType parser_type(const std::string& type, rendergraph::node
             return rendergraph::VariableType::Int;
         } else if (type == "bool") {
             return rendergraph::VariableType::Bool;
-        } else if (type == "float") {
+        } else if (type == "float" || type == "int") {
             return rendergraph::VariableType::Vector1;
-        } else if (type == "vec2") {
+        } else if (type == "vec2" || type == "ivec2") {
             return rendergraph::VariableType::Vector2;
-        } else if (type == "vec3") {
+        } else if (type == "vec3" || type == "ivec3") {
             return rendergraph::VariableType::Vector3;
-        } else if (type == "vec4") {
+        } else if (type == "vec4" || type == "ivec4") {
             return rendergraph::VariableType::Vector4;
         } else if (type == "mat2") {
             return rendergraph::VariableType::Matrix2;
@@ -30,7 +30,7 @@ rendergraph::VariableType parser_type(const std::string& type, rendergraph::node
             return rendergraph::VariableType::Matrix3;
         } else if (type == "mat4") {
             return rendergraph::VariableType::Matrix4;
-        } else if (type == "sampler2D") {
+        } else if (type == "sampler2D" || type == "image2D") {
             return rendergraph::VariableType::Sampler2D;
         } else if (type == "samplerCube") {
             return rendergraph::VariableType::SamplerCube;
@@ -146,10 +146,8 @@ ShaderTokenizer::EmitToken()
                 Advance();
                 return Token(ShaderToken::Dot, c, c + 1, Offset(c), start_line, start_column);
             case '#':
-            {
-                const char* e = DiscardUntil("\n\r");
-                return Token(ShaderToken::Pound, c, e, Offset(c), start_line, start_column);
-            }
+                Advance();
+                return Token(ShaderToken::Pound, c, c + 1, Offset(c), start_line, start_column);
             case ':':
                 Advance();
                 return Token(ShaderToken::Colon, c, c + 1, Offset(c), start_line, start_column);
@@ -256,7 +254,23 @@ void ShaderParser::Parse()
             } else if (str == "uniform") {
                 ParseUniform();
                 advanced = true;
+            } else if (str == "layout") {
+                ParseLayout();
+                advanced = true;
             }
+        }
+        else if (token_type == ShaderToken::Pound)
+        {
+            m_tokenizer.NextToken();    // skip Pound
+            Expect(ShaderToken::String, token = m_tokenizer.NextToken());
+            auto str = token.Data();
+            if (str == "define")
+            {
+                Expect(ShaderToken::String, token = m_tokenizer.NextToken());
+                auto key = token.Data();
+                m_symbols.insert({ key, ParseVariant() });
+            }
+            advanced = true;
         }
 
         //switch (token_type)
@@ -279,6 +293,28 @@ void ShaderParser::Parse()
         token = m_tokenizer.PeekToken();
         token_type = token.GetType();
     }
+}
+
+std::map<ShaderToken::Type, std::string> ShaderParser::TokenNames() const
+{
+	using namespace ShaderToken;
+
+	std::map<ShaderToken::Type, std::string> names;
+	//names[Integer]      = "integer";
+	//names[Decimal]      = "decimal";
+	//names[String]       = "string";
+	//names[OParenthesis] = "'('";
+	//names[CParenthesis] = "')'";
+	//names[OBrace]       = "'{'";
+	//names[CBrace]       = "'}'";
+	//names[OBracket]     = "'['";
+	//names[CBracket]     = "']'";
+ //   names[Comma]        = "','";
+ //   names[Dot]          = "'.'";
+	//names[Comment]      = "comment";
+	//names[Eof]          = "end of file";
+
+	return names;
 }
 
 void ShaderParser::ParseStruct()
@@ -317,6 +353,40 @@ void ShaderParser::ParseUniform()
     std::vector<Variable> vars;
     ParseVariables(vars);
     std::copy(vars.begin(), vars.end(), std::back_inserter(m_uniforms));
+}
+
+void ShaderParser::ParseLayout()
+{
+    Token token;
+    Expect(ShaderToken::String, token = m_tokenizer.NextToken());
+    assert(token.Data() == "layout");
+
+    Expect(ShaderToken::OParenthesis, token = m_tokenizer.NextToken());
+    while (token.GetType() != ShaderToken::CParenthesis)
+    {
+        if (token.GetType() == ShaderToken::String) 
+        {
+            auto str = token.Data();
+            if (str == "local_size_x")
+            {
+                Expect(ShaderToken::Equal, token = m_tokenizer.NextToken());
+                m_props.insert({ "local_size_x", ParseVariant() });
+            }
+            else if (str == "local_size_y")
+            {
+                Expect(ShaderToken::Equal, token = m_tokenizer.NextToken());
+                m_props.insert({ "local_size_y", ParseVariant() });
+            }
+            else if (str == "local_size_z")
+            {
+                Expect(ShaderToken::Equal, token = m_tokenizer.NextToken());
+                m_props.insert({ "local_size_z", ParseVariant() });
+            }
+        }
+
+        token = m_tokenizer.NextToken();
+    }
+    token = m_tokenizer.NextToken();    // skip CParenthesis
 }
 
 ShaderTokenizer::Token 
@@ -415,26 +485,25 @@ ShaderParser::ParseVariables(std::vector<Variable>& vars) const
     return token;
 }
 
-std::map<ShaderToken::Type, std::string> ShaderParser::TokenNames() const
+ShaderVariant ShaderParser::ParseVariant()
 {
-	using namespace ShaderToken;
+    ShaderVariant ret;
 
-	std::map<ShaderToken::Type, std::string> names;
-	//names[Integer]      = "integer";
-	//names[Decimal]      = "decimal";
-	//names[String]       = "string";
-	//names[OParenthesis] = "'('";
-	//names[CParenthesis] = "')'";
-	//names[OBrace]       = "'{'";
-	//names[CBrace]       = "'}'";
-	//names[OBracket]     = "'['";
-	//names[CBracket]     = "']'";
- //   names[Comma]        = "','";
- //   names[Dot]          = "'.'";
-	//names[Comment]      = "comment";
-	//names[Eof]          = "end of file";
+    auto token = m_tokenizer.NextToken();
+    switch (token.GetType())
+    {
+    case ShaderToken::String:
+        ret = ShaderVariant(token.Data());
+        break;
+    case ShaderToken::Integer:
+        ret = ShaderVariant(token.ToInteger<int>());
+        break;
+    case ShaderToken::Decimal:
+        ret = ShaderVariant(token.ToFloat<float>());
+        break;
+    }
 
-	return names;
+    return ret;
 }
 
 }

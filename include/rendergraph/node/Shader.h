@@ -57,6 +57,8 @@ public:
     void SetUniformValue(const RenderContext& rc, const std::string& key,
         const ShaderVariant& val);
 
+    ShaderVariant QueryProp(const std::string& name) const;
+
 private:
     void Init(const RenderContext& rc);
 
@@ -67,6 +69,8 @@ private:
 
 private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;
+
+    std::map<std::string, ShaderVariant> m_props;
 
     RTTR_ENABLE(Node)
 

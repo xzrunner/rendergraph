@@ -6,6 +6,7 @@
 #include <lexer/Tokenizer.h>
 #include <lexer/Parser.h>
 #include <shadertrans/ShaderStage.h>
+#include <unirender/AccessType.h>
 
 namespace rendergraph
 {
@@ -85,15 +86,21 @@ public:
 
     void Parse();
 
+    auto& GetSymbols() const { return m_symbols; }
+    auto& GetProps() const { return m_props; }
+
     auto& GetUniforms() const { return m_uniforms; }
 
 private:
+    virtual std::map<ShaderToken::Type, std::string> TokenNames() const override;
+
     void ParseStruct();
     void ParseUniform();
+    void ParseLayout();
 
     ShaderTokenizer::Token ParseVariables(std::vector<Variable>& vars) const;
 
-    virtual std::map<ShaderToken::Type, std::string> TokenNames() const override;
+    ShaderVariant ParseVariant();
 
 private:
     struct Struct
@@ -102,14 +109,26 @@ private:
         std::vector<Variable> vars;
     };
 
+    struct ImageUnit
+    {
+        Variable var;
+
+        int unit = 0;
+        ur::AccessType access;
+    };
+
 private:
     node::Shader::Language m_lang;
 
     mutable ShaderTokenizer m_tokenizer;
     ShaderFormat::Type m_format;
 
-    std::vector<Struct>   m_structs;
-    std::vector<Variable> m_uniforms;
+    std::map<std::string, ShaderVariant> m_symbols;
+    std::map<std::string, ShaderVariant> m_props;
+
+    std::vector<Struct>    m_structs;
+    std::vector<Variable>  m_uniforms;
+    std::vector<ImageUnit> m_images;
 
     typedef ShaderTokenizer::Token Token;
 

@@ -1,5 +1,4 @@
 #include "rendergraph/node/Shader.h"
-#include "rendergraph/node/ShaderParser.h"
 #include "rendergraph/node/Texture.h"
 #include "rendergraph/node/ShaderInfo.h"
 #include "rendergraph/Evaluator.h"
@@ -43,14 +42,13 @@ void Shader::SetCodes(const std::string& vert, const std::string& tess_ctrl,
 
     m_prog.reset();
 
-    std::vector<Variable> uniforms;
-    std::set<std::string> names;
-    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::VertexShader, m_vert, m_lang, uniforms, names, out);
-    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, m_lang, uniforms, names, out);
-    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, m_lang, uniforms, names, out);
-    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, uniforms, names, out);
+    ShaderInfo si;
+    si.Parse(shadertrans::ShaderStage::VertexShader, m_vert, m_lang, out);
+    si.Parse(shadertrans::ShaderStage::TessCtrlShader, m_tess_ctrl, m_lang, out);
+    si.Parse(shadertrans::ShaderStage::TessEvalShader, m_tess_eval, m_lang, out);
+    si.Parse(shadertrans::ShaderStage::PixelShader, m_frag, m_lang, out);
 
-    UpdateImports(uniforms);
+    UpdateImports(si.GetUniforms());
 
     // disconnect old pins
 //    for (auto& old : cache_old_pins) 
@@ -83,11 +81,12 @@ void Shader::SetCodes(const std::string& compute, std::ostream& out)
 
     m_prog.reset();
 
-    std::vector<Variable> uniforms;
-    std::set<std::string> names;
-    ShaderInfo::GetCodeUniforms(shadertrans::ShaderStage::ComputeShader, m_compute, m_lang, uniforms, names, out);
+    ShaderInfo si;
+    si.Parse(shadertrans::ShaderStage::ComputeShader, m_compute, m_lang, out);
 
-    UpdateImports(uniforms);
+    m_props = si.GetProps();
+
+    UpdateImports(si.GetUniforms());
 }
 
 void Shader::Bind(RenderContext& rc)
@@ -168,6 +167,18 @@ void Shader::SetUniformValue(const RenderContext& rc, const std::string& key,
     }
 
     ShaderHelper::SetUniformValue(m_prog, m_imports[key_idx].var.type, val);
+}
+
+ShaderVariant Shader::QueryProp(const std::string& name) const
+{
+    ShaderVariant ret;
+
+    auto itr = m_props.find(name);
+    if (itr != m_props.end()) {
+        ret = itr->second;
+    }
+
+    return ret;
 }
 
 void Shader::Init(const RenderContext& rc)

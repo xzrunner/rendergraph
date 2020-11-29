@@ -102,7 +102,7 @@ FunctionTokenizer::EmitToken()
 
 const std::string& FunctionTokenizer::NumberDelim()
 {
-    static const std::string number_delim(Whitespace() + ")]}");
+    static const std::string number_delim(Whitespace() + ")]},");
     return number_delim;
 }
 

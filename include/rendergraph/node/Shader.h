@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rendergraph/Node.h"
+#include "rendergraph/node/ImageUnit.h"
 
 #include <painting0/UniformNames.h>
 
@@ -58,6 +59,7 @@ public:
         const ShaderVariant& val);
 
     ShaderVariant QueryProp(const std::string& name) const;
+    const ImageUnit* QueryImage(const std::string& name) const;
 
 private:
     void Init(const RenderContext& rc);
@@ -71,6 +73,7 @@ private:
     std::shared_ptr<ur::ShaderProgram> m_prog = nullptr;
 
     std::map<std::string, ShaderVariant> m_props;
+    std::vector<ImageUnit> m_images;
 
     RTTR_ENABLE(Node)
 

@@ -411,6 +411,9 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Compute.h">
       <Filter>nodes\op</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\ImageUnit.h">
+      <Filter>nodes\resource\shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dataset">

@@ -6,7 +6,6 @@
 #include <lexer/Tokenizer.h>
 #include <lexer/Parser.h>
 #include <shadertrans/ShaderStage.h>
-#include <unirender/AccessType.h>
 
 namespace rendergraph
 {
@@ -90,6 +89,7 @@ public:
     auto& GetProps() const { return m_props; }
 
     auto& GetUniforms() const { return m_uniforms; }
+    auto& GetImages() const { return m_images; }
 
 private:
     virtual std::map<ShaderToken::Type, std::string> TokenNames() const override;
@@ -107,14 +107,6 @@ private:
     {
         std::string name;
         std::vector<Variable> vars;
-    };
-
-    struct ImageUnit
-    {
-        Variable var;
-
-        int unit = 0;
-        ur::AccessType access;
     };
 
 private:

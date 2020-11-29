@@ -104,6 +104,8 @@ void ShaderInfo::Parse(shadertrans::ShaderStage stage, const std::string& code,
         }
     }
 
+	m_images = parser.GetImages();
+
 	auto& symbols = parser.GetSymbols();
 	auto& props = parser.GetProps();
 	for (auto& prop : parser.GetProps())

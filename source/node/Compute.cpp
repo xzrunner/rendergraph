@@ -46,11 +46,15 @@ void Compute::Execute(const std::shared_ptr<dag::Context>& ctx)
         auto val = Evaluator::Calc(*rc, input, var, flags);
         if (val.type == VariableType::Texture && val.p) 
         {
-            auto tex = reinterpret_cast<const TextureVal*>(val.p);
-            // todo
-            tex->texture->BindToImage(0, ur::AccessType::WriteOnly);
-            out_tex = tex->texture;
-            break;
+            auto img = shader->QueryImage(input.var.type.name);
+            if (img)
+            {
+                auto tex = reinterpret_cast<const TextureVal*>(val.p);
+                tex->texture->BindToImage(img->unit, img->access);
+                if (img->access == ur::AccessType::WriteOnly) {
+                    out_tex = tex->texture;
+                }
+            }
         }
     }
 

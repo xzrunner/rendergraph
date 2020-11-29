@@ -2,6 +2,7 @@
 
 #include "rendergraph/Variable.h"
 #include "rendergraph/node/Shader.h"
+#include "rendergraph/node/ImageUnit.h"
 
 #include <shadertrans/ShaderStage.h>
 
@@ -26,11 +27,15 @@ public:
 
 	auto& GetProps() const { return m_props; }
 
+	auto& GetImages() const { return m_images; }
+	
 private:
 	std::vector<Variable> m_uniforms;
 	std::set<std::string> m_unique_names;
 
 	std::map<std::string, ShaderVariant> m_props;
+
+	std::vector<ImageUnit> m_images;
 
 }; // ShaderInfo
 

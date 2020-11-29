@@ -85,6 +85,7 @@ void Shader::SetCodes(const std::string& compute, std::ostream& out)
     si.Parse(shadertrans::ShaderStage::ComputeShader, m_compute, m_lang, out);
 
     m_props = si.GetProps();
+    m_images = si.GetImages();
 
     UpdateImports(si.GetUniforms());
 }
@@ -179,6 +180,16 @@ ShaderVariant Shader::QueryProp(const std::string& name) const
     }
 
     return ret;
+}
+
+const ImageUnit* Shader::QueryImage(const std::string& name) const
+{
+    for (auto& img : m_images) {
+        if (img.name == name) {
+            return &img;
+        }
+    }
+    return nullptr;
 }
 
 void Shader::Init(const RenderContext& rc)

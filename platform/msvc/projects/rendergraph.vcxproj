@@ -23,6 +23,7 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\Cull.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\FrontFace.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Heightfield.parm.h" />
+    <ClInclude Include="..\..\..\include\rendergraph\node\ImageUnit.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Input.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Int.parm.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\LookAtMat.parm.h" />

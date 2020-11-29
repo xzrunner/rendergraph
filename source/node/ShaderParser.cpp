@@ -361,6 +361,8 @@ void ShaderParser::ParseLayout()
     Expect(ShaderToken::String, token = m_tokenizer.NextToken());
     assert(token.Data() == "layout");
 
+    ImageUnit img;
+
     Expect(ShaderToken::OParenthesis, token = m_tokenizer.NextToken());
     while (token.GetType() != ShaderToken::CParenthesis)
     {
@@ -382,11 +384,78 @@ void ShaderParser::ParseLayout()
                 Expect(ShaderToken::Equal, token = m_tokenizer.NextToken());
                 m_props.insert({ "local_size_z", ParseVariant() });
             }
+            else if (str == "binding")
+            {
+                Expect(ShaderToken::Equal, token = m_tokenizer.NextToken());
+                Expect(ShaderToken::Integer, token = m_tokenizer.NextToken());
+                img.unit = token.ToInteger<int>();
+            }
+            // check image format qualifiers
+            else if (str == "rgba8")
+            {
+                img.fmt = ur::ImageFormat::rgba8;
+            }
+            else if (str == "rgba16f")
+            {
+                img.fmt = ur::ImageFormat::rgba16f;
+            }
+            else if (str == "rgba32f")
+            {
+                img.fmt = ur::ImageFormat::rgba32f;
+            }
+            else if (str == "rg16f")
+            {
+                img.fmt = ur::ImageFormat::rg16f;
+            }
+            else if (str == "r8")
+            {
+                img.fmt = ur::ImageFormat::r8;
+            }
+            else if (str == "r16")
+            {
+                img.fmt = ur::ImageFormat::r16;
+            }
         }
 
         token = m_tokenizer.NextToken();
     }
     token = m_tokenizer.NextToken();    // skip CParenthesis
+
+    // image unit
+    if (token.GetType() == ShaderToken::String) 
+    {
+        bool find_access = false;
+
+        auto str = token.Data();
+        if (str == "readonly") {
+            img.access = ur::AccessType::ReadOnly;
+            find_access = true;
+        } else if (str == "writeonly") {
+            img.access = ur::AccessType::WriteOnly;
+            find_access = true;
+        }
+
+        if (find_access)
+        {
+            Expect(ShaderToken::String, token = m_tokenizer.NextToken());
+            assert(token.Data() == "uniform");
+
+            std::vector<Variable> vars;
+            ParseVariables(vars);
+            assert(vars.size() == 1);
+
+            assert(vars[0].type == VariableType::Sampler2D);
+            img.name = vars[0].name;
+
+            m_uniforms.push_back(vars[0]);
+
+            m_images.push_back(img);
+        }
+        else
+        {
+            return;
+        }
+    }        
 }
 
 ShaderTokenizer::Token 

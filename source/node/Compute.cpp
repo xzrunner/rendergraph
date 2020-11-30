@@ -6,6 +6,7 @@
 
 #include <unirender/Context.h>
 #include <unirender/Texture.h>
+#include <unirender/ShaderProgram.h>
 
 namespace rendergraph
 {
@@ -50,7 +51,8 @@ void Compute::Execute(const std::shared_ptr<dag::Context>& ctx)
             if (img)
             {
                 auto tex = reinterpret_cast<const TextureVal*>(val.p);
-                tex->texture->BindToImage(img->unit, img->access);
+                int slot = prog->QueryTexSlot(input.var.type.name);
+                tex->texture->BindToImage(slot, img->access);
                 if (img->access == ur::AccessType::WriteOnly) {
                     out_tex = tex->texture;
                 }

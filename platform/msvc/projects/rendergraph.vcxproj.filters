@@ -137,6 +137,9 @@
     <ClCompile Include="..\..\..\source\node\Compute.cpp">
       <Filter>nodes\op</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\node\Barrier.cpp">
+      <Filter>nodes\op</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\rendergraph\Node.h">
@@ -413,6 +416,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\ImageUnit.h">
       <Filter>nodes\resource\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Barrier.h">
+      <Filter>nodes\op</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\rendergraph\node\Barrier.parm.h">
+      <Filter>nodes\op</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

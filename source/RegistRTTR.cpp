@@ -77,6 +77,23 @@ rttr::registration::enumeration<rendergraph::node::Clear::Type>("rg_clear_type")
     REGIST_ENUM_ITEM(rendergraph::node::Clear::Type::Stencil, "stencil", "Stencil")
 );
 
+rttr::registration::enumeration<rendergraph::node::Barrier::Type>("rg_barrier_type")
+(
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::VertexAttribArray, "vertexattri_barray",  "VertexAttribArray"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::ElementArray,      "element_array",       "ElementArray"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::Uniform,           "uniform",             "Uniform"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::TextureFetch,      "texture_fetch",       "TextureFetch"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::ShaderImageAccess, "shader_image_access", "ShaderImageAccess"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::Command,           "command",             "Command"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::PixelBuffer,       "pixel_buffer",        "PixelBuffer"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::TextureUpdate,     "texture_update",      "TextureUpdate"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::BufferUpdate,      "buffer_update",       "BufferUpdate"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::Framebuffer,       "frame_buffer",        "Framebuffer"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::TransformFeedback, "transform_feedback",  "TransformFeedback"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::AtomicCounter,     "atomic_counter",      "AtomicCounter"),
+    REGIST_ENUM_ITEM(rendergraph::node::Barrier::Type::ShaderStorage,     "shader_storage",      "ShaderStorage")
+);
+
 rttr::registration::enumeration<rendergraph::node::CustomData::ReturnType>("rg_user_script_return_type")
 (
     REGIST_ENUM_ITEM(rendergraph::node::CustomData::ReturnType::Void,      "void",       "Void"),

@@ -39,6 +39,7 @@ void Compute::Execute(const std::shared_ptr<dag::Context>& ctx)
         rc->ur_ds.program = prog;
     }
 
+    // find out tex
     ur::TexturePtr out_tex = nullptr;
     for (auto& input : shader->GetImports())
     {
@@ -59,26 +60,28 @@ void Compute::Execute(const std::shared_ptr<dag::Context>& ctx)
             }
         }
     }
-
-    if (out_tex)
-    {
-        const int w = out_tex->GetWidth();
-        const int h = out_tex->GetHeight();
-
-        auto v_sz_x = shader->QueryProp("local_size_x");
-        auto v_sz_y = shader->QueryProp("local_size_y");
-        auto v_sz_z = shader->QueryProp("local_size_z");
-        assert(v_sz_x.type == VariableType::Int 
-            && v_sz_y.type == VariableType::Int
-            && v_sz_z.type == VariableType::Int);
-
-        int group_x = v_sz_x.i == 1 ? 1 : (w / v_sz_x.i + 1);
-        int group_y = v_sz_y.i == 1 ? 1 : (h / v_sz_y.i + 1);
-        assert(v_sz_z.i == 1);
-        int group_z = 1;
-
-        rc->ur_ctx->Compute(rc->ur_ds, group_x, group_y, group_z);
+    if (!out_tex) {
+        return;
     }
+
+    shader->Bind(*rc);
+
+    const int w = out_tex->GetWidth();
+    const int h = out_tex->GetHeight();
+
+    auto v_sz_x = shader->QueryProp("local_size_x");
+    auto v_sz_y = shader->QueryProp("local_size_y");
+    auto v_sz_z = shader->QueryProp("local_size_z");
+    assert(v_sz_x.type == VariableType::Int 
+        && v_sz_y.type == VariableType::Int
+        && v_sz_z.type == VariableType::Int);
+
+    int group_x = v_sz_x.i == 1 ? 1 : (w / v_sz_x.i + 1);
+    int group_y = v_sz_y.i == 1 ? 1 : (h / v_sz_y.i + 1);
+    assert(v_sz_z.i == 1);
+    int group_z = 1;
+
+    rc->ur_ctx->Compute(rc->ur_ds, group_x, group_y, group_z);
 }
 
 }

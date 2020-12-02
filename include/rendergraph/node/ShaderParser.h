@@ -33,15 +33,16 @@ namespace ShaderToken
     static const Type Pound         = 1 << 12; // #
     static const Type Colon         = 1 << 13; // :
     static const Type Question      = 1 << 14; // ?
+    static const Type Semicolon     = 1 << 15; // ;
 
-    static const Type Add           = 1 << 15; // +
-    static const Type Sub           = 1 << 16; // _
-    static const Type Mul           = 1 << 17; // *
-    static const Type Div           = 1 << 18; // /
-    static const Type Equal         = 1 << 19; // =
+    static const Type Add           = 1 << 16; // +
+    static const Type Sub           = 1 << 17; // _
+    static const Type Mul           = 1 << 18; // *
+    static const Type Div           = 1 << 19; // /
+    static const Type Equal         = 1 << 20; // =
 
-	static const Type Eof           = 1 << 20; // end of file
-	static const Type Eol           = 1 << 21; // end of line
+	static const Type Eof           = 1 << 21; // end of file
+	static const Type Eol           = 1 << 22; // end of line
 }
 
 enum class ShaderKeyword
@@ -67,13 +68,18 @@ public:
         m_skip_eol = skip_eol;
     }
 
+    void SetSkipSemicolon(bool skip_semicolon) {
+        m_skip_semicolon = skip_semicolon;
+    }
+
 protected:
     virtual Token EmitToken() override;
 
     static const std::string& NumberDelim();
 
 private:
-    bool m_skip_eol;
+    bool m_skip_eol       = true;
+    bool m_skip_semicolon = true;
 
 }; // ShaderTokenizer
 

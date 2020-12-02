@@ -181,11 +181,15 @@ ShaderTokenizer::EmitToken()
             case '\r':
             case ' ':
             case '\t':
+                DiscardWhile(Whitespace());
+                break;
             case ';':
-            {
-                static const std::string whitespace(Whitespace() + ";");
-                DiscardWhile(whitespace);
-            }
+                if (m_skip_semicolon) {
+                    DiscardWhile(";");
+                } else {
+                    Advance();
+                    return Token(ShaderToken::Semicolon, c, c + 1, Offset(c), start_line, start_column);
+                }
                 break;
             default: { // whitespace, integer, decimal or word
                 const char* e = ReadInteger(NumberDelim());
@@ -521,8 +525,15 @@ ShaderParser::ParseVariables(std::vector<Variable>& vars) const
             std::copy(_vars.begin(), _vars.end(), std::back_inserter(sub_vars));
         }
         token = m_tokenizer.NextToken();    // skip CBrace
+
+        m_tokenizer.SetSkipSemicolon(false);
         token = m_tokenizer.PeekToken();
-        if (token.GetType() == ShaderToken::String) 
+        m_tokenizer.SetSkipSemicolon(true);
+        if (token.GetType() == ShaderToken::Semicolon) 
+        {
+            std::copy(sub_vars.begin(), sub_vars.end(), std::back_inserter(vars));
+        }
+        else if (token.GetType() == ShaderToken::String) 
         {
             auto name = token.Data();
             for (auto& var : sub_vars) {
@@ -532,9 +543,7 @@ ShaderParser::ParseVariables(std::vector<Variable>& vars) const
         } 
         else 
         {
-            Struct s;
-            s.name = type_str;
-            s.vars = sub_vars;
+            assert(0);
         }
     }
         break;

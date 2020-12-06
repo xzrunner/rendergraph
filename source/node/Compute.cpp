@@ -53,7 +53,7 @@ void Compute::Execute(const std::shared_ptr<dag::Context>& ctx)
             {
                 auto tex = reinterpret_cast<const TextureVal*>(val.p);
                 int slot = prog->QueryTexSlot(input.var.type.name);
-                tex->texture->BindToImage(slot, img->access);
+                rc->ur_ctx->SetImage(slot, tex->texture, img->access);
                 if (img->access == ur::AccessType::WriteOnly) {
                     out_tex = tex->texture;
                 }

@@ -30,8 +30,10 @@ public:
 	auto& GetImages() const { return m_images; }
 	
 private:
+	void Parse(shadertrans::ShaderStage stage, const std::string& glsl);
+
+private:
 	std::vector<Variable> m_uniforms;
-	std::set<std::string> m_unique_names;
 
 	std::map<std::string, ShaderVariant> m_props;
 

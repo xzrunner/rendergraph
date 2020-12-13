@@ -87,7 +87,6 @@
     <ClInclude Include="..\..\..\include\rendergraph\node\RenderTarget.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\SetUniform.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.h" />
-    <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\Unbind.h" />
     <ClInclude Include="..\..\..\include\rendergraph\node\CustomData.h" />
@@ -138,7 +137,6 @@
     <ClCompile Include="..\..\..\source\node\RenderTarget.cpp" />
     <ClCompile Include="..\..\..\source\node\SetUniform.cpp" />
     <ClCompile Include="..\..\..\source\node\Shader.cpp" />
-    <ClCompile Include="..\..\..\source\node\ShaderParser.cpp" />
     <ClCompile Include="..\..\..\source\node\TessParams.cpp" />
     <ClCompile Include="..\..\..\source\node\Texture.cpp" />
     <ClCompile Include="..\..\..\source\node\TextureCube.cpp" />

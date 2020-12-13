@@ -107,9 +107,6 @@
     <ClCompile Include="..\..\..\source\node\Shader.cpp">
       <Filter>nodes\resource\shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\node\ShaderParser.cpp">
-      <Filter>nodes\resource\shader</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\node\Texture.cpp">
       <Filter>nodes\resource\texture</Filter>
     </ClCompile>
@@ -367,9 +364,6 @@
       <Filter>nodes\resource\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Shader.parm.h">
-      <Filter>nodes\resource\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\rendergraph\node\ShaderParser.h">
       <Filter>nodes\resource\shader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\rendergraph\node\Texture.h">

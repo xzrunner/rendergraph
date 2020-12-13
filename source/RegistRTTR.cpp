@@ -1,7 +1,6 @@
 #include "rendergraph/node/input_nodes.h"
 #include "rendergraph/node/math_nodes.h"
 #include "rendergraph/node/value_nodes.h"
-#include "rendergraph/node/ShaderParser.h"
 #include "rendergraph/node/Clear.h"
 #include "rendergraph/node/AttachRT.h"
 #include "rendergraph/node/String.h"
@@ -62,12 +61,6 @@ rttr::registration::enumeration<rendergraph::VariableType>("rg_var_type")
     REGIST_ENUM_ITEM(rendergraph::VariableType::Vec3Array,    "vec3_array",    "Vec3Array"),
     REGIST_ENUM_ITEM(rendergraph::VariableType::Vec4Array,    "vec4_array",    "Vec4Array"),
     REGIST_ENUM_ITEM(rendergraph::VariableType::UserType,     "user_type",     "UserType")
-);
-
-rttr::registration::enumeration<rendergraph::node::ShaderKeyword>("rg_shader_keyword")
-(
-    REGIST_ENUM_ITEM(rendergraph::node::ShaderKeyword::Struct,  "struct",  "Struct"),
-    REGIST_ENUM_ITEM(rendergraph::node::ShaderKeyword::Uniform, "uniform", "Uniform")
 );
 
 rttr::registration::enumeration<rendergraph::node::Clear::Type>("rg_clear_type")

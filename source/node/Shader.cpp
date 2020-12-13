@@ -124,15 +124,25 @@ void Shader::Bind(RenderContext& rc)
         }
         if (val.type == VariableType::Texture && val.p)
         {
-            const int slot = m_prog->QueryTexSlot(ip.var.type.name);
-            SetUniformValue(rc, ip.var.type.name, ShaderVariant(slot));
             auto tex = reinterpret_cast<const TextureVal*>(val.p);
-			if (tex->texture) {
-				rc.ur_ctx->SetTexture(slot, tex->texture);
-			}
-			if (tex->sampler) {
-				rc.ur_ctx->SetTextureSampler(slot, tex->sampler);
-			}
+            int slot = m_prog->QueryTexSlot(ip.var.type.name);
+            if (slot >= 0)
+            {
+			    if (tex->texture) {
+				    rc.ur_ctx->SetTexture(slot, tex->texture);
+			    }
+			    if (tex->sampler) {
+				    rc.ur_ctx->SetTextureSampler(slot, tex->sampler);
+			    }
+            }
+            else
+            {
+                slot = m_prog->QueryImgSlot(ip.var.type.name);
+                if (tex->texture) {
+                    rc.ur_ctx->SetImage(slot, tex->texture, ur::AccessType::ReadWrite);
+                }
+            }
+            SetUniformValue(rc, ip.var.type.name, ShaderVariant(slot));
         }
     }
 }

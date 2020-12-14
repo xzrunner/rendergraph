@@ -20,6 +20,11 @@ namespace node
 
 void Texture::Execute(const std::shared_ptr<dag::Context>& ctx)
 {
+    if (IsDirty()) {
+        auto rc = std::static_pointer_cast<RenderContext>(ctx);
+        InitTexture(*rc);
+    }
+
     if (!m_imports[I_SIZE].conns.empty())
     {
         auto rc = std::static_pointer_cast<RenderContext>(ctx);
@@ -49,10 +54,6 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
             const_cast<Texture*>(this)->m_height = static_cast<int>(v_sz.vec2.y);
         }
     }
-    
-    if (!m_tex) {
-        Init(rc);
-    }
 
     if (port_idx == O_OUT)
     {
@@ -77,7 +78,7 @@ void Texture::Eval(const RenderContext& rc, size_t port_idx,
     }
 }
 
-void Texture::Init(const RenderContext& rc) const
+void Texture::InitTexture(const RenderContext& rc) const
 {
     ur::TextureTarget target;
     switch (m_type)

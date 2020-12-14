@@ -67,6 +67,8 @@ public:
         RGBA4,
         RGB,
         RGB565,
+        RGBA32F,
+        RGBA16F,
 		RGB16F,
 		RG16F,
         A8,
